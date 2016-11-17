@@ -47,6 +47,8 @@ int main(int, char **)
 		}
 	}
 
+	gl.Release(window->GetWindowHandle());
+
 	delete window;
 
 	return 0;
