@@ -2,6 +2,7 @@
 #include <windows.h>
 #include <gl/gl.h>
 #include <math.h>
+#include "Matrix.h"
 
 #pragma comment(lib, "opengl32.lib")
 
@@ -76,14 +77,13 @@ public:
 
 	bool Init(HWND hwnd);
 	bool InitOpenGL(HWND hwnd, int screenWidth, int screenHeight, float screenDepth, float screenNear, bool vsync);
+
 	void Release(HWND hwnd);
+	HDC GetDeviceContext() const;
+	HGLRC GetRenderingContext() const;
 
-	void BeginScene(float red, float green, float blue, float alpha);
-	void EndScene() const;
-
-	void GetWorldMatrix(float* matrix);
-	void GetProjMatrix(float* matrix);
-	static void BuildIdentityMatrix(float* matrix);
+	void GetWorldMatrix(Matrix& matrix) const;
+	void GetProjMatrix(Matrix& matrix) const;
 	void BuildPerspectiveFovLHMatrix(float* matrix, float fieldOfView, float screenAspect, float screenNear, float screenDepth) const;
 
 private:
@@ -95,8 +95,8 @@ private:
 	PFNWGLCREATECONTEXTATTRIBSARBPROC wglCreateContextAttribsARB;
 	PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT;
 
-	float m_worldMatrix[16];
-	float m_projectionMatrix[16];
+	Matrix m_worldMatrix;
+	Matrix m_projectionMatrix;
 
 public:
 	PFNGLATTACHSHADERPROC glAttachShader;
@@ -132,4 +132,7 @@ public:
 	PFNGLDISABLEVERTEXATTRIBARRAYPROC glDisableVertexAttribArray;
 	PFNGLUNIFORM3FVPROC glUniform3fv;
 	PFNGLUNIFORM4FVPROC glUniform4fv;
+
+	HWND m_hWnd;
+	HINSTANCE m_hInst;
 };

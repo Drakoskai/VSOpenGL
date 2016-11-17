@@ -1,49 +1,51 @@
 #include "GLDeviceResources.h"
 
-GLDeviceResources::GLDeviceResources():
-m_deviceContext(nullptr),
-m_renderingContext(nullptr),
-wglChoosePixelFormatARB(nullptr),
-wglCreateContextAttribsARB(nullptr),
-wglSwapIntervalEXT(nullptr), 
-glAttachShader(nullptr), 
-glBindBuffer(nullptr), 
-glBindVertexArray(nullptr), 
-glBufferData(nullptr), 
-glCompileShader(nullptr),
-glCreateProgram(nullptr), 
-glCreateShader(nullptr), 
-glDeleteBuffers(nullptr),
-glDeleteProgram(nullptr), 
-glDeleteShader(nullptr),
-glDeleteVertexArrays(nullptr),
-glDetachShader(nullptr), 
-glEnableVertexAttribArray(nullptr),
-glGenBuffers(nullptr), 
-glGenVertexArrays(nullptr), 
-glGetAttribLocation(nullptr), 
-glGetProgramInfoLog(nullptr), 
-glGetProgramiv(nullptr), 
-glGetShaderInfoLog(nullptr),
-glGetShaderiv(nullptr), 
-glLinkProgram(nullptr), 
-glShaderSource(nullptr),
-glUseProgram(nullptr),
-glVertexAttribPointer(nullptr), 
-glBindAttribLocation(nullptr), 
-glGetUniformLocation(nullptr), 
-glUniformMatrix4fv(nullptr), 
-glActiveTexture(nullptr), 
-glUniform1i(nullptr), 
-glGenerateMipmap(nullptr),
-glDisableVertexAttribArray(nullptr), 
-glUniform3fv(nullptr), 
-glUniform4fv(nullptr) { }
+GLDeviceResources::GLDeviceResources()
+	: m_deviceContext(nullptr),
+	m_renderingContext(nullptr),
+	wglChoosePixelFormatARB(nullptr),
+	wglCreateContextAttribsARB(nullptr),
+	wglSwapIntervalEXT(nullptr),
+	glAttachShader(nullptr),
+	glBindBuffer(nullptr),
+	glBindVertexArray(nullptr),
+	glBufferData(nullptr),
+	glCompileShader(nullptr),
+	glCreateProgram(nullptr),
+	glCreateShader(nullptr),
+	glDeleteBuffers(nullptr),
+	glDeleteProgram(nullptr),
+	glDeleteShader(nullptr),
+	glDeleteVertexArrays(nullptr),
+	glDetachShader(nullptr),
+	glEnableVertexAttribArray(nullptr),
+	glGenBuffers(nullptr),
+	glGenVertexArrays(nullptr),
+	glGetAttribLocation(nullptr),
+	glGetProgramInfoLog(nullptr),
+	glGetProgramiv(nullptr),
+	glGetShaderInfoLog(nullptr),
+	glGetShaderiv(nullptr),
+	glLinkProgram(nullptr),
+	glShaderSource(nullptr),
+	glUseProgram(nullptr),
+	glVertexAttribPointer(nullptr),
+	glBindAttribLocation(nullptr),
+	glGetUniformLocation(nullptr),
+	glUniformMatrix4fv(nullptr),
+	glActiveTexture(nullptr),
+	glUniform1i(nullptr),
+	glGenerateMipmap(nullptr),
+	glDisableVertexAttribArray(nullptr),
+	glUniform3fv(nullptr),
+	glUniform4fv(nullptr),
+	m_hWnd(nullptr),
+	m_hInst(nullptr) { }
 
 GLDeviceResources::~GLDeviceResources() { }
 
 bool GLDeviceResources::Init(HWND hwnd)
-{		
+{
 	HDC deviceContext = { nullptr };
 	deviceContext = GetDC(hwnd);
 	if (!deviceContext)
@@ -99,84 +101,24 @@ void GLDeviceResources::Release(HWND hwnd)
 	}
 }
 
-void GLDeviceResources::BeginScene(float red, float green, float blue, float alpha)
+HDC GLDeviceResources::GetDeviceContext() const
 {
-	glClearColor(red, green, blue, alpha);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	return m_deviceContext;
 }
 
-void GLDeviceResources::EndScene() const
+HGLRC GLDeviceResources::GetRenderingContext() const
 {
-	SwapBuffers(m_deviceContext);
+	return m_renderingContext;
 }
 
-void GLDeviceResources::GetWorldMatrix(float* matrix)
+void GLDeviceResources::GetWorldMatrix(Matrix& matrix) const
 {
-	matrix[0] = m_worldMatrix[0];
-	matrix[1] = m_worldMatrix[1];
-	matrix[2] = m_worldMatrix[2];
-	matrix[3] = m_worldMatrix[3];
-
-	matrix[4] = m_worldMatrix[4];
-	matrix[5] = m_worldMatrix[5];
-	matrix[6] = m_worldMatrix[6];
-	matrix[7] = m_worldMatrix[7];
-
-	matrix[8] = m_worldMatrix[8];
-	matrix[9] = m_worldMatrix[9];
-	matrix[10] = m_worldMatrix[10];
-	matrix[11] = m_worldMatrix[11];
-
-	matrix[12] = m_worldMatrix[12];
-	matrix[13] = m_worldMatrix[13];
-	matrix[14] = m_worldMatrix[14];
-	matrix[15] = m_worldMatrix[15];
+	matrix = m_worldMatrix;
 }
 
-void GLDeviceResources::GetProjMatrix(float* matrix)
+void GLDeviceResources::GetProjMatrix(Matrix& matrix) const
 {
-	matrix[0] = m_projectionMatrix[0];
-	matrix[1] = m_projectionMatrix[1];
-	matrix[2] = m_projectionMatrix[2];
-	matrix[3] = m_projectionMatrix[3];
-
-	matrix[4] = m_projectionMatrix[4];
-	matrix[5] = m_projectionMatrix[5];
-	matrix[6] = m_projectionMatrix[6];
-	matrix[7] = m_projectionMatrix[7];
-
-	matrix[8] = m_projectionMatrix[8];
-	matrix[9] = m_projectionMatrix[9];
-	matrix[10] = m_projectionMatrix[10];
-	matrix[11] = m_projectionMatrix[11];
-
-	matrix[12] = m_projectionMatrix[12];
-	matrix[13] = m_projectionMatrix[13];
-	matrix[14] = m_projectionMatrix[14];
-	matrix[15] = m_projectionMatrix[15];
-}
-
-void GLDeviceResources::BuildIdentityMatrix(float* matrix)
-{
-	matrix[0] = 1.0f;
-	matrix[1] = 0.0f;
-	matrix[2] = 0.0f;
-	matrix[3] = 0.0f;
-
-	matrix[4] = 0.0f;
-	matrix[5] = 1.0f;
-	matrix[6] = 0.0f;
-	matrix[7] = 0.0f;
-
-	matrix[8] = 0.0f;
-	matrix[9] = 0.0f;
-	matrix[10] = 1.0f;
-	matrix[11] = 0.0f;
-
-	matrix[12] = 0.0f;
-	matrix[13] = 0.0f;
-	matrix[14] = 0.0f;
-	matrix[15] = 1.0f;
+	matrix = m_projectionMatrix;
 }
 
 void GLDeviceResources::BuildPerspectiveFovLHMatrix(float* matrix, float fieldOfView, float screenAspect, float screenNear, float screenDepth) const
@@ -270,10 +212,10 @@ bool GLDeviceResources::InitOpenGL(HWND hwnd, int screenWidth, int screenHeight,
 	glFrontFace(GL_CW);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	BuildIdentityMatrix(m_worldMatrix);
+	m_worldMatrix.
 
 	float fieldOfView = 3.14159265358979323846f / 4.0f;
-	float screenAspect = (float)screenWidth / (float)screenHeight;
+	float screenAspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
 
 	BuildPerspectiveFovLHMatrix(m_projectionMatrix, fieldOfView, screenAspect, screenNear, screenDepth);
 

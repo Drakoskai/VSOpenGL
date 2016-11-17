@@ -20,6 +20,8 @@ public:
 	}
 
 	static const int MaxLoadString = 100;
+	static const int DefaultHeight = 1280;
+	static const int DefaultWidth = 720;
 
 private:
 	BOOL InitInstance();
@@ -33,5 +35,8 @@ private:
 
 	TCHAR m_title[MaxLoadString];
 	TCHAR m_windowClass[MaxLoadString];
+
+	int currentHeight;
+	int currentWidth;
 
 };

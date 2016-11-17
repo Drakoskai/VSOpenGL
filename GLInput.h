@@ -13,22 +13,16 @@ public:
 	enum Keys
 	{
 		None = 0,
-
 		Back = 0x8,
 		Tab = 0x9,
-
 		Enter = 0xd,
-
 		Pause = 0x13,
 		CapsLock = 0x14,
 		Kana = 0x15,
-
 		Kanji = 0x19,
-
 		Escape = 0x1b,
 		ImeConvert = 0x1c,
 		ImeNoConvert = 0x1d,
-
 		Space = 0x20,
 		PageUp = 0x21,
 		PageDown = 0x22,
@@ -55,7 +49,6 @@ public:
 		D7 = 0x37,
 		D8 = 0x38,
 		D9 = 0x39,
-
 		A = 0x41,
 		B = 0x42,
 		C = 0x43,
@@ -85,7 +78,6 @@ public:
 		LeftWindows = 0x5b,
 		RightWindows = 0x5c,
 		Apps = 0x5d,
-
 		Sleep = 0x5f,
 		NumPad0 = 0x60,
 		NumPad1 = 0x61,
@@ -101,7 +93,6 @@ public:
 		Add = 0x6b,
 		Separator = 0x6c,
 		Subtract = 0x6d,
-
 		Decimal = 0x6e,
 		Divide = 0x6f,
 		F1 = 0x70,
@@ -128,10 +119,8 @@ public:
 		F22 = 0x85,
 		F23 = 0x86,
 		F24 = 0x87,
-
 		NumLock = 0x90,
 		Scroll = 0x91,
-
 		LeftShift = 0xa0,
 		RightShift = 0xa1,
 		LeftControl = 0xa2,
@@ -156,7 +145,6 @@ public:
 		SelectMedia = 0xb5,
 		LaunchApplication1 = 0xb6,
 		LaunchApplication2 = 0xb7,
-
 		OemSemicolon = 0xba,
 		OemPlus = 0xbb,
 		OemComma = 0xbc,
@@ -164,31 +152,26 @@ public:
 		OemPeriod = 0xbe,
 		OemQuestion = 0xbf,
 		OemTilde = 0xc0,
-
 		OemOpenBrackets = 0xdb,
 		OemPipe = 0xdc,
 		OemCloseBrackets = 0xdd,
 		OemQuotes = 0xde,
 		Oem8 = 0xdf,
-
 		OemBackslash = 0xe2,
-
 		ProcessKey = 0xe5,
-
 		OemCopy = 0xf2,
 		OemAuto = 0xf3,
 		OemEnlW = 0xf4,
-
 		Attn = 0xf6,
 		Crsel = 0xf7,
 		Exsel = 0xf8,
 		EraseEof = 0xf9,
 		Play = 0xfa,
 		Zoom = 0xfb,
-
 		Pa1 = 0xfd,
 		OemClear = 0xfe,
 	};
+
 	struct State
 	{
 		bool Reserved0 : 8;

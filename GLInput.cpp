@@ -19,7 +19,6 @@ void GLInput::TranslateKeyMessage(MSG& msg, WPARAM wParam, LPARAM lParam)
 	case WM_SYSKEYDOWN:
 		down = true;
 		break;
-
 	case WM_KEYUP:
 	case WM_SYSKEYUP:
 		break;

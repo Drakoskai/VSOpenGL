@@ -4,6 +4,7 @@
 #include "GLWindow.h"
 #include "GLInput.h"
 #include "GLDeviceResources.h"
+#include "GLDrawContext.h"
 
 bool isRunning = true;
 const bool FullScreen = false;
@@ -16,9 +17,11 @@ int main(int, char **)
 	GLWindow * window = new GLWindow();
 	window->Create();
 	GLInput input = GLInput();
-	GLDeviceResources gl = GLDeviceResources();
-	gl.Init(window->GetWindowHandle());
-	gl.InitOpenGL(window->GetWindowHandle(), 1280, 720, ScreenDepth, ScreenNear, VsynEnabled);
+	GLDeviceResources* gl = new GLDeviceResources();
+	gl->Init(window->GetWindowHandle());
+	gl->InitOpenGL(window->GetWindowHandle(), 1280, 720, ScreenDepth, ScreenNear, VsynEnabled);
+	
+	GLDrawContext * dc = new GLDrawContext(gl);
 	
 	MSG msg = { nullptr };
 	while (isRunning)
@@ -40,14 +43,15 @@ int main(int, char **)
 			{
 				isRunning = false;
 			}
-			
-			gl.BeginScene(0.5f, 0.5f, 0.5f, 1.0f);
-
-			gl.EndScene();
+			dc->BeginScene();
+			dc->EndScene();
 		}
 	}
+	delete dc;
 
-	gl.Release(window->GetWindowHandle());
+	gl->Release(window->GetWindowHandle());
+
+	delete gl;
 
 	delete window;
 
