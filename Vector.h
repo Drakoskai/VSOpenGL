@@ -75,12 +75,7 @@ struct Vector4
 	static const Vector4 UnitX;
 	static const Vector4 UnitY;
 	static const Vector4 UnitZ;
-	static const Vector4 Up;
-	static const Vector4 Down;
-	static const Vector4 Left;
-	static const Vector4 Right;
-	static const Vector4 Forward;
-	static const Vector4 Backward;
+	static const Vector4 UnitW;
 };
 
 struct Color

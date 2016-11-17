@@ -112,6 +112,13 @@ Vector3 Vector3::operator/(const float s) const
 
 #pragma region Vector4
 
+const Vector4 Vector4::Zero(0.0f);
+const Vector4 Vector4::One(1.0f);
+const Vector4 Vector4::UnitX(1.0f, 0.0f, 0.0f, 0.0f);
+const Vector4 Vector4::UnitY(0.0f, 1.0f, 0.0f, 0.0f);
+const Vector4 Vector4::UnitZ(0.0f, 0.0f, 1.0f, 0.0f);
+const Vector4 Vector4::UnitW(0.0f, 0.0f, 0.0f, 1.0f);
+
 Vector4::Vector4() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) { }
 Vector4::Vector4(float f) : x(f), y(f), z(f), w(f) { }
 Vector4::Vector4(float x_, float y_) : x(x_), y(y_), z(0.0f), w(0.0f) { }
@@ -143,38 +150,69 @@ Vector4& Vector4::operator=(const Vector4& other)
 
 Vector4& Vector4::operator+=(const Vector4& other)
 {
+	x += other.x;
+	y += other.y;
+	z += other.z;
+	w += other.w;
+
+	return *this;
 }
 
 Vector4& Vector4::operator-=(const Vector4& other)
 {
+	x -= other.x;
+	y -= other.y;
+	z -= other.z;
+	w -= other.w;
+
+	return *this;
 }
 
 Vector4& Vector4::operator*=(float s)
 {
+	x *= s;
+	y *= s;
+	z *= s;
+	w *= s;
+
+	return *this;
 }
 
 Vector4& Vector4::operator/=(float s)
 {
+	float inva = 1.0f / s;
+	x *= inva;
+	y *= inva;
+	z *= inva;
+	w *= inva;
+
+	return *this;
 }
 
 Vector4 Vector4::operator-() const
 {
+	return Vector4(-x, -y, -z, -w);
 }
 
 Vector4 Vector4::operator+(const Vector4& other) const
 {
+	return Vector4(x + other.x, y + other.y, z + other.z, w + other.w);
 }
 
 Vector4 Vector4::operator-(const Vector4& other) const
 {
+	return Vector4(x - other.x, y - other.y, z - other.z, w - other.w);
 }
 
 Vector4 Vector4::operator*(const float s) const
 {
+	return Vector4(x * s, y * s, z * s, w * s);
 }
 
 Vector4 Vector4::operator/(const float s) const
 {
+	float inva = 1.0f / s;
+	return Vector4(x * inva, y * inva, z * inva, w * inva);
 }
 
 #pragma endregion Vector4
