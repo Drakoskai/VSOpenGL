@@ -19,6 +19,7 @@ public:
 	void Scale(float h, float w, float d);
 	void Rotate(float angle, Vector3 axis);
 	void Rotate(float angle, float x, float y, float z);
+	float * GetModelToClipMatrix();
 
 private:
 	Matrix translationMatrix;

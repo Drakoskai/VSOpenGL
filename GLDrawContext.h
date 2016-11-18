@@ -2,7 +2,7 @@
 
 #include "GLDeviceResources.h"
 #include <memory>
-#include <vector>
+#include <string>
 
 class Model;
 
@@ -15,13 +15,13 @@ public:
 
 	void Init() const;
 	void BeginScene() const;
-	void DrawIndirect() const;
+	void Draw() const;
 	void EndScene() const;
-
-	//int LoadShader(std::string filename);
+	unsigned int GetVaoId() const;
+	GLDeviceResources * GetGL() const;
+	unsigned int LoadShader(std::string filename) const;
 
 private:
 	GLDrawContext();
-	//unsigned int CompileShader(char* shaderCode);
 	std::unique_ptr<Impl>  impl_;
 };

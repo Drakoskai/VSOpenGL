@@ -40,6 +40,9 @@
     <Filter Include="Source Files\Math">
       <UniqueIdentifier>{187ce842-c318-418c-85ef-99c92b173b23}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Shaders">
+      <UniqueIdentifier>{d2045c70-92e4-49e3-aa89-80a98377ffe7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -63,14 +66,14 @@
     <ClCompile Include="Vector.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Teapot.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
     <ClCompile Include="Cube.cpp">
       <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="GLBuffers.cpp">
+      <Filter>Source Files\GL</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -101,9 +104,6 @@
     <ClInclude Include="Transform.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Teapot.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="Vector.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
@@ -116,5 +116,19 @@
     <ClInclude Include="Cube.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="GLBuffers.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="basic.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="basic.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -22,7 +22,7 @@ int main(int, char **)
 	gl->InitOpenGL(window->GetWindowHandle(), 1280, 720, ScreenDepth, ScreenNear, VsynEnabled);
 	
 	GLDrawContext * dc = new GLDrawContext(gl);
-	
+	dc->Init();
 	MSG msg = { nullptr };
 	while (isRunning)
 	{
