@@ -57,6 +57,34 @@ bool Matrix::operator!=(const Matrix& other) const
 	return !Compare(other);
 }
 
+Matrix& Matrix::operator*=(const Matrix& other) 
+{
+	// Row 1
+	mat[0].x = (mat[0].x * other.mat[0].x) + (mat[0].y * other.mat[1].x) + (mat[0].z * other.mat[2].x) + (mat[0].w * other.mat[3].x);
+	mat[0].y = (mat[0].x * other.mat[0].y) + (mat[0].y * other.mat[1].y) + (mat[0].z * other.mat[2].y) + (mat[0].w * other.mat[3].y);
+	mat[0].z = (mat[0].x * other.mat[0].z) + (mat[0].y * other.mat[1].z) + (mat[0].z * other.mat[2].z) + (mat[0].w * other.mat[3].z);
+	mat[0].w = (mat[0].x * other.mat[0].w) + (mat[0].y * other.mat[1].w) + (mat[0].z * other.mat[2].w) + (mat[0].w * other.mat[3].w);
+	
+	// Row 2
+	mat[1].x = (mat[1].x * other.mat[0].x) + (mat[1].y * other.mat[1].x) + (mat[1].z * other.mat[2].x) + (mat[1].w * other.mat[3].x);
+	mat[1].y = (mat[1].x * other.mat[0].y) + (mat[1].y * other.mat[1].y) + (mat[1].z * other.mat[2].y) + (mat[1].w * other.mat[3].y);
+	mat[1].z = (mat[1].x * other.mat[0].z) + (mat[1].y * other.mat[1].z) + (mat[1].z * other.mat[2].z) + (mat[1].w * other.mat[3].z);
+	mat[1].w = (mat[1].x * other.mat[0].w) + (mat[1].y * other.mat[1].w) + (mat[1].z * other.mat[2].w) + (mat[1].w * other.mat[3].w);
+	
+	// Row 3
+	mat[2].x = (mat[2].x * other.mat[0].x) + (mat[2].y * other.mat[1].x) + (mat[2].z * other.mat[2].x) + (mat[2].w * other.mat[3].x);
+	mat[2].y = (mat[2].x * other.mat[0].y) + (mat[2].y * other.mat[1].y) + (mat[2].z * other.mat[2].y) + (mat[2].w * other.mat[3].y);
+	mat[2].z = (mat[2].x * other.mat[0].z) + (mat[2].y * other.mat[1].z) + (mat[2].z * other.mat[2].z) + (mat[2].w * other.mat[3].z);
+	mat[2].w = (mat[2].x * other.mat[0].w) + (mat[2].y * other.mat[1].w) + (mat[2].z * other.mat[2].w) + (mat[2].w * other.mat[3].w);
+	
+	// Row 4
+	mat[3].x = (mat[3].x * other.mat[0].x) + (mat[3].y * other.mat[1].x) + (mat[3].z * other.mat[2].x) + (mat[3].w * other.mat[3].x);
+	mat[3].y = (mat[3].x * other.mat[0].y) + (mat[3].y * other.mat[1].y) + (mat[3].z * other.mat[2].y) + (mat[3].w * other.mat[3].y);
+	mat[3].z = (mat[3].x * other.mat[0].z) + (mat[3].y * other.mat[1].z) + (mat[3].z * other.mat[2].z) + (mat[3].w * other.mat[3].z);
+	mat[3].w = (mat[3].x * other.mat[0].w) + (mat[3].y * other.mat[1].w) + (mat[3].z * other.mat[2].w) + (mat[3].w * other.mat[3].w);
+	return *this;
+}
+
 Matrix& Matrix::operator=(const Matrix& other)
 {
 	mat[0] = other.mat[0];
@@ -76,6 +104,58 @@ Matrix Matrix::operator*(const float s) const
 		mat[3].x * s, mat[3].y * s, mat[3].z * s, mat[3].w * s);
 }
 
+Matrix Matrix::operator*(const Matrix& other) const
+{
+	return Matrix(
+		// Row 1
+		(mat[0].x * other.mat[0].x) + (mat[0].y * other.mat[1].x) + (mat[0].z * other.mat[2].x) + (mat[0].w * other.mat[3].x),
+		(mat[0].x * other.mat[0].y) + (mat[0].y * other.mat[1].y) + (mat[0].z * other.mat[2].y) + (mat[0].w * other.mat[3].y),
+		(mat[0].x * other.mat[0].z) + (mat[0].y * other.mat[1].z) + (mat[0].z * other.mat[2].z) + (mat[0].w * other.mat[3].z),
+		(mat[0].x * other.mat[0].w) + (mat[0].y * other.mat[1].w) + (mat[0].z * other.mat[2].w) + (mat[0].w * other.mat[3].w),
+		// Row 2
+		(mat[1].x * other.mat[0].x) + (mat[1].y * other.mat[1].x) + (mat[1].z * other.mat[2].x) + (mat[1].w * other.mat[3].x),
+		(mat[1].x * other.mat[0].y) + (mat[1].y * other.mat[1].y) + (mat[1].z * other.mat[2].y) + (mat[1].w * other.mat[3].y),
+		(mat[1].x * other.mat[0].z) + (mat[1].y * other.mat[1].z) + (mat[1].z * other.mat[2].z) + (mat[1].w * other.mat[3].z),
+		(mat[1].x * other.mat[0].w) + (mat[1].y * other.mat[1].w) + (mat[1].z * other.mat[2].w) + (mat[1].w * other.mat[3].w),
+		// Row 3
+		(mat[2].x * other.mat[0].x) + (mat[2].y * other.mat[1].x) + (mat[2].z * other.mat[2].x) + (mat[2].w * other.mat[3].x),
+		(mat[2].x * other.mat[0].y) + (mat[2].y * other.mat[1].y) + (mat[2].z * other.mat[2].y) + (mat[2].w * other.mat[3].y),
+		(mat[2].x * other.mat[0].z) + (mat[2].y * other.mat[1].z) + (mat[2].z * other.mat[2].z) + (mat[2].w * other.mat[3].z),
+		(mat[2].x * other.mat[0].w) + (mat[2].y * other.mat[1].w) + (mat[2].z * other.mat[2].w) + (mat[2].w * other.mat[3].w),
+		// Row 4
+		(mat[3].x * other.mat[0].x) + (mat[3].y * other.mat[1].x) + (mat[3].z * other.mat[2].x) + (mat[3].w * other.mat[3].x),
+		(mat[3].x * other.mat[0].y) + (mat[3].y * other.mat[1].y) + (mat[3].z * other.mat[2].y) + (mat[3].w * other.mat[3].y),
+		(mat[3].x * other.mat[0].z) + (mat[3].y * other.mat[1].z) + (mat[3].z * other.mat[2].z) + (mat[3].w * other.mat[3].z),
+		(mat[3].x * other.mat[0].w) + (mat[3].y * other.mat[1].w) + (mat[3].z * other.mat[2].w) + (mat[3].w * other.mat[3].w));
+}
+
+void Matrix::Multiply(const Matrix& src1, const Matrix& src2, Matrix& dst)
+{
+	// Row 1
+	dst.mat[0].x = (src1.mat[0].x * src2.mat[0].x) + (src1.mat[0].y * src2.mat[1].x) + (src1.mat[0].z * src2.mat[2].x) + (src1.mat[0].w * src2.mat[3].x);
+	dst.mat[0].y = (src1.mat[0].x * src2.mat[0].y) + (src1.mat[0].y * src2.mat[1].y) + (src1.mat[0].z * src2.mat[2].y) + (src1.mat[0].w * src2.mat[3].y);
+	dst.mat[0].z = (src1.mat[0].x * src2.mat[0].z) + (src1.mat[0].y * src2.mat[1].z) + (src1.mat[0].z * src2.mat[2].z) + (src1.mat[0].w * src2.mat[3].z);
+	dst.mat[0].w = (src1.mat[0].x * src2.mat[0].w) + (src1.mat[0].y * src2.mat[1].w) + (src1.mat[0].z * src2.mat[2].w) + (src1.mat[0].w * src2.mat[3].w);
+
+	// Row 2
+	dst.mat[1].x = (src1.mat[1].x * src2.mat[0].x) + (src1.mat[1].y * src2.mat[1].x) + (src1.mat[1].z * src2.mat[2].x) + (src1.mat[1].w * src2.mat[3].x);
+	dst.mat[1].y = (src1.mat[1].x * src2.mat[0].y) + (src1.mat[1].y * src2.mat[1].y) + (src1.mat[1].z * src2.mat[2].y) + (src1.mat[1].w * src2.mat[3].y);
+	dst.mat[1].z = (src1.mat[1].x * src2.mat[0].z) + (src1.mat[1].y * src2.mat[1].z) + (src1.mat[1].z * src2.mat[2].z) + (src1.mat[1].w * src2.mat[3].z);
+	dst.mat[1].w = (src1.mat[1].x * src2.mat[0].w) + (src1.mat[1].y * src2.mat[1].w) + (src1.mat[1].z * src2.mat[2].w) + (src1.mat[1].w * src2.mat[3].w);
+
+	// Row 3
+	dst.mat[2].x = (src1.mat[2].x * src2.mat[0].x) + (src1.mat[2].y * src2.mat[1].x) + (src1.mat[2].z * src2.mat[2].x) + (src1.mat[2].w * src2.mat[3].x);
+	dst.mat[2].y = (src1.mat[2].x * src2.mat[0].y) + (src1.mat[2].y * src2.mat[1].y) + (src1.mat[2].z * src2.mat[2].y) + (src1.mat[2].w * src2.mat[3].y);
+	dst.mat[2].z = (src1.mat[2].x * src2.mat[0].z) + (src1.mat[2].y * src2.mat[1].z) + (src1.mat[2].z * src2.mat[2].z) + (src1.mat[2].w * src2.mat[3].z);
+	dst.mat[2].w = (src1.mat[2].x * src2.mat[0].w) + (src1.mat[2].y * src2.mat[1].w) + (src1.mat[2].z * src2.mat[2].w) + (src1.mat[2].w * src2.mat[3].w);
+
+	// Row 4
+	dst.mat[3].x = (src1.mat[3].x * src2.mat[0].x) + (src1.mat[3].y * src2.mat[1].x) + (src1.mat[3].z * src2.mat[2].x) + (src1.mat[3].w * src2.mat[3].x);
+	dst.mat[3].y = (src1.mat[3].x * src2.mat[0].y) + (src1.mat[3].y * src2.mat[1].y) + (src1.mat[3].z * src2.mat[2].y) + (src1.mat[3].w * src2.mat[3].y);
+	dst.mat[3].z = (src1.mat[3].x * src2.mat[0].z) + (src1.mat[3].y * src2.mat[1].z) + (src1.mat[3].z * src2.mat[2].z) + (src1.mat[3].w * src2.mat[3].z);
+	dst.mat[3].w = (src1.mat[3].x * src2.mat[0].w) + (src1.mat[3].y * src2.mat[1].w) + (src1.mat[3].z * src2.mat[2].w) + (src1.mat[3].w * src2.mat[3].w);
+}
+
 void Matrix::Identity()
 {
 	mat[0] = Vector4(1.0f, 0.0f, 0.0f, 0.0f);
@@ -83,3 +163,4 @@ void Matrix::Identity()
 	mat[2] = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
 	mat[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
 }
+

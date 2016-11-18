@@ -17,11 +17,18 @@ struct Matrix
 	bool Compare(const Matrix& other) const;
 	bool operator==(const Matrix& other) const;
 	bool operator!=(const Matrix& other) const;
+
+	Matrix& operator*=(const Matrix& other);
+
 	
 	Matrix& operator= (const Matrix& other);
-	
+
 	Matrix operator*(const float s) const;
+	Matrix operator*(const Matrix& other) const;
+
+	static void Multiply(const Matrix& src1, const Matrix& src2, Matrix& dst);
 
 	void Identity();
 
 };
+

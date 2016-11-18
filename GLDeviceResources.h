@@ -84,7 +84,7 @@ public:
 
 	void GetWorldMatrix(Matrix& matrix) const;
 	void GetProjMatrix(Matrix& matrix) const;
-	void BuildPerspectiveFovLHMatrix(float* matrix, float fieldOfView, float screenAspect, float screenNear, float screenDepth) const;
+	void BuildPerspectiveFovLHMatrix(Matrix& matrix, float fieldOfView, float screenAspect, float screenNear, float screenDepth) const;
 
 private:
 	bool LoadExtensionList();

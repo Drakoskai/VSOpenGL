@@ -121,27 +121,14 @@ void GLDeviceResources::GetProjMatrix(Matrix& matrix) const
 	matrix = m_projectionMatrix;
 }
 
-void GLDeviceResources::BuildPerspectiveFovLHMatrix(float* matrix, float fieldOfView, float screenAspect, float screenNear, float screenDepth) const
+void GLDeviceResources::BuildPerspectiveFovLHMatrix(Matrix& matrix, float fieldOfView, float screenAspect, float screenNear, float screenDepth) const
 {
-	matrix[0] = 1.0f / (screenAspect * tan(fieldOfView * 0.5f));
-	matrix[1] = 0.0f;
-	matrix[2] = 0.0f;
-	matrix[3] = 0.0f;
-
-	matrix[4] = 0.0f;
-	matrix[5] = 1.0f / tan(fieldOfView * 0.5f);
-	matrix[6] = 0.0f;
-	matrix[7] = 0.0f;
-
-	matrix[8] = 0.0f;
-	matrix[9] = 0.0f;
-	matrix[10] = screenDepth / (screenDepth - screenNear);
-	matrix[11] = 1.0f;
-
-	matrix[12] = 0.0f;
-	matrix[13] = 0.0f;
-	matrix[14] = (-screenNear * screenDepth) / (screenDepth - screenNear);
-	matrix[15] = 0.0f;
+	matrix.Identity();
+	matrix.mat[0].x /= (screenAspect * tan(fieldOfView * 0.5f));
+	matrix.mat[1].y /= tan(fieldOfView * 0.5f);
+	matrix.mat[2].z = screenDepth / (screenDepth - screenNear);
+	matrix.mat[3].z = (-screenNear * screenDepth) / (screenDepth - screenNear);
+	matrix.mat[4].w = 0.0f;
 }
 
 bool GLDeviceResources::InitOpenGL(HWND hwnd, int screenWidth, int screenHeight, float screenDepth, float screenNear, bool vsync)
@@ -212,7 +199,6 @@ bool GLDeviceResources::InitOpenGL(HWND hwnd, int screenWidth, int screenHeight,
 	glFrontFace(GL_CW);
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
-	m_worldMatrix.
 
 	float fieldOfView = 3.14159265358979323846f / 4.0f;
 	float screenAspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);

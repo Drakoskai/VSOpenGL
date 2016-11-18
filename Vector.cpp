@@ -15,15 +15,10 @@ const Vector3 Vector3::Forward(0.f, 0.f, -1.f);
 const Vector3 Vector3::Backward(0.f, 0.f, 1.f);
 
 Vector3::Vector3() : x(0.0f), y(0.0f), z(0.0f) { }
-
 Vector3::Vector3(float x_) : x(x_), y(x_), z(x_) { }
-
 Vector3::Vector3(float x_, float y_) : x(x_), y(y_), z(0.0f) { }
-
 Vector3::Vector3(float x_, float y_, float z_) : x(x_), y(y_), z(z_) { }
-
 Vector3::Vector3(const float* pArray) : x(pArray[0]), y(pArray[1]), z(pArray[2]) { }
-
 Vector3::Vector3(const Vector3& other) : x(other.x), y(other.y), z(other.z) { }
 
 bool Vector3::operator==(const Vector3& other) const
