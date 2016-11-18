@@ -161,7 +161,9 @@
     <ClCompile Include="GLWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Pyramid.cpp" />
+    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Teapot.cpp" />
+    <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,10 +176,10 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="Pyramid.h" />
+    <ClInclude Include="Cube.h" />
+    <ClInclude Include="Teapot.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector.h" />
-    <ClInclude Include="Vertex.h" />
     <ClInclude Include="WinMain.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -2,12 +2,15 @@
 
 #include "GLDrawContext.h"
 
+/**
+ * Contract for behavior of a drawable object 
+ */
 class Model
 {
 public:
-	virtual ~Model();
-	virtual bool Init(GLDrawContext dc);
-	virtual void GetTransform();
-	virtual void Update(float dt);
-	virtual void Release(GLDrawContext dc);
+	virtual ~Model() { }
+	virtual bool Init(GLDrawContext dc) = 0;
+	virtual void GetTransform() = 0;
+	virtual void Update(float dt) = 0;
+	virtual void Release(GLDrawContext dc) = 0;
 };

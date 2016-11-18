@@ -2,12 +2,14 @@
 #include "WinMain.h"
 #include "Resource.h"
 
-GLWindow::GLWindow() :
-m_hInst(nullptr),
-m_prevInst(nullptr),
-m_lpCmdLine(nullptr),
-m_nCmdShow(0),
-m_hWnd(nullptr)
+GLWindow::GLWindow()
+	: m_hInst(nullptr),
+	m_prevInst(nullptr),
+	m_lpCmdLine(nullptr),
+	m_nCmdShow(0),
+	m_hWnd(nullptr),
+	m_currentHeight(0),
+	m_currentWidth(0)
 {
 	m_hInst = WinMainParameters::GetHInstance();
 	m_prevInst = WinMainParameters::GetHPrevInstance();
@@ -23,6 +25,7 @@ GLWindow::~GLWindow()
 	{
 		DestroyWindow(m_hWnd);
 	}
+
 	UnregisterClass(m_title, m_hInst);
 }
 
@@ -73,7 +76,7 @@ BOOL GLWindow::InitInstance()
 	int posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;
 	int posY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
 
-	m_hWnd = CreateWindow(L"OpenGL", L"OpenGL", 
+	m_hWnd = CreateWindow(L"OpenGL", L"OpenGL",
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
 		posX, posY,
 		screenWidth, screenHeight,

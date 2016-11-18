@@ -18,7 +18,9 @@ namespace GLAttribs
 	static const int ColorSize = 4;
 	static const int ColorType = GL_FLOAT;
 	static const int ColorOffset = NormalOffset * sizeof(float);
+
 }
+
 struct GLAttrib
 {
 	virtual ~GLAttrib() { }
@@ -26,6 +28,7 @@ struct GLAttrib
 	virtual int Size();
 	virtual int Type();
 	virtual int OffSet();
+
 };
 
 struct Position : GLAttrib
@@ -34,6 +37,7 @@ struct Position : GLAttrib
 	{
 		return GLAttribs::PositionIndex;
 	}
+
 	int Size() override
 	{
 		return GLAttribs::PositionSize;
@@ -48,6 +52,7 @@ struct Position : GLAttrib
 	{
 		return GLAttribs::PositionOffset;
 	}
+
 };
 
 struct Normal : GLAttrib
@@ -56,6 +61,7 @@ struct Normal : GLAttrib
 	{
 		return  GLAttribs::NormalIndex;
 	}
+
 	int Size() override
 	{
 		return  GLAttribs::NormalSize;
@@ -70,6 +76,7 @@ struct Normal : GLAttrib
 	{
 		return  GLAttribs::NormalOffset;
 	}
+
 };
 
 struct Color : GLAttrib
@@ -78,6 +85,7 @@ struct Color : GLAttrib
 	{
 		return  GLAttribs::ColorIndex;
 	}
+
 	int Size() override
 	{
 		return  GLAttribs::ColorSize;
@@ -92,4 +100,5 @@ struct Color : GLAttrib
 	{
 		return  GLAttribs::ColorOffset;
 	}
+
 };

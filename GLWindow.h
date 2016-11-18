@@ -7,8 +7,8 @@ class GLWindow
 public:
 	GLWindow();
 	~GLWindow();
-	void Create();
-	
+
+	void Create();	
 	HWND GetWindowHandle() const;
 
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -36,7 +36,7 @@ private:
 	TCHAR m_title[MaxLoadString];
 	TCHAR m_windowClass[MaxLoadString];
 
-	int currentHeight;
-	int currentWidth;
+	int m_currentHeight;
+	int m_currentWidth;
 
 };

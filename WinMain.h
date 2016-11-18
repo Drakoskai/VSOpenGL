@@ -1,17 +1,18 @@
 #pragma once
 
 #define NOMINMAX
+
 #include <Windows.h>
 #include <cassert>
 
 namespace WinMainParameters
 {
-	inline HINSTANCE GetHInstance() 
+	inline HINSTANCE GetHInstance()
 	{
 		return static_cast<HINSTANCE>(GetModuleHandle(nullptr));
 	}
 
-	inline HINSTANCE GetHPrevInstance() 
+	inline HINSTANCE GetHPrevInstance()
 	{
 		return static_cast<HINSTANCE>(nullptr);
 	}
@@ -25,14 +26,16 @@ namespace WinMainParameters
 		LPWSTR lpCmdLine = ::GetCommandLineW();
 		assert(lpCmdLine != nullptr);
 
-		while (*lpCmdLine <= space || isQuoted) {
+		while (*lpCmdLine <= space || isQuoted)
+		{
 			if (*lpCmdLine == quote) {
 				isQuoted = !isQuoted;
 			}
 			lpCmdLine++;
 		}
 
-		while (*lpCmdLine <= space && *lpCmdLine != nullTerminator) {
+		while (*lpCmdLine <= space && *lpCmdLine != nullTerminator)
+		{
 			lpCmdLine++;
 		}
 
@@ -40,11 +43,13 @@ namespace WinMainParameters
 	}
 
 	inline int GetNCmdShow() {
-		::STARTUPINFOW startupInfo;
-		::GetStartupInfoW(&startupInfo);
-		if ((startupInfo.dwFlags & STARTF_USESHOWWINDOW) != 0) {
+		STARTUPINFOW startupInfo;
+		GetStartupInfoW(&startupInfo);
+		if ((startupInfo.dwFlags & STARTF_USESHOWWINDOW) != 0)
+		{
 			return startupInfo.wShowWindow;
 		}
+
 		return SW_SHOWDEFAULT;
 	}
 }

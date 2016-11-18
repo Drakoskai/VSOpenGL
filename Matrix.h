@@ -20,9 +20,7 @@ struct Matrix
 
 	Matrix& operator*=(const Matrix& other);
 
-	
 	Matrix& operator= (const Matrix& other);
-
 	Matrix operator*(const float s) const;
 	Matrix operator*(const Matrix& other) const;
 

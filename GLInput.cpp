@@ -1,14 +1,9 @@
 #include "GLInput.h"
 #include <stdint.h>
 
-GLInput::GLInput()
-{
-	m_keyState = {};
-}
+GLInput::GLInput() { m_keyState = { }; }
 
-GLInput::~GLInput()
-{
-}
+GLInput::~GLInput() { }
 
 void GLInput::TranslateKeyMessage(MSG& msg, WPARAM wParam, LPARAM lParam)
 {
@@ -46,7 +41,6 @@ void GLInput::TranslateKeyMessage(MSG& msg, WPARAM wParam, LPARAM lParam)
 		vk = (lParam & 0x01000000) ? VK_RMENU : VK_LMENU;
 		break;
 	default: break;
-
 	}
 
 	if (down)
@@ -78,7 +72,9 @@ GLInput::State GLInput::GetState() const
 void GLInput::KeyUp(int key, State& state)
 {
 	if (key < 0 || key > 0xfe)
+	{
 		return;
+	}
 
 	auto ptr = reinterpret_cast<uint32_t*>(&state);
 
@@ -94,6 +90,7 @@ bool GLInput::IsKeyDown(Keys key) const
 		unsigned int bf = 1u << (key & 0x1f);
 		return (ptr[(key >> 5)] & bf) != 0;
 	}
+
 	return false;
 }
 
@@ -105,5 +102,6 @@ bool GLInput::IsKeyUp(Keys key) const
 		unsigned int bf = 1u << (key & 0x1f);
 		return (ptr[(key >> 5)] & bf) == 0;
 	}
+
 	return false;
 }

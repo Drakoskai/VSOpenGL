@@ -38,6 +38,7 @@ struct Vector3
 	static const Vector3 Right;
 	static const Vector3 Forward;
 	static const Vector3 Backward;
+
 };
 
 struct Vector4
@@ -76,6 +77,7 @@ struct Vector4
 	static const Vector4 UnitY;
 	static const Vector4 UnitZ;
 	static const Vector4 UnitW;
+
 };
 
 struct Color

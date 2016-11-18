@@ -6,13 +6,13 @@ class GLDrawContext::Impl
 public:
 	Impl(GLDeviceResources* gl);
 	~Impl();
-
+	void Init();
 	void BeginScene() const;
 	void DrawIndirect() const;
 	void EndScene() const;
 private:
 	GLDeviceResources* m_gl;
-	int m_vaoId;
+	GLuint m_vaoId;
 	int m_voaName[1];
 	float m_clearColor[4];
 	float m_clearDepth;
@@ -24,6 +24,11 @@ GLDrawContext::GLDrawContext(GLDeviceResources* gl)
 	: impl_(new Impl(gl)) { }
 
 GLDrawContext::~GLDrawContext() { }
+
+void GLDrawContext::Init() const
+{
+	impl_->Init();
+}
 
 void GLDrawContext::BeginScene() const
 {
@@ -41,9 +46,7 @@ void GLDrawContext::EndScene() const
 }
 
 GLDrawContext::Impl::Impl(GLDeviceResources* gl)
-	: m_gl(gl),
-	m_vaoId(0),
-	m_clearDepth(1.0f)
+	: m_gl(gl),	m_vaoId(0),	m_clearDepth(1.0f)
 {
 	m_clearColor[0] = 0.0f;
 	m_clearColor[1] = 0.0f;
@@ -51,7 +54,17 @@ GLDrawContext::Impl::Impl(GLDeviceResources* gl)
 	m_clearColor[3] = 0.0f;
 }
 
-GLDrawContext::Impl::~Impl() { }
+GLDrawContext::Impl::~Impl()
+{
+	m_gl->glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	m_gl->glDeleteBuffers(1, &m_vaoId);
+}
+
+void GLDrawContext::Impl::Init()
+{
+	m_gl->glGenVertexArrays(1, &m_vaoId);
+	m_gl->glBindVertexArray(m_vaoId);
+}
 
 void GLDrawContext::Impl::BeginScene() const
 {

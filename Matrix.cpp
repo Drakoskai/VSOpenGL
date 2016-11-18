@@ -82,6 +82,7 @@ Matrix& Matrix::operator*=(const Matrix& other)
 	mat[3].y = (mat[3].x * other.mat[0].y) + (mat[3].y * other.mat[1].y) + (mat[3].z * other.mat[2].y) + (mat[3].w * other.mat[3].y);
 	mat[3].z = (mat[3].x * other.mat[0].z) + (mat[3].y * other.mat[1].z) + (mat[3].z * other.mat[2].z) + (mat[3].w * other.mat[3].z);
 	mat[3].w = (mat[3].x * other.mat[0].w) + (mat[3].y * other.mat[1].w) + (mat[3].z * other.mat[2].w) + (mat[3].w * other.mat[3].w);
+	
 	return *this;
 }
 
