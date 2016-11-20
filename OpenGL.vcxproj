@@ -184,7 +184,6 @@
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Vector.h" />
-    <ClInclude Include="Vertex.h" />
     <ClInclude Include="WinMain.h" />
   </ItemGroup>
   <ItemGroup>
