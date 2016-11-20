@@ -1,17 +1,24 @@
 #pragma once
 
-#include "GLDrawContext.h"
+#include "Interfaces.h"
 #include "Transform.h"
+#include <string>
+#include <vector>
 
-/**
- * Contract for behavior of a drawable object 
- */
 class Model
 {
 public:
-	virtual ~Model() { }
-	virtual void Init(GLDrawContext * dc) = 0;
-	virtual Transform GetTransform() = 0;
-	virtual void Update(float dt) = 0;
-	virtual void Release() = 0;
+	Model(const std::string& filename);
+	~Model();
+	void Init(DrawContext * dc);
+	Transform GetTransform();
+	void Update(float dt);
+	void Release();
+
+private:
+	Transform m_transform;
+	std::vector<Vector3f> m_vertexData;
+	std::vector<Vector3f> m_normalData;
+	std::vector<Vector2f> m_uvData;
+
 };

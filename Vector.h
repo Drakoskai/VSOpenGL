@@ -1,84 +1,133 @@
 #pragma once
 
-struct Vector3
+#include <string>
+
+
+#pragma region Vector2f
+
+struct Vector2f
+{
+	float x;
+	float y;
+
+	Vector2f();
+	explicit Vector2f(float f);
+	Vector2f(float x, float y);
+	explicit Vector2f(const float *pArray);
+	Vector2f(const Vector2f& other);
+
+	bool operator ==(const Vector2f& v)const;
+	bool operator !=(const Vector2f& v)const;
+
+	Vector2f& operator= (const Vector2f& other);
+	Vector2f& operator+= (const Vector2f& other);
+	Vector2f& operator-= (const Vector2f& other);
+	Vector2f& operator*= (float s);
+	Vector2f& operator/= (float s);
+
+	Vector2f operator-() const;
+	Vector2f operator+(const Vector2f& other) const;
+	Vector2f operator-(const Vector2f& other) const;
+	Vector2f operator*(const float s) const;
+	Vector2f operator/(const float s) const;
+
+	std::string ToString() const;
+
+};
+
+#pragma endregion Vector2f
+
+#pragma region Vector3f
+
+struct Vector3f
 {
 	float x;
 	float y;
 	float z;
 
-	Vector3();
-	explicit Vector3(float f);
-	Vector3(float x, float y);
-	Vector3(float x, float y, float z);
-	explicit Vector3(const float *pArray);
-	Vector3(const Vector3& other);
+	Vector3f();
+	explicit Vector3f(float f);
+	Vector3f(float x, float y);
+	Vector3f(float x, float y, float z);
+	explicit Vector3f(const float *pArray);
+	Vector3f(const Vector3f& other);
 
-	bool operator ==(const Vector3& v)const;
-	bool operator !=(const Vector3& v)const;
-	Vector3& operator= (const Vector3& other);
-	Vector3& operator+= (const Vector3& other);
-	Vector3& operator-= (const Vector3& other);
-	Vector3& operator*= (float s);
-	Vector3& operator/= (float s);
+	bool operator ==(const Vector3f& v)const;
+	bool operator !=(const Vector3f& v)const;
+	Vector3f& operator= (const Vector3f& other);
+	Vector3f& operator+= (const Vector3f& other);
+	Vector3f& operator-= (const Vector3f& other);
+	Vector3f& operator*= (float s);
+	Vector3f& operator/= (float s);
 
-	Vector3 operator-() const;
-	Vector3 operator+(const Vector3& other) const;
-	Vector3 operator-(const Vector3& other) const;
-	Vector3 operator*(const float s) const;
-	Vector3 operator/(const float s) const;
+	Vector3f operator-() const;
+	Vector3f operator+(const Vector3f& other) const;
+	Vector3f operator-(const Vector3f& other) const;
+	Vector3f operator*(const float s) const;
+	Vector3f operator/(const float s) const;
 
-	static const Vector3 Zero;
-	static const Vector3 One;
-	static const Vector3 UnitX;
-	static const Vector3 UnitY;
-	static const Vector3 UnitZ;
-	static const Vector3 Up;
-	static const Vector3 Down;
-	static const Vector3 Left;
-	static const Vector3 Right;
-	static const Vector3 Forward;
-	static const Vector3 Backward;
+	std::string ToString() const;
+
+	static const Vector3f Zero;
+	static const Vector3f One;
+	static const Vector3f UnitX;
+	static const Vector3f UnitY;
+	static const Vector3f UnitZ;
+	static const Vector3f Up;
+	static const Vector3f Down;
+	static const Vector3f Left;
+	static const Vector3f Right;
+	static const Vector3f Forward;
+	static const Vector3f Backward;
 
 };
 
-struct Vector4
+#pragma endregion Vector3f
+
+#pragma region Vector4f
+
+struct Vector4f
 {
 	float x;
 	float y;
 	float z;
 	float w;
 
-	Vector4();
-	explicit Vector4(float f);
-	Vector4(float x, float y);
-	Vector4(float x, float y, float z);
-	Vector4(float x, float y, float z, float w);
-	explicit Vector4(const float *pArray);
-	explicit Vector4(const Vector3& other);
-	Vector4(const Vector4& other);
+	Vector4f();
+	explicit Vector4f(float f);
+	Vector4f(float x, float y);
+	Vector4f(float x, float y, float z);
+	Vector4f(float x, float y, float z, float w);
+	explicit Vector4f(const float *pArray);
+	explicit Vector4f(const Vector3f& other);
+	Vector4f(const Vector4f& other);
 
-	bool operator ==(const Vector4& v)const;
-	bool operator !=(const Vector4& v)const;
-	Vector4& operator= (const Vector4& other);
-	Vector4& operator+= (const Vector4& other);
-	Vector4& operator-= (const Vector4& other);
-	Vector4& operator*= (float s);
-	Vector4& operator/= (float s);
+	bool operator ==(const Vector4f& v)const;
+	bool operator !=(const Vector4f& v)const;
+	Vector4f& operator= (const Vector4f& other);
+	Vector4f& operator+= (const Vector4f& other);
+	Vector4f& operator-= (const Vector4f& other);
+	Vector4f& operator*= (float s);
+	Vector4f& operator/= (float s);
 
-	Vector4 operator-() const;
-	Vector4 operator+(const Vector4& other) const;
-	Vector4 operator-(const Vector4& other) const;
-	Vector4 operator*(const float s) const;
-	Vector4 operator/(const float s) const;
+	Vector4f operator-() const;
+	Vector4f operator+(const Vector4f& other) const;
+	Vector4f operator-(const Vector4f& other) const;
+	Vector4f operator*(const float s) const;
+	Vector4f operator/(const float s) const;
 
-	static const Vector4 Zero;
-	static const Vector4 One;
-	static const Vector4 UnitX;
-	static const Vector4 UnitY;
-	static const Vector4 UnitZ;
-	static const Vector4 UnitW;
+	static const Vector4f Zero;
+	static const Vector4f One;
+	static const Vector4f UnitX;
+	static const Vector4f UnitY;
+	static const Vector4f UnitZ;
+	static const Vector4f UnitW;
 
 };
+
+#pragma endregion Vector4f
+
+#pragma region Color
 
 struct Color
 {
@@ -87,3 +136,5 @@ struct Color
 	float z;
 	float a;
 };
+
+#pragma endregion Color

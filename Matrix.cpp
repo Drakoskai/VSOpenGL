@@ -2,10 +2,10 @@
 
 Matrix::Matrix()
 {
-	mat[0] = Vector4(1.0f, 0.0f, 0.0f, 0.0f);
-	mat[1] = Vector4(0.0f, 1.0f, 0.0f, 0.0f);
-	mat[2] = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
-	mat[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	mat[0] = Vector4f(1.0f, 0.0f, 0.0f, 0.0f);
+	mat[1] = Vector4f(0.0f, 1.0f, 0.0f, 0.0f);
+	mat[2] = Vector4f(0.0f, 0.0f, 1.0f, 0.0f);
+	mat[3] = Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 Matrix::Matrix(
@@ -14,13 +14,13 @@ Matrix::Matrix(
 	float m20, float m21, float m22, float m23,
 	float m30, float m31, float m32, float m33)
 {
-	mat[0] = Vector4(m00, m01, m02, m03);
-	mat[1] = Vector4(m10, m11, m12, m13);
-	mat[2] = Vector4(m20, m21, m22, m23);
-	mat[3] = Vector4(m30, m31, m32, m33);
+	mat[0] = Vector4f(m00, m01, m02, m03);
+	mat[1] = Vector4f(m10, m11, m12, m13);
+	mat[2] = Vector4f(m20, m21, m22, m23);
+	mat[3] = Vector4f(m30, m31, m32, m33);
 }
 
-Matrix::Matrix(const Vector4& row0, const Vector4& row1, const Vector4& row2, const Vector4& row3)
+Matrix::Matrix(const Vector4f& row0, const Vector4f& row1, const Vector4f& row2, const Vector4f& row3)
 {
 	mat[0] = row0;
 	mat[1] = row1;
@@ -159,9 +159,9 @@ void Matrix::Multiply(const Matrix& src1, const Matrix& src2, Matrix& dst)
 
 void Matrix::Identity()
 {
-	mat[0] = Vector4(1.0f, 0.0f, 0.0f, 0.0f);
-	mat[1] = Vector4(0.0f, 1.0f, 0.0f, 0.0f);
-	mat[2] = Vector4(0.0f, 0.0f, 1.0f, 0.0f);
-	mat[3] = Vector4(0.0f, 0.0f, 0.0f, 1.0f);
+	mat[0] = Vector4f(1.0f, 0.0f, 0.0f, 0.0f);
+	mat[1] = Vector4f(0.0f, 1.0f, 0.0f, 0.0f);
+	mat[2] = Vector4f(0.0f, 0.0f, 1.0f, 0.0f);
+	mat[3] = Vector4f(0.0f, 0.0f, 0.0f, 1.0f);
 }
 

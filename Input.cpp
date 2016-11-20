@@ -1,11 +1,11 @@
-#include "GLInput.h"
+#include "Input.h"
 #include <stdint.h>
 
-GLInput::GLInput() { m_keyState = { }; }
+Input::Input() { m_keyState = { }; }
 
-GLInput::~GLInput() { }
+Input::~Input() { }
 
-void GLInput::TranslateKeyMessage(MSG& msg, WPARAM wParam, LPARAM lParam)
+void Input::TranslateKeyMessage(MSG& msg, WPARAM wParam, LPARAM lParam)
 {
 	bool down = false;
 	switch (msg.message)
@@ -53,7 +53,7 @@ void GLInput::TranslateKeyMessage(MSG& msg, WPARAM wParam, LPARAM lParam)
 	}
 }
 
-void GLInput::KeyDown(int key, State& state)
+void Input::KeyDown(int key, State& state)
 {
 	if (key < 0 || key > 0xfe)
 		return;
@@ -64,12 +64,12 @@ void GLInput::KeyDown(int key, State& state)
 	ptr[(key >> 5)] |= bf;
 }
 
-GLInput::State GLInput::GetState() const
+Input::State Input::GetState() const
 {
 	return m_keyState;
 }
 
-void GLInput::KeyUp(int key, State& state)
+void Input::KeyUp(int key, State& state)
 {
 	if (key < 0 || key > 0xfe)
 	{
@@ -82,7 +82,7 @@ void GLInput::KeyUp(int key, State& state)
 	ptr[(key >> 5)] &= ~bf;
 }
 
-bool GLInput::IsKeyDown(Keys key) const
+bool Input::IsKeyDown(Keys key) const
 {
 	if (key >= 0 && key <= 0xff)
 	{
@@ -94,7 +94,7 @@ bool GLInput::IsKeyDown(Keys key) const
 	return false;
 }
 
-bool GLInput::IsKeyUp(Keys key) const
+bool Input::IsKeyUp(Keys key) const
 {
 	if (key >= 0 && key <= 0xfe)
 	{

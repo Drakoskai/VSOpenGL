@@ -1,14 +1,15 @@
 #pragma once
 
 #include <windows.h>
+#include "Interfaces.h"
 
-class GLWindow
+class GLWindow : Window
 {
 public:
 	GLWindow();
 	~GLWindow();
 
-	void Create();	
+	HWND Create(const DisplayState &displayState) override;
 	HWND GetWindowHandle() const;
 
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
@@ -19,12 +20,8 @@ public:
 		return reinterpret_cast<GLWindow *>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
 	}
 
-	static const int MaxLoadString = 100;
-	static const int DefaultHeight = 1280;
-	static const int DefaultWidth = 720;
-
 private:
-	BOOL InitInstance();
+	BOOL InitInstance(const DisplayState &displayState);
 	ATOM GLRegisterClass() const;
 
 	HINSTANCE m_hInst;
@@ -33,10 +30,7 @@ private:
 	int m_nCmdShow;
 	HWND m_hWnd;
 
-	TCHAR m_title[MaxLoadString];
-	TCHAR m_windowClass[MaxLoadString];
-
-	int m_currentHeight;
-	int m_currentWidth;
+	TCHAR m_title[Display::MaxLoadString];
+	TCHAR m_windowClass[Display::MaxLoadString];
 
 };

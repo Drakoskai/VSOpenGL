@@ -3,74 +3,10 @@
 #include <GL/glew.h>
 #include <fstream>
 #include "Util.h"
+#include "GLWindow.h"
 
-class GLDrawContext::Impl
-{
-public:
-	Impl(GLDeviceResources* gl);
-	~Impl();
-	void Init();
-	void BeginScene() const;
-	void Draw() const;
-	void EndScene() const;
-	unsigned int GetVaoId() const;
-	GLDeviceResources *	GetGL() const;
-	static unsigned int LoadShader(std::string filename);
-	static void OutputShaderErrorMessage(unsigned int shaderId, char* shaderFilename);
-
-private:
-	static std::string LoadShaderFromFile(std::string filename);
-	GLDeviceResources* m_gl;
-	GLuint m_vaoId;
-	int m_voaName[1];
-	float m_clearColor[4];
-	float m_clearDepth;
-};
-
-GLDrawContext::GLDrawContext() : impl_(nullptr) { }
-
-GLDrawContext::GLDrawContext(GLDeviceResources* gl)
-	: impl_(new Impl(gl)) { }
-
-GLDrawContext::~GLDrawContext() { }
-
-void GLDrawContext::Init() const
-{
-	impl_->Init();
-}
-
-void GLDrawContext::BeginScene() const
-{
-	impl_->BeginScene();
-}
-
-void GLDrawContext::Draw() const
-{
-	impl_->Draw();
-}
-
-void GLDrawContext::EndScene() const
-{
-	impl_->EndScene();
-}
-
-unsigned int GLDrawContext::GetVaoId() const
-{
-	return impl_->GetVaoId();
-}
-
-GLDeviceResources* GLDrawContext::GetGL() const
-{
-	return impl_->GetGL();
-}
-
-unsigned int GLDrawContext::LoadShader(std::string filename) const
-{
-	return impl_->LoadShader(filename);
-}
-
-GLDrawContext::Impl::Impl(GLDeviceResources* gl)
-	: m_gl(gl),	m_vaoId(0),	m_clearDepth(1.0f)
+GLDrawContext::GLDrawContext()
+	: m_vaoId(0), m_clearDepth(0), m_hWnd(nullptr), m_gl(nullptr), m_window(nullptr)
 {
 	m_clearColor[0] = 0.0f;
 	m_clearColor[1] = 0.0f;
@@ -78,43 +14,83 @@ GLDrawContext::Impl::Impl(GLDeviceResources* gl)
 	m_clearColor[3] = 0.0f;
 }
 
-GLDrawContext::Impl::~Impl()
+GLDrawContext::~GLDrawContext()
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 	glDeleteBuffers(1, &m_vaoId);
+
+	m_gl->Release(m_hWnd);
+	delete m_gl;
+	m_gl = nullptr;
+
+	delete m_window;
+	m_window = nullptr;
+
 }
 
-void GLDrawContext::Impl::Init()
+void GLDrawContext::Init()
 {
+	m_window = new GLWindow();
+	m_gl = new GLDevice();
+	m_currentDisplayState = { };
+	m_hWnd = m_window->Create(m_currentDisplayState);
+	m_gl->Init(m_hWnd);
+	m_gl->InitOpenGL(m_hWnd, m_currentDisplayState);
+
+	glClearDepth(1.0f);
+	glEnable(GL_DEPTH_TEST);
+	glFrontFace(GL_CW);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+
 	glGenVertexArrays(1, &m_vaoId);
 	glBindVertexArray(m_vaoId);
+
+	float fieldOfView = 3.14159265358979323846f / 4.0f;
+	float screenAspect = static_cast<float>(m_currentDisplayState.ScreenWidth) / static_cast<float>(m_currentDisplayState.ScreenHeight);
+	BuildPerspectiveFovLHMatrix(m_projectionMatrix, fieldOfView, screenAspect, m_currentDisplayState.ScreenNear, m_currentDisplayState.ScreenDepth);
 }
 
-void GLDrawContext::Impl::BeginScene() const
+void GLDrawContext::BeginScene() const
 {
 	glClearColor(m_clearColor[0], m_clearColor[1], m_clearColor[2], m_clearColor[3]);
 	glClearDepth(m_clearDepth);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void GLDrawContext::Impl::Draw() const { }
+void GLDrawContext::Draw() const { }
 
-void GLDrawContext::Impl::EndScene() const
+void GLDrawContext::EndScene() const
 {
 	SwapBuffers(m_gl->GetDeviceContext());
 }
 
-unsigned GLDrawContext::Impl::GetVaoId() const
+void GLDrawContext::BuildPerspectiveFovLHMatrix(Matrix& matrix, float fieldOfView, float screenAspect, float screenNear, float screenDepth) const
 {
-	return m_vaoId;
+	matrix.Identity();
+	matrix.mat[0].x /= (screenAspect * tan(fieldOfView * 0.5f));
+	matrix.mat[1].y /= tan(fieldOfView * 0.5f);
+	matrix.mat[2].z = screenDepth / (screenDepth - screenNear);
+	matrix.mat[3].z = (-screenNear * screenDepth) / (screenDepth - screenNear);
+	matrix.mat[4].w = 0.0f;
 }
 
-GLDeviceResources* GLDrawContext::Impl::GetGL() const
+void GLDrawContext::GetWorldMatrix(Matrix& matrix) const
 {
-	return m_gl;
+	matrix = m_worldMatrix;
 }
 
-unsigned int GLDrawContext::Impl::LoadShader(std::string filename)
+void GLDrawContext::GetProjMatrix(Matrix& matrix) const
+{
+	matrix = m_projectionMatrix;
+}
+
+Window* GLDrawContext::GetWindow()
+{
+	return reinterpret_cast<Window*>(m_window);
+}
+
+unsigned int GLDrawContext::LoadShader(std::string filename)
 {
 	std::string	shaderCode = LoadShaderFromFile(filename + ".vert");
 	GLint shader = glCreateShader(GL_VERTEX_SHADER);
@@ -123,17 +99,26 @@ unsigned int GLDrawContext::Impl::LoadShader(std::string filename)
 	glCompileShader(shader);
 	int status;
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
+
 	return shader;
 }
 
-std::string GLDrawContext::Impl::LoadShaderFromFile(std::string filename)
+unsigned int GLDrawContext::GetVaoId() const
+{
+	return m_vaoId;
+}
+
+std::string GLDrawContext::LoadShaderFromFile(std::string filename)
 {
 	FILE* f = nullptr;
 	fopen_s(&f, filename.c_str(), "r");
+
 	fseek(f, 0, SEEK_END);
 	size_t size = ftell(f);
-	char* buffer = new char[size +1];
+	char* buffer = new char[size + 1];
+
 	rewind(f);
+
 	fread(buffer, sizeof(char), size, f);
 	buffer[size] = '\0';
 
@@ -143,22 +128,13 @@ std::string GLDrawContext::Impl::LoadShaderFromFile(std::string filename)
 	return outstr;
 }
 
-char * concat(char dest[], char src[])
-{
-	int i = 0, j = 0;
-	while (dest[i]) ++i;
-	while (src[j]) dest[i++] = src[j++];
-	dest[i] = '\0';
-	return dest;
-}
-
-void  GLDrawContext::Impl::OutputShaderErrorMessage(unsigned int shaderId, char* shaderFilename)
+void  GLDrawContext::OutputShaderErrorMessage(unsigned int shaderId, char* shaderFilename)
 {
 	int logSize;
 	glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &logSize);
+
 	GLchar* infoLog;
 	logSize++;
-
 	infoLog = new GLchar[logSize];
 	glGetShaderInfoLog(shaderId, logSize, nullptr, infoLog);
 

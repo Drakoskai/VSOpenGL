@@ -2,11 +2,11 @@
 
 #include <windows.h>
 
-class GLInput
+class Input
 {
 public:
-	GLInput();
-	~GLInput();
+	Input();
+	~Input();
 
 	void TranslateKeyMessage(MSG& msg, WPARAM wParam, LPARAM lParam);
 

@@ -5,7 +5,8 @@
 #include "GLSemantic.h"
 
 GLBuffers::GLBuffers()
-	: m_vertexData(nullptr), m_normalData(nullptr), m_elementData(nullptr), p_transform(nullptr) { }
+	: m_shaderProgram(0), m_vertexData(nullptr), m_normalData(nullptr),
+	m_elementData(nullptr), p_transform(nullptr) { }
 
 GLBuffers::~GLBuffers()
 {

@@ -5,19 +5,18 @@
 #include <GL/glew.h>
 #include <GL/wglew.h>
 #include "Matrix.h"
+#include "Interfaces.h"
 
 #pragma comment(lib, "glew32s.lib")
-//#pragma comment(lib, "opengl32.lib")
 
-
-class GLDeviceResources
+class GLDevice
 {
 public:
-	GLDeviceResources();
-	~GLDeviceResources();
+	GLDevice();
+	~GLDevice();
 
 	static bool Init(HWND hwnd);
-	bool InitOpenGL(HWND hwnd, int screenWidth, int screenHeight, float screenDepth, float screenNear, bool vsync);
+	bool InitOpenGL(HWND hwnd, const DisplayState &displayState);
 
 	void Release(HWND hwnd);
 	HDC GetDeviceContext() const;
@@ -32,9 +31,9 @@ private:
 	HDC m_deviceContext;
 	HGLRC m_renderingContext;
 
-	Matrix m_worldMatrix;
-	Matrix m_projectionMatrix;
+
 
 	HWND m_hWnd;
 	HINSTANCE m_hInst;
+
 };

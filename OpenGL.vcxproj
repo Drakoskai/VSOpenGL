@@ -113,7 +113,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>glew32s.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalOptions>/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup /NODEFAULTLIB:libcmt.lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/NODEFAULTLIB:libcmt.lib %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -156,28 +156,31 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GLBuffers.cpp" />
-    <ClCompile Include="GLDeviceResources.cpp" />
+    <ClCompile Include="GLDevice.cpp" />
     <ClCompile Include="GLDrawContext.cpp" />
-    <ClCompile Include="GLInput.cpp" />
+    <ClCompile Include="Input.cpp" />
     <ClCompile Include="GLWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Cube.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ObjFile.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GLBuffers.h" />
     <ClInclude Include="GLAttrib.h" />
     <ClInclude Include="GLDrawContext.h" />
-    <ClInclude Include="GLInput.h" />
+    <ClInclude Include="Input.h" />
     <ClInclude Include="GLSemantic.h" />
     <ClInclude Include="GLWindow.h" />
-    <ClInclude Include="GLDeviceResources.h" />
+    <ClInclude Include="GLDevice.h" />
+    <ClInclude Include="Interfaces.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Model.h" />
+    <ClInclude Include="ObjFile.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="Cube.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Vector.h" />

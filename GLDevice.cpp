@@ -1,13 +1,12 @@
-#include "GLDeviceResources.h"
+#include "GLDevice.h"
 #include <math.h>
 
-
-GLDeviceResources::GLDeviceResources()
+GLDevice::GLDevice()
 	: m_deviceContext(nullptr), m_renderingContext(nullptr), m_hWnd(nullptr), m_hInst(nullptr) { }
 
-GLDeviceResources::~GLDeviceResources() { }
+GLDevice::~GLDevice() { }
 
-bool GLDeviceResources::Init(HWND hwnd)
+bool GLDevice::Init(HWND hwnd)
 {
 	HDC deviceContext;
 	deviceContext = GetDC(hwnd);
@@ -42,7 +41,7 @@ bool GLDeviceResources::Init(HWND hwnd)
 	return true;
 }
 
-void GLDeviceResources::Release(HWND hwnd)
+void GLDevice::Release(HWND hwnd)
 {
 	if (m_renderingContext)
 	{
@@ -58,37 +57,17 @@ void GLDeviceResources::Release(HWND hwnd)
 	}
 }
 
-HDC GLDeviceResources::GetDeviceContext() const
+HDC GLDevice::GetDeviceContext() const
 {
 	return m_deviceContext;
 }
 
-HGLRC GLDeviceResources::GetRenderingContext() const
+HGLRC GLDevice::GetRenderingContext() const
 {
 	return m_renderingContext;
 }
 
-void GLDeviceResources::GetWorldMatrix(Matrix& matrix) const
-{
-	matrix = m_worldMatrix;
-}
-
-void GLDeviceResources::GetProjMatrix(Matrix& matrix) const
-{
-	matrix = m_projectionMatrix;
-}
-
-void GLDeviceResources::BuildPerspectiveFovLHMatrix(Matrix& matrix, float fieldOfView, float screenAspect, float screenNear, float screenDepth) const
-{
-	matrix.Identity();
-	matrix.mat[0].x /= (screenAspect * tan(fieldOfView * 0.5f));
-	matrix.mat[1].y /= tan(fieldOfView * 0.5f);
-	matrix.mat[2].z = screenDepth / (screenDepth - screenNear);
-	matrix.mat[3].z = (-screenNear * screenDepth) / (screenDepth - screenNear);
-	matrix.mat[4].w = 0.0f;
-}
-
-bool GLDeviceResources::InitializeExt(HWND hwnd)
+bool GLDevice::InitializeExt(HWND hwnd)
 {
 	HDC deviceContext = GetDC(hwnd);
 	if (!deviceContext)
@@ -129,7 +108,7 @@ bool GLDeviceResources::InitializeExt(HWND hwnd)
 	return true;
 }
 
-bool GLDeviceResources::InitOpenGL(HWND hwnd, int screenWidth, int screenHeight, float screenDepth, float screenNear, bool vsync)
+bool GLDevice::InitOpenGL(HWND hwnd, const DisplayState &displayState)
 {
 	if (!InitializeExt(hwnd))
 	{
@@ -141,6 +120,7 @@ bool GLDeviceResources::InitOpenGL(HWND hwnd, int screenWidth, int screenHeight,
 	{
 		return false;
 	}
+
 	int attributeListInt[19];
 	attributeListInt[0] = WGL_SUPPORT_OPENGL_ARB;
 	attributeListInt[1] = TRUE;
@@ -160,8 +140,8 @@ bool GLDeviceResources::InitOpenGL(HWND hwnd, int screenWidth, int screenHeight,
 	attributeListInt[15] = WGL_TYPE_RGBA_ARB;
 	attributeListInt[16] = WGL_STENCIL_BITS_ARB;
 	attributeListInt[17] = 8;
-
 	attributeListInt[18] = 0;
+
 	int pixelFormat[1];
 	unsigned int formatCount;
 	BOOL result = wglChoosePixelFormatARB(m_deviceContext, attributeListInt, nullptr, 1, pixelFormat, &formatCount);
@@ -169,12 +149,14 @@ bool GLDeviceResources::InitOpenGL(HWND hwnd, int screenWidth, int screenHeight,
 	{
 		return false;
 	}
+
 	PIXELFORMATDESCRIPTOR pixelFormatDescriptor;
 	result = SetPixelFormat(m_deviceContext, pixelFormat[0], &pixelFormatDescriptor);
 	if (result != 1)
 	{
 		return false;
 	}
+
 	int attributeList[5];
 	//5.0 version of OpenGL 
 	attributeList[0] = WGL_CONTEXT_MAJOR_VERSION_ARB;
@@ -190,21 +172,12 @@ bool GLDeviceResources::InitOpenGL(HWND hwnd, int screenWidth, int screenHeight,
 		return false;
 	}
 
-	glClearDepth(1.0f);
-	glEnable(GL_DEPTH_TEST);
-	glFrontFace(GL_CW);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
 
-	float fieldOfView = 3.14159265358979323846f / 4.0f;
-	float screenAspect = static_cast<float>(screenWidth) / static_cast<float>(screenHeight);
-
-	BuildPerspectiveFovLHMatrix(m_projectionMatrix, fieldOfView, screenAspect, screenNear, screenDepth);
 
 	char *vendorString = (char*)glGetString(GL_VENDOR);
 	char *rendererString = (char*)glGetString(GL_RENDERER);
 
-	if (vsync)
+	if (displayState.VsynEnabled)
 	{
 	result = wglSwapIntervalEXT(1);
 	}

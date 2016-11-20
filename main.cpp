@@ -2,28 +2,21 @@
 #include <stdlib.h>
 #include <string>
 #include "GLWindow.h"
-#include "GLInput.h"
-#include "GLDeviceResources.h"
 #include "GLDrawContext.h"
+#include "Input.h"
+#include "Model.h"
 
 bool isRunning = true;
-const bool FullScreen = false;
-const bool VsynEnabled = true;
-const float ScreenDepth = 1000.0f;
-const float ScreenNear = 0.1f;
+
 
 int main(int, char **)
 {
-	GLWindow * window = new GLWindow();
-	window->Create();
-	GLInput input = GLInput();
-	GLDeviceResources* gl = new GLDeviceResources();
-	gl->Init(window->GetWindowHandle());
-	gl->InitOpenGL(window->GetWindowHandle(), 1280, 720, ScreenDepth, ScreenNear, VsynEnabled);
+	Input input = Input();
 	
-	GLDrawContext * dc = new GLDrawContext(gl);
-	dc->Init();
+	GLDrawContext dc = GLDrawContext();
+	dc.Init();
 	MSG msg = { nullptr };
+	Model model = Model("Assets/Meshes/cube.obj");
 	while (isRunning)
 	{
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -39,21 +32,16 @@ int main(int, char **)
 		else
 		{
 			input.TranslateKeyMessage(msg, msg.wParam, msg.lParam);
-			if (input.IsKeyDown(GLInput::Escape))
+			if (input.IsKeyDown(Input::Escape))
 			{
 				isRunning = false;
 			}
-			dc->BeginScene();
-			dc->EndScene();
+			
+			dc.BeginScene();
+			dc.Draw();
+			dc.EndScene();
 		}
 	}
-	delete dc;
-
-	gl->Release(window->GetWindowHandle());
-
-	delete gl;
-
-	delete window;
 
 	return 0;
 }

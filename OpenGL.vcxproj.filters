@@ -43,16 +43,16 @@
     <Filter Include="Source Files\Shaders">
       <UniqueIdentifier>{d2045c70-92e4-49e3-aa89-80a98377ffe7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Util">
+      <UniqueIdentifier>{9b98e3fd-e9f2-4b95-9288-7682691d9999}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Util">
+      <UniqueIdentifier>{cebab7a6-455c-4e8b-a1c2-d3f8220c431a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GLDeviceResources.cpp">
-      <Filter>Source Files\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="GLInput.cpp">
-      <Filter>Source Files\GL</Filter>
     </ClCompile>
     <ClCompile Include="GLWindow.cpp">
       <Filter>Source Files\GL\Win32</Filter>
@@ -69,20 +69,26 @@
     <ClCompile Include="Transform.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
     <ClCompile Include="GLBuffers.cpp">
       <Filter>Source Files\GL</Filter>
     </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="GLDevice.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Util.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjFile.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GLDeviceResources.h">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="GLInput.h">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
     <ClInclude Include="WinMain.h">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
@@ -113,14 +119,23 @@
     <ClInclude Include="Resource.h">
       <Filter>Header Files\Win32</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="GLBuffers.h">
       <Filter>Header Files\GL</Filter>
     </ClInclude>
-    <ClInclude Include="Util.h">
+    <ClInclude Include="Input.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Interfaces.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GLDevice.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjFile.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

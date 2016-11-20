@@ -3,21 +3,11 @@
 #include "Resource.h"
 
 GLWindow::GLWindow()
-	: m_hInst(nullptr),
-	m_prevInst(nullptr),
-	m_lpCmdLine(nullptr),
-	m_nCmdShow(0),
-	m_hWnd(nullptr),
-	m_currentHeight(0),
-	m_currentWidth(0)
-{
-	m_hInst = WinMainParameters::GetHInstance();
-	m_prevInst = WinMainParameters::GetHPrevInstance();
-	m_lpCmdLine = WinMainParameters::GetLPCmdLine();
-	m_nCmdShow = WinMainParameters::GetNCmdShow();
-
-	FreeConsole();
-}
+	: m_hInst(WinMainParameters::GetHInstance()),
+	m_prevInst(WinMainParameters::GetHPrevInstance()),
+	m_lpCmdLine(WinMainParameters::GetLPCmdLine()),
+	m_nCmdShow(WinMainParameters::GetNCmdShow()),
+	m_hWnd(nullptr) { }
 
 GLWindow::~GLWindow()
 {
@@ -29,10 +19,11 @@ GLWindow::~GLWindow()
 	UnregisterClass(m_title, m_hInst);
 }
 
-void GLWindow::Create()
+HWND GLWindow::Create(const DisplayState &displayState)
 {
 	GLRegisterClass();
-	InitInstance();
+	InitInstance(displayState);
+	return m_hWnd;
 }
 
 HWND GLWindow::GetWindowHandle() const
@@ -47,7 +38,8 @@ LRESULT GLWindow::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	}
 
 	GLWindow* pView = GetViewFromObject(hWnd);
-	if (pView){
+	if (pView)
+	{
 		pView->WinMsgHandler(hWnd, message, wParam, lParam);
 	}
 
@@ -69,17 +61,17 @@ LRESULT GLWindow::WinMsgHandler(HWND hWnd, UINT message, WPARAM wParam, LPARAM l
 	}
 }
 
-BOOL GLWindow::InitInstance()
+BOOL GLWindow::InitInstance(const DisplayState &displayState)
 {
-	int screenWidth = 1280;
-	int screenHeight = 720;
-	int posX = (GetSystemMetrics(SM_CXSCREEN) - screenWidth) / 2;
-	int posY = (GetSystemMetrics(SM_CYSCREEN) - screenHeight) / 2;
+	int w = displayState.ScreenWidth;
+	int h = displayState.ScreenHeight;
+	int posX = (GetSystemMetrics(SM_CXSCREEN) - w) / 2;
+	int posY = (GetSystemMetrics(SM_CYSCREEN) - h) / 2;
 
 	m_hWnd = CreateWindow(L"OpenGL", L"OpenGL",
 		WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_POPUP,
 		posX, posY,
-		screenWidth, screenHeight,
+		w, h,
 		NULL, NULL, m_hInst, NULL);
 
 	if (!m_hWnd)
@@ -96,7 +88,7 @@ BOOL GLWindow::InitInstance()
 
 ATOM GLWindow::GLRegisterClass() const
 {
-	WNDCLASSEX wcex = {};
+	WNDCLASSEX wcex = { };
 
 	wcex.cbSize = sizeof(WNDCLASSEX);
 	wcex.style = CS_HREDRAW | CS_VREDRAW;
