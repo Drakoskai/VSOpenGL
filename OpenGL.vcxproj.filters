@@ -137,6 +137,9 @@
     <ClInclude Include="Util.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="basic.frag">

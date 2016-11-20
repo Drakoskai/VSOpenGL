@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Vector.h"
+#include "Vertex.h"
 
 class ObjFile
 {
@@ -11,9 +12,7 @@ public:
 	~ObjFile();
 
 	bool Exists();
-	void GetVertices(std::vector<Vector3f>& vertices);
-	void GetNormals(std::vector<Vector3f>& normals);
-	void GetUVs(std::vector<Vector2f>& uvs);
+	void GetMeshData(std::vector<Vector3f>& vertices, std::vector<Vector2f>& uvs, std::vector<Vector3f>& normals, std::vector<unsigned short>& indices);
 	std::string ToString();
 
 private:
@@ -25,5 +24,8 @@ private:
 	std::vector<Vector3f> m_verts;
 	std::vector<Vector3f> m_normals;
 	std::vector<Vector2f> m_uvs;
+	std::vector<int> m_vertIndices;
+	std::vector<int> m_normalIndices;
+	std::vector<int> m_uvIndices;
 
 };

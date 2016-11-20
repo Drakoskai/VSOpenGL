@@ -43,9 +43,6 @@ void GLDrawContext::Init()
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
 
-	glGenVertexArrays(1, &m_vaoId);
-	glBindVertexArray(m_vaoId);
-
 	float fieldOfView = 3.14159265358979323846f / 4.0f;
 	float screenAspect = static_cast<float>(m_currentDisplayState.ScreenWidth) / static_cast<float>(m_currentDisplayState.ScreenHeight);
 	BuildPerspectiveFovLHMatrix(m_projectionMatrix, fieldOfView, screenAspect, m_currentDisplayState.ScreenNear, m_currentDisplayState.ScreenDepth);
@@ -58,7 +55,11 @@ void GLDrawContext::BeginScene() const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void GLDrawContext::Draw() const { }
+void GLDrawContext::Draw() const
+{
+	
+
+}
 
 void GLDrawContext::EndScene() const
 {
@@ -92,13 +93,11 @@ Window* GLDrawContext::GetWindow()
 
 unsigned int GLDrawContext::LoadShader(std::string filename)
 {
-	std::string	shaderCode = LoadShaderFromFile(filename + ".vert");
+	std::string	shaderCode = LoadShaderFromFile(filename);
 	GLint shader = glCreateShader(GL_VERTEX_SHADER);
 	const char * shaderBuffer = shaderCode.c_str();
 	glShaderSource(shader, 1, &shaderBuffer, nullptr);
 	glCompileShader(shader);
-	int status;
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 
 	return shader;
 }

@@ -15,8 +15,12 @@ int main(int, char **)
 	
 	GLDrawContext dc = GLDrawContext();
 	dc.Init();
+
 	MSG msg = { nullptr };
 	Model model = Model("Assets/Meshes/cube.obj");
+
+	model.Init(&dc);
+
 	while (isRunning)
 	{
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -39,9 +43,12 @@ int main(int, char **)
 			
 			dc.BeginScene();
 			dc.Draw();
+			model.Draw();
 			dc.EndScene();
 		}
 	}
+	model.Release();
+
 
 	return 0;
 }
