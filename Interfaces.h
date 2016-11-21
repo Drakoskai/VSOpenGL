@@ -11,6 +11,8 @@ namespace Display
 	static const bool DefaultVsynEnabled = true;
 	static const float DefaultScreenDepth = 1000.0f;
 	static const float DefaultScreenNear = 0.1f;
+	static const float DefaultFieldOfView = 45.0f;
+	static const float DefaultAspectRatio = static_cast<float>(DefaultWidth) / static_cast<float>(DefaultHeight);
 }
 
 struct DisplayState

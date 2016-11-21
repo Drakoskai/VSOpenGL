@@ -5,12 +5,14 @@
 #include "GLDrawContext.h"
 #include "Input.h"
 #include "Model.h"
+#include <cassert>
+#include <iostream>
 
 bool isRunning = true;
 
 
 int main(int, char **)
-{
+{	
 	Input input = Input();
 	
 	GLDrawContext dc = GLDrawContext();
@@ -48,7 +50,6 @@ int main(int, char **)
 		}
 	}
 	model.Release();
-
 
 	return 0;
 }

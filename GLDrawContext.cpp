@@ -57,8 +57,6 @@ void GLDrawContext::BeginScene() const
 
 void GLDrawContext::Draw() const
 {
-	
-
 }
 
 void GLDrawContext::EndScene() const
@@ -68,12 +66,6 @@ void GLDrawContext::EndScene() const
 
 void GLDrawContext::BuildPerspectiveFovLHMatrix(Matrix& matrix, float fieldOfView, float screenAspect, float screenNear, float screenDepth) const
 {
-	matrix.Identity();
-	matrix.mat[0].x /= (screenAspect * tan(fieldOfView * 0.5f));
-	matrix.mat[1].y /= tan(fieldOfView * 0.5f);
-	matrix.mat[2].z = screenDepth / (screenDepth - screenNear);
-	matrix.mat[3].z = (-screenNear * screenDepth) / (screenDepth - screenNear);
-	matrix.mat[4].w = 0.0f;
 }
 
 void GLDrawContext::GetWorldMatrix(Matrix& matrix) const

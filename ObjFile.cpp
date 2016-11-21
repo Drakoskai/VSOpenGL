@@ -160,7 +160,7 @@ string ObjFile::ToString()
 		<< '{' << endl;
 	ss << '\t';
 	ss << "vertices:[" << endl;
-	int count = 0;
+	unsigned int count = 0;
 
 	for (Vector3f vert : m_verts)
 	{
@@ -230,7 +230,7 @@ string ObjFile::ToString()
 	ss << "VertexIndices:[" << endl;
 
 	count = 0;
-	int indicesSize = m_vertIndices.size();
+	size_t indicesSize = m_vertIndices.size();
 	for (int i = 0; i < indicesSize; i++)
 	{
 		ss << '\t';
