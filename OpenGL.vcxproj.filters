@@ -96,6 +96,9 @@
     <ClCompile Include="Plane.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
+    <ClCompile Include="TestTriangle.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="WinMain.h">
@@ -155,12 +158,21 @@
     <ClInclude Include="Frustum.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
+    <ClInclude Include="TestTriangle.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="basic.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="basic.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="test.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="test.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

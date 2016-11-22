@@ -3,13 +3,21 @@
 Camera::Camera()
 	: m_nearClip(Display::DefaultScreenNear), m_farClip(Display::DefaultScreenDepth),
 	m_fieldofView(Display::DefaultFieldOfView), m_screenAspect(Display::DefaultAspectRatio),
-	m_viewportWidth(Display::DefaultWidth), m_viewportHeight(Display::DefaultHeight) { }
+	m_viewportWidth(Display::DefaultWidth), m_viewportHeight(Display::DefaultHeight)
+{
+	m_up = Vector3f::Up;
+
+}
 
 Camera::~Camera() { }
 
 void Camera::Init() { }
 
-void Camera::Update() { }
+void Camera::Update()
+{
+	
+
+}
 
 void Camera::GetModelView(Matrix& modelView) const { modelView = m_modelView; }
 

@@ -166,6 +166,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ObjFile.cpp" />
     <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="TestTriangle.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vector.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="ObjFile.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="TestTriangle.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Vector.h" />
@@ -195,6 +197,8 @@
   <ItemGroup>
     <None Include="basic.frag" />
     <None Include="basic.vert" />
+    <None Include="test.frag" />
+    <None Include="test.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
