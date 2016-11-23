@@ -1,17 +1,16 @@
 #pragma once
-#include "Plane.h"
 
-struct Matrix;
+#include "Plane.h"
 
 struct Frustum
 {
-	Plane left;
-	Plane right;
-	Plane bottom;
-	Plane top;
-	Plane near;
-	Plane far;
+	Plane leftPlane;
+	Plane rightPlane;
+	Plane bottomPlane;
+	Plane topPlane;
+	Plane nearPlane;
+	Plane farPlane;
 
-	Frustum(float width, float hieght, int viewportWidth, int viewPortHeight);
-
+	Frustum();
+	Frustum(float fieldOfView, int width, int height, float nearClip, float farClip);
 };

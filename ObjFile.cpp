@@ -27,7 +27,7 @@ bool ObjFile::Exists()
 	return m_exists;
 }
 
-void ObjFile::GetMeshData(vector<Vector3f>& vertices, vector<Vector2f>& uvs, vector<Vector3f>& normals, vector<unsigned short>& indices)
+void ObjFile::GetMeshData(vector<Vector3f>& vertices, vector<Vector2f>& uvs, vector<Vector3f>& normals, vector<unsigned int>& indices)
 {
 	if (!m_isLoaded)
 	{
@@ -46,7 +46,7 @@ void ObjFile::GetMeshData(vector<Vector3f>& vertices, vector<Vector2f>& uvs, vec
 		vertices.push_back(vertex);
 		uvs.push_back(uv);
 		normals.push_back(normal);
-		indices.push_back(static_cast<unsigned short>(vertices.size()) - 1);
+		indices.push_back(static_cast<unsigned int>(vertices.size()) - 1);
 	}
 }
 

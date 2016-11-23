@@ -22,13 +22,13 @@ struct Matrix
 	Matrix& operator= (const Matrix& other);
 	Matrix operator*(const float s) const;
 	Matrix operator*(const Matrix& other) const;
-
+	void MakeScale(float x, float y, float z);
+	static Matrix MakePerspective(float fieldOfView, float screenAspect, float screenNear, float screenDepth);
+	static Matrix MakeLookAt(Vector3f eye, Vector3f lookAt, Vector3f up);
 	static void Multiply(const Matrix& src1, const Matrix& src2, Matrix& dst);
 
 	void Identity();
 	void Zero();
-
-
 
 };
 

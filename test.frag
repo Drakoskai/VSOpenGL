@@ -1,10 +1,16 @@
-#version 400
+#version 450
 
-in vec3 color;
+#define FRAG_COLOR  0
 
-out vec4 outputColor;
+precision highp float;
+precision highp int;
+layout(std140, column_major) uniform;
+layout(std430, column_major) buffer;
 
-void main(void)
-{
-	outputColor = vec4(color, 1.0f);
+layout (location = 0) in vec3 interpolatedColor;
+
+layout (location = FRAG_COLOR) out vec4 outputColor;
+
+void main() {
+    outputColor = vec4(interpolatedColor, 1.0);
 }

@@ -156,6 +156,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="GLBuffers.cpp" />
     <ClCompile Include="GLDevice.cpp" />
     <ClCompile Include="GLDrawContext.cpp" />
@@ -163,17 +164,18 @@
     <ClCompile Include="GLWindow.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ObjFile.cpp" />
     <ClCompile Include="Plane.cpp" />
-    <ClCompile Include="TestTriangle.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vector.cpp" />
-    <ClCompile Include="View.cpp" />
+    <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Frustum.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="GLBuffers.h" />
     <ClInclude Include="GLAttrib.h" />
     <ClInclude Include="GLDrawContext.h" />
@@ -183,20 +185,18 @@
     <ClInclude Include="GLDevice.h" />
     <ClInclude Include="Interfaces.h" />
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="Mesh.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ObjFile.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="TestTriangle.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Vector.h" />
-    <ClInclude Include="View.h" />
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="WinMain.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic.frag" />
-    <None Include="basic.vert" />
     <None Include="test.frag" />
     <None Include="test.vert" />
   </ItemGroup>

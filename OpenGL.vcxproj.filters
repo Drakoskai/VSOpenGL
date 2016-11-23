@@ -87,16 +87,19 @@
     <ClCompile Include="ObjFile.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="View.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Frustum.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="Plane.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
-    <ClCompile Include="TestTriangle.cpp">
+    <ClCompile Include="Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Geometry.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Mesh.cpp">
       <Filter>Source Files\Model</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,26 +152,23 @@
     <ClInclude Include="Util.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="View.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Plane.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
     <ClInclude Include="Frustum.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="TestTriangle.h">
+    <ClInclude Include="Camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Geometry.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="basic.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="basic.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
     <None Include="test.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>

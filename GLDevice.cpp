@@ -21,7 +21,9 @@ bool GLDevice::Init(HWND hwnd)
 		return false;
 	}
 
+	
 	HGLRC renderContext = wglCreateContext(deviceContext);
+
 	if (!renderContext)
 	{
 		return false;
@@ -32,7 +34,12 @@ bool GLDevice::Init(HWND hwnd)
 	{
 		return false;
 	}
-
+	GLenum err = glewInit();
+	if (err != GLEW_OK)
+	{
+		fprintf(stdout, "Error: %s\n", glewGetErrorString(err));
+	}
+	fprintf(stdout, "Status: Using GLEW %s\n", glewGetString(GLEW_VERSION));
 	wglMakeCurrent(nullptr, nullptr);
 	wglDeleteContext(renderContext);
 
@@ -94,13 +101,6 @@ bool GLDevice::InitializeExt(HWND hwnd)
 		return false;
 	}
 
-	glewExperimental = GL_TRUE;
-	GLenum err = glewInit();
-	if (err != GLEW_OK)
-	{
-		return false;
-	}
-
 	wglMakeCurrent(nullptr, nullptr);
 	wglDeleteContext(renderContext);
 	ReleaseDC(hwnd, deviceContext);
@@ -110,6 +110,7 @@ bool GLDevice::InitializeExt(HWND hwnd)
 
 bool GLDevice::InitOpenGL(HWND hwnd, const DisplayState &displayState)
 {
+
 	if (!InitializeExt(hwnd))
 	{
 		return false;
@@ -172,24 +173,34 @@ bool GLDevice::InitOpenGL(HWND hwnd, const DisplayState &displayState)
 		return false;
 	}
 
-
-
-	char *vendorString = (char*)glGetString(GL_VENDOR);
-	char *rendererString = (char*)glGetString(GL_RENDERER);
-
 	if (displayState.VsynEnabled)
 	{
-	result = wglSwapIntervalEXT(1);
+		result = wglSwapIntervalEXT(1);
 	}
 	else
 	{
-	result = wglSwapIntervalEXT(0);
+		result = wglSwapIntervalEXT(0);
 	}
 
 	if (result != 1)
 	{
 		return false;
 	}
+
+#if _DEBUG
+	if (glDebugMessageCallback){
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+		glDebugMessageCallback(openglCallbackFunction, nullptr);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_HIGH, 0, nullptr, GL_TRUE);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_MEDIUM, 0, nullptr, GL_TRUE);
+	}
+	else
+	{
+		std::cout << "glDebugMessageCallback not available" << std::endl;
+	}
+#endif
 
 	return true;
 }

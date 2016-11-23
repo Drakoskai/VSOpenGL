@@ -11,7 +11,7 @@ namespace Display
 	static const bool DefaultVsynEnabled = true;
 	static const float DefaultScreenDepth = 1000.0f;
 	static const float DefaultScreenNear = 0.1f;
-	static const float DefaultFieldOfView = 45.0f;
+	static const float DefaultFieldOfView = 3.14159265358979323846f / 4.0f;
 	static const float DefaultAspectRatio = static_cast<float>(DefaultWidth) / static_cast<float>(DefaultHeight);
 }
 
@@ -45,7 +45,7 @@ public:
 	virtual	~DrawContext() { }
 	virtual void Init() = 0;
 	virtual Window* GetWindow() = 0;
-	virtual void BeginScene() const = 0;
+	virtual void BeginScene() = 0;
 	virtual void Draw() const = 0;
 	virtual void EndScene() const = 0;
 };

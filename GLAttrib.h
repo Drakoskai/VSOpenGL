@@ -2,6 +2,15 @@
 
 #include <GL/GL.h>
 
+enum Attrib
+{
+	Position = 0,
+	Color = 1,
+	Normal = 2,
+	Texture0 = 3,
+	Texture1 = 4
+};
+
 namespace GLAttribs
 {
 	static const int PositionIndex = 0;

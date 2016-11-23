@@ -11,7 +11,7 @@ public:
 	~ObjFile();
 
 	bool Exists();
-	void GetMeshData(std::vector<Vector3f>& vertices, std::vector<Vector2f>& uvs, std::vector<Vector3f>& normals, std::vector<unsigned short>& indices);
+	void GetMeshData(std::vector<Vector3f>& vertices, std::vector<Vector2f>& uvs, std::vector<Vector3f>& normals, std::vector<unsigned int>& indices);
 	std::string ToString();
 
 private:

@@ -1,19 +1,24 @@
-#version 400
+#version 450
 
-in vec3 inputPosition;
-in vec3 inputColor;
+#define POSITION    0
+#define TRANSFORM0  1
+#define BLOCK       0
 
-out vec3 color;
+precision highp float;
+precision highp int;
+layout(std140, column_major) uniform;
+layout(std430, column_major) buffer;
 
-uniform mat4 worldMatrix;
-uniform mat4 viewMatrix;
-uniform mat4 projectionMatrix;
+layout (location = POSITION) in vec3 position;
 
-void main(void)
+layout (binding = TRANSFORM0) uniform Transform
 {
-	gl_Position = worldMatrix * vec4(inputPosition, 1.0f);
-	gl_Position = viewMatrix * gl_Position;
-	gl_Position = projectionMatrix * gl_Position;
+    mat4 modelToClipMatrix;
+} transform;
 
-	color = inputColor;
+layout (location = 0) out vec3 interpolatedColor;
+
+void main() {
+    gl_Position = transform.modelToClipMatrix * vec4(position, 1.0);
+    interpolatedColor = vec3(clamp(position, 0, 1));
 }

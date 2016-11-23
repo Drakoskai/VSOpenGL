@@ -65,6 +65,14 @@ struct Vector3f
 	Vector3f operator-(const Vector3f& other) const;
 	Vector3f operator*(const float s) const;
 	Vector3f operator/(const float s) const;
+	
+	float GetLength() const;
+	float GetLengthSqrd() const;
+
+	float Normalize();
+	Vector3f NormalizeTo() const;
+	Vector3f Cross(Vector3f& other) const;
+	float Dot(const Vector3f& other) const;
 
 	std::string ToString() const;
 

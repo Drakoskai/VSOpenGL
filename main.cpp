@@ -1,27 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string>
 #include "GLWindow.h"
 #include "GLDrawContext.h"
 #include "Input.h"
-#include "Model.h"
-#include <cassert>
 #include <iostream>
+#include "Model.h"
+
 
 bool isRunning = true;
 
-
 int main(int, char **)
-{	
+{
 	Input input = Input();
-	
 	GLDrawContext dc = GLDrawContext();
 	dc.Init();
 
 	MSG msg = { nullptr };
-	Model model = Model("Assets/Meshes/cube.obj");
 
-	model.Init(&dc);
+	Model model = Model("Assets/Meshes/cube.obj");
+	model.Init(dc);
 
 	while (isRunning)
 	{
@@ -42,13 +39,15 @@ int main(int, char **)
 			{
 				isRunning = false;
 			}
-			
+
 			dc.BeginScene();
-			dc.Draw();
-			model.Draw();
+			model.Draw(dc);
+
+
 			dc.EndScene();
 		}
 	}
+
 	model.Release();
 
 	return 0;

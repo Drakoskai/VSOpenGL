@@ -178,6 +178,42 @@ Matrix Matrix::operator*(const Matrix& b) const
 	return a;
 }
 
+void Matrix::MakeScale(float x, float y, float z)
+{
+	mat[0] = x;
+	mat[5] = y;
+	mat[10] = z;
+	mat[15] = 1.0f;
+}
+
+Matrix Matrix::MakePerspective(float fieldOfView, float screenAspect, float screenNear, float screenDepth)
+{
+	return Matrix(
+		1.0f / (screenAspect * tan(fieldOfView * 0.5f)), 0.0f, 0.0f, 0.0f,
+		0.0f, 1.0f / tan(fieldOfView * 0.5f), 0.0f, 0.0f,
+		0.0f, 0.0f, screenDepth / (screenDepth - screenNear), 0.0f,
+		0.0f, 0.0f, -screenNear * screenDepth / (screenDepth - screenNear), 0.0f);
+}
+
+Matrix Matrix::MakeLookAt(Vector3f eye, Vector3f lookAt, Vector3f up)
+{
+	Vector3f zAxis = lookAt - eye;
+	zAxis.Normalize();
+
+	Vector3f xAxis = zAxis;
+	xAxis.Cross(up).Normalize();
+
+	Vector3f yAxis = zAxis;
+	yAxis.Cross(xAxis).Normalize();
+
+	return Matrix(
+		xAxis.x, yAxis.x, zAxis.x, 0.0f,
+		xAxis.y, yAxis.y, zAxis.y, 0.0f,
+		xAxis.z, yAxis.z, zAxis.z, 0.0f,
+		xAxis.Dot(eye) * -1.0f, yAxis.Dot(eye)* -1.0f, zAxis.Dot(eye) * -1.0f, 1.0f);
+
+}
+
 void Matrix::Multiply(const Matrix& a, const Matrix& b, Matrix& d)
 {
 	float b00 = b.mat[0 + 0 * 4];

@@ -67,11 +67,11 @@ unsigned GLBuffers::GetStride(Buffers::GLBuffer type)
 	return m_stride[type];
 }
 
-void GLBuffers::SetElementData(int mode, int* src, unsigned int numElements)
+void GLBuffers::SetElementData(GLint mode, unsigned* src, unsigned numElements)
 {
 	m_elementData = src;
 	m_mode[Buffers::Element] = mode;
-	m_size[Buffers::Element] = 1;
+	m_size[Buffers::Element] = numElements * sizeof(unsigned int);
 	m_glType[Buffers::Element] = GL_UNSIGNED_INT;
 	m_count[Buffers::Element] = numElements;
 }
@@ -94,44 +94,19 @@ void GLBuffers::SetNormalData(float* src, unsigned int numNormals)
 	m_stride[Buffers::Normal] = 3 * sizeof(float);
 }
 
-void GLBuffers::InitBuffers(GLDrawContext * dc)
+float* GLBuffers::GetFloatBuffer(Buffers::GLBuffer type)
 {
-	GLuint vboId;
-	glGenBuffers(Buffers::Name, &vboId);
-	m_vboId[Buffers::Vertex] = vboId;
-
-	glBindBuffer(GL_ARRAY_BUFFER, m_vboId[Buffers::Vertex]);
-	glBufferData(GL_ARRAY_BUFFER,
-		GetSize(Buffers::Vertex),
-		m_vertexData,
-		GetMode(Buffers::Vertex));
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_vboId[Buffers::Element]);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-		GetSize(Buffers::Element),
-		m_elementData,
-		GetMode(Buffers::Element));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
-	glBindBuffer(GL_UNIFORM_BUFFER, m_vboId[Buffers::Transform]);
-	GLint * uniformBufferOffset = new GLint[1];
-	glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, uniformBufferOffset);
-	int uniformBlockSize = max(16 * sizeof(float), uniformBufferOffset[0]);
-	glBufferStorage(GL_UNIFORM_BUFFER, uniformBlockSize, nullptr, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT);
-	delete[] uniformBufferOffset;
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-	glVertexArrayElementBuffer(dc->GetVaoId(), m_vboId[Buffers::Element]);
-	glVertexArrayVertexBuffer(dc->GetVaoId(), Semantic::Stream::_0, m_vboId[Buffers::Vertex], 0, GetStride(Buffers::Vertex));
-	p_transform = reinterpret_cast<float*>(glMapNamedBufferRange(m_vboId[Buffers::Transform],
-		0,
-		16 * GetSize(Buffers::Transform),
-		GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT | GL_MAP_INVALIDATE_BUFFER_BIT));
+	if (type == Buffers::GLBuffer::Vertex)
+	{
+		return m_vertexData;
+	}
+	if (type == Buffers::GLBuffer::Normal)
+	{
+		return m_normalData;
+	}
 }
 
-void GLBuffers::Release()
+unsigned int* GLBuffers::GetIntBuffer(Buffers::GLBuffer type)
 {
-	glUnmapNamedBuffer(m_vboId[Buffers::Transform]);
-	glDeleteBuffers(1, &m_vboId[Buffers::Vertex]);
+	return m_elementData;
 }

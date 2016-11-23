@@ -7,68 +7,108 @@
 
 
 Model::Model(const std::string& filename)
-	: m_filename(filename), m_vaoId(0), m_vboid(0), m_idxid(0), m_transformid(0),
-	m_shaderProgram(0), m_transformPointer(nullptr) { }
+	: m_filename(filename), m_mesh(nullptr) { }
 
-Model::~Model() { }
+Model::Model(float* vertexData, int vertexCount, int* elementData, int elementCount)
+{
+}
 
-void Model::Init(GLDrawContext* dc)
+Model::~Model() { Release(); }
+
+void Model::Init(GLDrawContext& dc)
 {
 	ObjFile file = ObjFile(m_filename);
-	file.GetMeshData(m_vertexData, m_uvData, m_normalData, m_idxData);
+	std::vector<Vector3f> vertices;
+	std::vector<Vector2f> uvs;
+	std::vector<Vector3f> normals;
+	std::vector<unsigned int> indices;
+	file.GetMeshData(vertices, uvs, normals, indices);
 
-	GLuint vertShaderId = dc->LoadShader("basic.vert");
-	GLuint fragShaderId = dc->LoadShader("basic.frag");
+	m_mesh = new Mesh(vertices, indices, GL_TRIANGLES);
 
-	m_shaderProgram = glCreateProgram();
-	glAttachShader(m_shaderProgram, vertShaderId);
-	glAttachShader(m_shaderProgram, fragShaderId);
-	glLinkProgram(m_shaderProgram);
+	GLuint vertShaderId = glCreateShader(GL_VERTEX_SHADER);
+	GLenum GLerror;
+	if ((GLerror = glGetError()) != GL_NO_ERROR)
+	{
+		fprintf(stderr, "GL error: %x\n", GLerror);
+	}
 
-	glGenVertexArrays(1, &m_vaoId);
-	glBindVertexArray(m_vaoId);
-	glCreateBuffers(4, &m_vboid);
+	GLuint fragShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+	if ((GLerror = glGetError()) != GL_NO_ERROR)
+	{
+		fprintf(stderr, "GL error: %x\n", GLerror);
+	}
 
-	glBufferStorage(GL_ARRAY_BUFFER, m_vertexData.size() * sizeof(Vector3f), &m_vertexData[0], 0);
+	std::string	vertShaderSrc = dc.LoadShaderFromFile("test.vert");
+	std::string	fragShaderSrc = dc.LoadShaderFromFile("test.frag");
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_idxid);
-	glBufferStorage(GL_ELEMENT_ARRAY_BUFFER, m_idxData.size() * sizeof(unsigned short), &m_idxData[0], 0);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+	const char * vertShaderBuffer = vertShaderSrc.c_str();
+	GLint  vertShaderLength = vertShaderSrc.size();
+	const char * fragShaderBuffer = vertShaderSrc.c_str();
+	GLint const fragshaderLength = vertShaderSrc.size();
 
-	glBindBuffer(GL_UNIFORM_BUFFER, m_transformid);
-	GLint * uniformBufferOffset = new GLint[1];
-	glGetIntegerv(GL_UNIFORM_BUFFER_OFFSET_ALIGNMENT, uniformBufferOffset);
-	int uniformBlockSize = max(16 * sizeof(float), uniformBufferOffset[0]);
-	glBufferStorage(GL_UNIFORM_BUFFER, uniformBlockSize, nullptr, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT);
-	delete[] uniformBufferOffset;
-	glBindBuffer(GL_UNIFORM_BUFFER, 0);
+	glShaderSource(vertShaderId, 1, &vertShaderBuffer, &vertShaderLength);
 
-	glVertexArrayElementBuffer(dc->GetVaoId(), m_idxid);
-	glVertexArrayVertexBuffer(dc->GetVaoId(), Semantic::Stream::_0, m_vboid, 0, m_vertexData.size() * sizeof(Vector3f));
-	m_transformPointer = reinterpret_cast<float*>(glMapNamedBufferRange(m_transformid,
-		0,
-		16 * sizeof(float),
-		GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT | GL_MAP_INVALIDATE_BUFFER_BIT));
+	if ((GLerror = glGetError()) != GL_NO_ERROR)
+	{
+		fprintf(stderr, "GL error: %x\n", GLerror);
+	}
+
+	glShaderSource(fragShaderId, 1, &fragShaderBuffer, &fragshaderLength);
+	if ((GLerror = glGetError()) != GL_NO_ERROR)
+	{
+		fprintf(stderr, "GL error: %x\n", GLerror);
+	}
+
+	glCompileShader(vertShaderId);
+	if ((GLerror = glGetError()) != GL_NO_ERROR)
+	{
+		fprintf(stderr, "GL error: %x\n", GLerror);
+	}
+
+	glCompileShader(fragShaderId);
+	if ((GLerror = glGetError()) != GL_NO_ERROR)
+	{
+		fprintf(stderr, "GL error: %x\n", GLerror);
+	}
+
+	GLint status = 0;
+
+	glGetShaderiv(vertShaderId, GL_COMPILE_STATUS, &status);
+	if (status == GL_FALSE)
+	{
+		dc.OutputShaderErrorMessage(vertShaderId, "test.vert");
+	}
+
+	glGetShaderiv(fragShaderId, GL_COMPILE_STATUS, &status);
+	if (status == GL_FALSE)
+	{
+		dc.OutputShaderErrorMessage(fragShaderId, "test.frag");
+	}
+
+	GLuint shaderProg = glCreateProgram();
+	glAttachShader(shaderProg, vertShaderId);
+	glAttachShader(shaderProg, fragShaderId);
+	glLinkProgram(shaderProg);
+
+	delete[] fragShaderBuffer;
+	delete[] vertShaderBuffer;
 }
 
-Transform Model::GetTransform() { return m_transform; }
+Transform Model::GetTransform() const { return m_transform; }
 
-void Model::Update(float dt) { }
+void Model::Update(float dt) { m_mesh->Update(m_transform); }
 
-void Model::Draw()
+void Model::Draw(const GLDrawContext& dc) const
 {
-	glBindBufferBase(GL_UNIFORM_BUFFER, Semantic::Uniform::Transform0, m_vboid);
-	glUseProgram(m_shaderProgram);
-	glBindVertexArray(m_vaoId);
-	glDrawElements(GL_TRIANGLES, m_idxData.size(), GL_UNSIGNED_SHORT, &m_idxData[0]);
+	m_mesh->Draw(dc);
 }
 
-void Model::Release()
+void Model::Release() const
 {
-	glUnmapNamedBuffer(m_transformid);
-	glDeleteBuffers(1, &m_idxid);
-	glDeleteBuffers(1, &m_vboid);
-	glDeleteProgram(m_shaderProgram);
-	glDeleteVertexArrays(1, &m_vaoId);
+	if (m_mesh)
+	{
+		m_mesh->Release();
+		delete m_mesh;
+	}
 }

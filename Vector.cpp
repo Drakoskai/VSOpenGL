@@ -1,5 +1,8 @@
 #include "Vector.h"
+#include "math.h"
 #include <sstream>
+#include "Geometry.h"
+
 
 #pragma region Vector2
 
@@ -209,7 +212,51 @@ Vector3f Vector3f::operator*(const float s) const
 Vector3f Vector3f::operator/(const float s) const
 {
 	float inva = 1.0f / s;
+
 	return Vector3f(x * inva, y * inva, z * inva);
+}
+
+float Vector3f::GetLength() const
+{
+	return sqrtf(GetLengthSqrd());
+}
+
+float Vector3f::GetLengthSqrd() const
+{
+	return  x * x + y * y + z * z;
+}
+
+float Vector3f::Normalize()
+{
+	float sqrLength = x * x + y * y + z * z;
+
+	float invLength = Geometry::InvSqrt(sqrLength);
+	x *= invLength;
+	y *= invLength;
+	z *= invLength;
+
+	return invLength * sqrLength;
+}
+
+Vector3f Vector3f::NormalizeTo() const
+{
+	float length = GetLength();
+	if (length == 0)
+	{
+		return Vector3f(x, y, z);
+	}
+
+	return Vector3f(x / length, y / length, z / length);
+}
+
+Vector3f Vector3f::Cross(Vector3f& other) const
+{
+	return Vector3f(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x);
+}
+
+float Vector3f::Dot(const Vector3f& other) const
+{
+	return x * other.x + y * other.y + z * other.z;
 }
 
 std::string Vector3f::ToString() const

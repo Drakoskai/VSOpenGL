@@ -7,9 +7,9 @@ namespace Buffers
 	{
 		Vertex = 0,
 		Element = 1,
-		Normal = 2,
-		Transform = 3,
-		Name = 4
+		Transform = 2,
+		Max = 3,
+		Normal = 4
 	};
 }
 
@@ -28,12 +28,12 @@ public:
 	unsigned int GetId(Buffers::GLBuffer type);
 	unsigned int GetStride(Buffers::GLBuffer type);
 
-	void SetElementData(int mode, int * src, unsigned int numElements);
+	void SetElementData(GLint mode, unsigned int * src, unsigned int numElements);
 	void SetVertexData(float * src, unsigned int numVerts);
 	void SetNormalData(float * src, unsigned int numNormals);
 
-	void InitBuffers(GLDrawContext * dc);
-	void Release();
+	float* GetFloatBuffer(Buffers::GLBuffer type);
+	unsigned int* GetIntBuffer(Buffers::GLBuffer type);
 
 private:
 	int m_mode[4];
@@ -47,6 +47,6 @@ private:
 
 	float * m_vertexData;
 	float * m_normalData;
-	int * m_elementData;
+	unsigned int * m_elementData;
 	float * p_transform;
 };
