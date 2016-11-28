@@ -2,10 +2,10 @@
 
 Matrix::Matrix()
 {
-	mat[0] = 1.0f; mat[1] = 0.0f; mat[2] = 0.0f; mat[3] = 0.0f;
-	mat[4] = 0.0f; mat[5] = 1.0f; mat[6] = 0.0f; mat[7] = 0.0f;
-	mat[8] = 0.0f; mat[9] = 0.0f; mat[10] = 1.0f; mat[11] = 0.0f;
-	mat[12] = 0.0f; mat[13] = 0.0f; mat[14] = 0.0f; mat[15] = 1.0f;
+	mat[0][0] = 1.0f; mat[0][1] = 0.0f; mat[0][2] = 0.0f; mat[0][3] = 0.0f;
+	mat[1][0] = 0.0f; mat[1][1] = 1.0f; mat[1][2] = 0.0f; mat[1][3] = 0.0f;
+	mat[2][0] = 0.0f; mat[2][1] = 0.0f; mat[2][2] = 1.0f; mat[2][3] = 0.0f;
+	mat[3][0] = 0.0f; mat[3][1] = 0.0f; mat[3][2] = 0.0f; mat[3][3] = 1.0f;
 }
 
 Matrix::Matrix(
@@ -14,21 +14,29 @@ Matrix::Matrix(
 	float m20, float m21, float m22, float m23,
 	float m30, float m31, float m32, float m33)
 {
-	mat[0] = m00; mat[1] = m01; mat[2] = m02; mat[3] = m03;
-	mat[0] = m10; mat[1] = m11; mat[2] = m12; mat[3] = m13;
-	mat[0] = m20; mat[1] = m21; mat[2] = m22; mat[3] = m23;
-	mat[0] = m30; mat[1] = m31; mat[2] = m32; mat[3] = m33;
+	mat[0][0] = m00; mat[0][1] = m01; mat[0][2] = m02; mat[0][3] = m03;
+	mat[1][0] = m10; mat[1][1] = m11; mat[1][2] = m12; mat[1][3] = m13;
+	mat[2][0] = m20; mat[2][1] = m21; mat[2][2] = m22; mat[2][3] = m23;
+	mat[3][0] = m30; mat[3][1] = m31; mat[3][2] = m32; mat[3][3] = m33;
+}
+
+Matrix::Matrix(const float src[4][4])
+{
+	memcpy(mat, src, 4 * 4 * sizeof(float));
 }
 
 Matrix::Matrix(const Matrix& other)
 {
-	memcpy(mat, other.mat, 16 * sizeof(float));
+	memcpy(mat, other.mat, 4 * 4 * sizeof(float));
 }
 
 bool Matrix::Compare(const Matrix& other) const
 {
-	for (int i = 0; i < 16; i++) {
-		if (mat[i] != other.mat[i]) {
+
+	const float *ptr1 = reinterpret_cast<const float *>(mat);
+	const float *ptr2 = reinterpret_cast<const float *>(other.mat);
+	for (int i = 0; i < 4 * 4; i++) {
+		if (ptr1[i] != ptr2[i]) {
 			return false;
 		}
 	}
@@ -46,67 +54,26 @@ bool Matrix::operator!=(const Matrix& other) const
 	return !Compare(other);
 }
 
-Matrix& Matrix::operator*=(const Matrix& b)
+const Vector4f& Matrix::operator[](const int index) const
 {
-	float b00 = b.mat[0 + 0 * 4];
-	float b10 = b.mat[1 + 0 * 4];
-	float b20 = b.mat[2 + 0 * 4];
-	float b30 = b.mat[3 + 0 * 4];
-	float b01 = b.mat[0 + 1 * 4];
-	float b11 = b.mat[1 + 1 * 4];
-	float b21 = b.mat[2 + 1 * 4];
-	float b31 = b.mat[3 + 1 * 4];
-	float b02 = b.mat[0 + 2 * 4];
-	float b12 = b.mat[1 + 2 * 4];
-	float b22 = b.mat[2 + 2 * 4];
-	float b32 = b.mat[3 + 2 * 4];
-	float b03 = b.mat[0 + 3 * 4];
-	float b13 = b.mat[1 + 3 * 4];
-	float b23 = b.mat[2 + 3 * 4];
-	float b33 = b.mat[3 + 3 * 4];
+	return mat[index];
+}
 
-	float ai0 = mat[0 * 4];
-	float ai1 = mat[1 * 4];
-	float ai2 = mat[2 * 4];
-	float ai3 = mat[3 * 4];
-	mat[0 * 4] = static_cast<float>(ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30);
-	mat[1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	mat[2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	mat[3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
+Vector4f& Matrix::operator[](const int index)
+{
+	return mat[index];
+}
 
-	ai0 = mat[1 + 0 * 4];
-	ai1 = mat[1 + 1 * 4];
-	ai2 = mat[1 + 2 * 4];
-	ai3 = mat[1 + 3 * 4];
-	mat[1 + 0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	mat[1 + 1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	mat[1 + 2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	mat[1 + 3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
-
-	ai0 = mat[2 + 0 * 4];
-	ai1 = mat[2 + 1 * 4];
-	ai2 = mat[2 + 2 * 4];
-	ai3 = mat[2 + 3 * 4];
-	mat[2 + 0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	mat[2 + 1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	mat[2 + 2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	mat[2 + 3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
-
-	ai0 = mat[3 + 0 * 4];
-	ai1 = mat[3 + 1 * 4];
-	ai2 = mat[3 + 2 * 4];
-	ai3 = mat[3 + 3 * 4];
-	mat[3 + 0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	mat[3 + 1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	mat[3 + 2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	mat[3 + 3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
+Matrix& Matrix::operator*=(const Matrix& a)
+{
+	*this = (*this) * a;
 
 	return *this;
 }
 
 Matrix& Matrix::operator=(const Matrix& other)
 {
-	memcpy(mat, other.mat, 16 * sizeof(float));
+	memcpy(mat, other.mat, 4 * 4 * sizeof(float));
 
 	return *this;
 }
@@ -114,85 +81,77 @@ Matrix& Matrix::operator=(const Matrix& other)
 Matrix Matrix::operator*(const float s) const
 {
 	return Matrix(
-		mat[0] * s, mat[1] * s, mat[2] * s, mat[3] * s,
-		mat[4] * s, mat[5] * s, mat[6] * s, mat[7] * s,
-		mat[8] * s, mat[9] * s, mat[10] * s, mat[11] * s,
-		mat[12] * s, mat[13] * s, mat[14] * s, mat[15] * s);
+		mat[0].x * s, mat[0].y * s, mat[0].z * s, mat[0].w * s,
+		mat[1].x * s, mat[1].y * s, mat[1].z * s, mat[1].w * s,
+		mat[2].x * s, mat[2].y * s, mat[2].z * s, mat[2].w * s,
+		mat[3].x * s, mat[3].y * s, mat[3].z * s, mat[3].w * s);
 }
 
-Matrix Matrix::operator*(const Matrix& b) const
+Matrix Matrix::operator*(const Matrix& a) const
 {
-	float b00 = b.mat[0 + 0 * 4];
-	float b10 = b.mat[1 + 0 * 4];
-	float b20 = b.mat[2 + 0 * 4];
-	float b30 = b.mat[3 + 0 * 4];
-	float b01 = b.mat[0 + 1 * 4];
-	float b11 = b.mat[1 + 1 * 4];
-	float b21 = b.mat[2 + 1 * 4];
-	float b31 = b.mat[3 + 1 * 4];
-	float b02 = b.mat[0 + 2 * 4];
-	float b12 = b.mat[1 + 2 * 4];
-	float b22 = b.mat[2 + 2 * 4];
-	float b32 = b.mat[3 + 2 * 4];
-	float b03 = b.mat[0 + 3 * 4];
-	float b13 = b.mat[1 + 3 * 4];
-	float b23 = b.mat[2 + 3 * 4];
-	float b33 = b.mat[3 + 3 * 4];
-	Matrix a;
-	float ai0 = mat[0 * 4];
-	float ai1 = mat[1 * 4];
-	float ai2 = mat[2 * 4];
-	float ai3 = mat[3 * 4];
-	a.mat[0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	a.mat[1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	a.mat[2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	a.mat[3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
+	Matrix dst;
+	const float *m1Ptr = reinterpret_cast<const float *>(this);
+	const float *m2Ptr = reinterpret_cast<const float *>(&a);
+	float * dstPtr = reinterpret_cast<float *>(&dst);
 
-	ai0 = mat[1 + 0 * 4];
-	ai1 = mat[1 + 1 * 4];
-	ai2 = mat[1 + 2 * 4];
-	ai3 = mat[1 + 3 * 4];
-	a.mat[1 + 0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	a.mat[1 + 1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	a.mat[1 + 2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	a.mat[1 + 3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			*dstPtr = m1Ptr[0] * m2Ptr[0 * 4 + j]
+				+ m1Ptr[1] * m2Ptr[1 * 4 + j]
+				+ m1Ptr[2] * m2Ptr[2 * 4 + j]
+				+ m1Ptr[3] * m2Ptr[3 * 4 + j];
+			dstPtr++;
+		}
+		m1Ptr += 4;
+	}
 
-	ai0 = mat[2 + 0 * 4];
-	ai1 = mat[2 + 1 * 4];
-	ai2 = mat[2 + 2 * 4];
-	ai3 = mat[2 + 3 * 4];
-	a.mat[2 + 0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	a.mat[2 + 1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	a.mat[2 + 2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	a.mat[2 + 3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
-
-	ai0 = mat[3 + 0 * 4]; // row-3 of a
-	ai1 = mat[3 + 1 * 4];
-	ai2 = mat[3 + 2 * 4];
-	ai3 = mat[3 + 3 * 4];
-	a.mat[3 + 0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	a.mat[3 + 1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	a.mat[3 + 2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	a.mat[3 + 3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
-
-	return a;
+	return dst;
 }
 
-void Matrix::MakeScale(float x, float y, float z)
+Matrix Matrix::MakeScale(float x, float y, float z)
 {
-	mat[0] = x;
-	mat[5] = y;
-	mat[10] = z;
-	mat[15] = 1.0f;
+	Matrix m;
+	m.mat[0][0] = x;
+	m.mat[1][1] = y;
+	m.mat[2][2] = z;
+	m.mat[3][3] = 1.0f;
+	
+	return m;
 }
 
-Matrix Matrix::MakePerspective(float fieldOfView, float screenAspect, float screenNear, float screenDepth)
+Matrix Matrix::MakePerspective(float fieldOfView, float screenAspect, float screenNear, float screenFar)
 {
+	float const a = 1.0f / static_cast<float>(tan(fieldOfView / 2.0f));
+
 	return Matrix(
-		1.0f / (screenAspect * tan(fieldOfView * 0.5f)), 0.0f, 0.0f, 0.0f,
-		0.0f, 1.0f / tan(fieldOfView * 0.5f), 0.0f, 0.0f,
-		0.0f, 0.0f, screenDepth / (screenDepth - screenNear), 0.0f,
-		0.0f, 0.0f, -screenNear * screenDepth / (screenDepth - screenNear), 0.0f);
+		a / screenAspect, 0.0f, 0.0f, 0.0f,
+		0.0f, a, 0.0f, 0.0f,
+		0.0f, 0.0f, -((screenFar + screenNear) / (screenFar - screenNear)), -1.0f,
+		0.0f, 0.0f, -((2.0f * screenFar * screenNear) / (screenFar - screenNear)), 0.0f);
+}
+
+Matrix Matrix::MakeOrtho(float l, float r, float b, float t, float n, float f)
+{
+	Matrix m = Matrix(
+		2.0f / l, 0.0f, 0.0f, 0.0f,
+		0.0f, 2.0f / r, 0.0f, 0.0f,
+		0.0f, 0.0f, -2.0f / (f - n), -(f + n) / (f - n),
+		0.0f, 0.0f, 0.0f, 1.0f);
+
+	return m;
+}
+
+Matrix Matrix::MakeRotationZ(float angle)
+{
+	float s = sinf(angle);
+	float c = cosf(angle);
+	Matrix R = Matrix(
+		c, -s, 0.f, 0.f,
+		s, c, 0.f, 0.f,
+		0.f, 0.f, 1.f, 0.f,
+		0.f, 0.f, 0.f, 1.f);
+
+	return R;
 }
 
 Matrix Matrix::MakeLookAt(Vector3f eye, Vector3f lookAt, Vector3f up)
@@ -214,74 +173,36 @@ Matrix Matrix::MakeLookAt(Vector3f eye, Vector3f lookAt, Vector3f up)
 
 }
 
-void Matrix::Multiply(const Matrix& a, const Matrix& b, Matrix& d)
+void Matrix::Multiply(const Matrix& a, const Matrix& b, Matrix& dst)
 {
-	float b00 = b.mat[0 + 0 * 4];
-	float b10 = b.mat[1 + 0 * 4];
-	float b20 = b.mat[2 + 0 * 4];
-	float b30 = b.mat[3 + 0 * 4];
-	float b01 = b.mat[0 + 1 * 4];
-	float b11 = b.mat[1 + 1 * 4];
-	float b21 = b.mat[2 + 1 * 4];
-	float b31 = b.mat[3 + 1 * 4];
-	float b02 = b.mat[0 + 2 * 4];
-	float b12 = b.mat[1 + 2 * 4];
-	float b22 = b.mat[2 + 2 * 4];
-	float b32 = b.mat[3 + 2 * 4];
-	float b03 = b.mat[0 + 3 * 4];
-	float b13 = b.mat[1 + 3 * 4];
-	float b23 = b.mat[2 + 3 * 4];
-	float b33 = b.mat[3 + 3 * 4];
+	const float *m1Ptr = reinterpret_cast<const float *>(&a);
+	const float *m2Ptr = reinterpret_cast<const float *>(&b);
+	float * dstPtr = reinterpret_cast<float *>(&dst);
 
-	float ai0 = a.mat[0 * 4];
-	float ai1 = a.mat[1 * 4];
-	float ai2 = a.mat[2 * 4];
-	float ai3 = a.mat[3 * 4];
-	d.mat[0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	d.mat[1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	d.mat[2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	d.mat[3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
-
-	ai0 = a.mat[1 + 0 * 4];
-	ai1 = a.mat[1 + 1 * 4];
-	ai2 = a.mat[1 + 2 * 4];
-	ai3 = a.mat[1 + 3 * 4];
-	d.mat[1 + 0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	d.mat[1 + 1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	d.mat[1 + 2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	d.mat[1 + 3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
-
-	ai0 = a.mat[2 + 0 * 4];
-	ai1 = a.mat[2 + 1 * 4];
-	ai2 = a.mat[2 + 2 * 4];
-	ai3 = a.mat[2 + 3 * 4];
-	d.mat[2 + 0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	d.mat[2 + 1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	d.mat[2 + 2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	d.mat[2 + 3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
-
-	ai0 = a.mat[3 + 0 * 4];
-	ai1 = a.mat[3 + 1 * 4];
-	ai2 = a.mat[3 + 2 * 4];
-	ai3 = a.mat[3 + 3 * 4];
-	d.mat[3 + 0 * 4] = ai0 * b00 + ai1 * b10 + ai2 * b20 + ai3 * b30;
-	d.mat[3 + 1 * 4] = ai0 * b01 + ai1 * b11 + ai2 * b21 + ai3 * b31;
-	d.mat[3 + 2 * 4] = ai0 * b02 + ai1 * b12 + ai2 * b22 + ai3 * b32;
-	d.mat[3 + 3 * 4] = ai0 * b03 + ai1 * b13 + ai2 * b23 + ai3 * b33;
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			*dstPtr = m1Ptr[0] * m2Ptr[0 * 4 + j]
+				+ m1Ptr[1] * m2Ptr[1 * 4 + j]
+				+ m1Ptr[2] * m2Ptr[2 * 4 + j]
+				+ m1Ptr[3] * m2Ptr[3 * 4 + j];
+			dstPtr++;
+		}
+		m1Ptr += 4;
+	}
 }
 
 void Matrix::Identity()
 {
-	mat[0] = 1.0f; mat[1] = 0.0f; mat[2] = 0.0f; mat[3] = 0.0f;
-	mat[4] = 0.0f; mat[5] = 1.0f; mat[6] = 0.0f; mat[7] = 0.0f;
-	mat[8] = 0.0f; mat[9] = 0.0f; mat[10] = 1.0f; mat[11] = 0.0f;
-	mat[12] = 0.0f; mat[13] = 0.0f; mat[14] = 0.0f; mat[15] = 1.0f;
+	mat[0][0] = 1.0f; mat[0][1] = 0.0f; mat[0][2] = 0.0f; mat[0][3] = 0.0f;
+	mat[1][0] = 0.0f; mat[1][1] = 1.0f; mat[1][2] = 0.0f; mat[1][3] = 0.0f;
+	mat[2][0] = 0.0f; mat[2][1] = 0.0f; mat[2][2] = 1.0f; mat[2][3] = 0.0f;
+	mat[3][0] = 0.0f; mat[3][1] = 0.0f; mat[3][2] = 0.0f; mat[3][3] = 1.0f;
 }
 
 void Matrix::Zero()
 {
-	mat[0] = 0.0f; mat[1] = 0.0f; mat[2] = 0.0f; mat[3] = 0.0f;
-	mat[4] = 0.0f; mat[5] = 0.0f; mat[6] = 0.0f; mat[7] = 0.0f;
-	mat[8] = 0.0f; mat[9] = 0.0f; mat[10] = 0.0f; mat[11] = 0.0f;
-	mat[12] = 0.0f; mat[13] = 0.0f; mat[14] = 0.0f; mat[15] = 0.0f;
+	mat[0][0] = 0.0f; mat[0][1] = 0.0f; mat[0][2] = 0.0f; mat[0][3] = 0.0f;
+	mat[1][0] = 0.0f; mat[1][1] = 0.0f; mat[1][2] = 0.0f; mat[1][3] = 0.0f;
+	mat[2][0] = 0.0f; mat[2][1] = 0.0f; mat[2][2] = 0.0f; mat[2][3] = 0.0f;
+	mat[3][0] = 0.0f; mat[3][1] = 0.0f; mat[3][2] = 0.0f; mat[3][3] = 0.0f;
 }

@@ -47,17 +47,22 @@ std::vector<std::string> Util::split(const std::string& s, char delim)
 	return elems;
 }
 
-void Util::ReadObjFile(std::string filename)
+int Util::VDebugPrintF(const char* format, va_list argList)
 {
-	using namespace std;
+	const unsigned int MAX_CHARS = 1024;
+	static char s_buffer[MAX_CHARS];
+	int charsWritten = vsnprintf_s(s_buffer, MAX_CHARS, format, argList);
+	OutputDebugString(StringToWString(s_buffer).c_str());
 
-	ifstream in;
-	string s;
-	in.open(filename.c_str());
+	return charsWritten;
+}
 
-	while (in)
-	{
-		getline(in, s);
-		cout << s << endl;
-	}
+int Util::DebugPrintF(const char* format, ...)
+{
+	va_list argList;
+	va_start(argList, format);
+	int charsWritten = VDebugPrintF(format, argList);
+	va_end(argList);
+
+	return charsWritten;
 }

@@ -1,14 +1,9 @@
 #include "GLDrawContext.h"
-#include <vector>
-#include <GL/glew.h>
 #include <fstream>
 #include "Util.h"
-#include "GLWindow.h"
-#include <iostream>
-#include "GLSemantic.h"
 
 GLDrawContext::GLDrawContext()
-	: m_vaoId(0), m_clearDepth(0), m_hWnd(nullptr), m_gl(nullptr), m_window(nullptr)
+	: m_vaoId(0), m_clearDepth(0), m_window(nullptr)
 {
 	m_clearColor[0] = 0.0f;
 	m_clearColor[1] = 0.0f;
@@ -18,97 +13,164 @@ GLDrawContext::GLDrawContext()
 
 GLDrawContext::~GLDrawContext()
 {
-	m_gl->Release(m_hWnd);
-	delete m_gl;
-	m_gl = nullptr;
+	if (m_window)
+	{
+		glfwDestroyWindow(m_window);
+		m_window = nullptr;
+	}
 
-	delete m_window;
-	m_window = nullptr;
+	glfwTerminate();
 }
 
-void GLDrawContext::Init()
+bool GLDrawContext::Init()
 {
-	m_window = new GLWindow();
-	m_gl = new GLDevice();
-	m_currentDisplayState = {};
-	m_hWnd = m_window->Create(m_currentDisplayState);
-	m_gl->Init(m_hWnd);
-	m_gl->InitOpenGL(m_hWnd, m_currentDisplayState);
+	if (!glfwInit())
+	{
+		return false;
+	}
 
-	glClearDepth(1.0f);
-	glEnable(GL_DEPTH_TEST);
-	glFrontFace(GL_CW);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-	glCreateVertexArrays(1, &m_vaoId);
+	m_window = glfwCreateWindow(800, 600, "", nullptr, nullptr);
 
-	glVertexArrayAttribBinding(m_vaoId, Semantic::Attr::Position, Semantic::Stream::_0);
-	//glVertexArrayAttribBinding(m_vaoId, Semantic::Attr::Color, Semantic::Stream::_0);
+	glfwMakeContextCurrent(m_window);
+	if (!m_window)
+	{
+		Util::DebugPrintF("Failed to create GLFW window\n");
 
-	glVertexArrayAttribFormat(m_vaoId, Semantic::Attr::Position, 3, GL_FLOAT, false, 0);
-	//glVertexArrayAttribFormat(m_vaoId, Semantic::Attr::Color, 3, GL_FLOAT, false, 2 * sizeof(float));
+		return false;
+	}
 
-	glEnableVertexArrayAttrib(m_vaoId, Semantic::Attr::Position);
-	//glEnableVertexArrayAttrib(m_vaoId, Semantic::Attr::Color);
+	glfwSwapInterval(1);
+
+	glfwSetKeyCallback(m_window, DefaultKeyCallback);
+
+	if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
+	{
+		Util::DebugPrintF("OpenGL failed to intialize.\n");
+		return false;
+	}
+
+#ifdef GLAD_DEBUG	
+	glad_set_pre_callback(PreGLCall);
+	glad_set_post_callback(PostCallback);
+	glad_debug_glClear = glad_glClear;
+#endif
+	Util::DebugPrintF("OpenGL %d.%d\n", GLVersion.major, GLVersion.minor);
+	if (GLVersion.major < 2) {
+		Util::DebugPrintF("Your system doesn't support OpenGL >= 2!\n");
+		return false;
+	}
+
+	Util::DebugPrintF("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
+
+	glGenVertexArrays(1, &m_vaoId);
+	glBindVertexArray(m_vaoId);
+
+	return true;
 
 }
 
-void GLDrawContext::BeginScene()
-{
-	glClearBufferfv(GL_COLOR, 0,  m_clearColor);
-	glClearBufferfv(GL_DEPTH, 0, &m_clearDepth);
-}
+void GLDrawContext::BeginScene() { }
 
-void GLDrawContext::Draw() const
-{
-}
+void GLDrawContext::Draw() const { }
 
-void GLDrawContext::EndScene() const
-{
-	SwapBuffers(m_gl->GetDeviceContext());
-}
-
-void GLDrawContext::GetWorldMatrix(Matrix& matrix) const
-{
-	matrix = m_worldMatrix;
-}
+void GLDrawContext::EndScene() const { }
 
 void GLDrawContext::Release() const
 {
-	glDeleteVertexArrays(1, &m_vaoId);
-}
-
-Window* GLDrawContext::GetWindow()
-{
-	return reinterpret_cast<Window*>(m_window);
-}
-
-unsigned int GLDrawContext::LoadShader(std::string filename, GLuint type)
-{
-	std::string	shaderCode = LoadShaderFromFile(filename);
-	GLuint shader = glCreateShader(type); 
-	GLchar const * shaderBuffer = shaderCode.c_str();
-	GLint const shaderLength = shaderCode.size();
-	glShaderSource(shader, 1, &shaderBuffer, NULL);
-	glCompileShader(shader);
-	GLint status = 0;
-
-	glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
-	if (status == GL_FALSE)
+	if (m_window)
 	{
-		OutputShaderErrorMessage(shader, filename);
+		glfwDestroyWindow(m_window);
 	}
 
+	glfwTerminate();
+}
+
+GLFWwindow* GLDrawContext::GetWindow() const
+{
+	return m_window;
+}
+
+GLuint GLDrawContext::LoadShader(const char* text, GLenum type) const
+{
+	GLuint shader;
+	GLint shader_ok;
+	GLsizei log_length;
+	char info_log[8192];
+
+	shader = glCreateShader(type);
+	if (shader != 0)
+	{
+		glShaderSource(shader, 1, (const GLchar**)&text, NULL);
+		glCompileShader(shader);
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &shader_ok);
+		if (shader_ok != GL_TRUE)
+		{
+			Util::DebugPrintF("ERROR: Failed to compile %s shader\n", (type == GL_FRAGMENT_SHADER) ? "fragment" : "vertex");
+			glGetShaderInfoLog(shader, 8192, &log_length, info_log);
+			Util::DebugPrintF("ERROR: \n%s\n\n", info_log);
+			glDeleteShader(shader);
+			shader = 0;
+		}
+	}
 	return shader;
 }
 
-unsigned int GLDrawContext::GetVaoId() const
+GLuint GLDrawContext::LoadShaderProgram(const char* vs_text, const char* fs_text) const
 {
-	return m_vaoId;
+	GLuint program = 0u;
+	GLint program_ok;
+	GLuint vertex_shader = 0u;
+	GLuint fragment_shader = 0u;
+	GLsizei log_length;
+	char info_log[8192];
+
+	vertex_shader = LoadShader(vs_text, GL_VERTEX_SHADER);
+	if (vertex_shader != 0u)
+	{
+		fragment_shader = LoadShader(fs_text, GL_FRAGMENT_SHADER);
+		if (fragment_shader != 0u)
+		{
+			/* make the program that connect the two shader and link it */
+			program = glCreateProgram();
+			if (program != 0u)
+			{
+				/* attach both shader and link */
+				glAttachShader(program, vertex_shader);
+				glAttachShader(program, fragment_shader);
+				glLinkProgram(program);
+				glGetProgramiv(program, GL_LINK_STATUS, &program_ok);
+
+				if (program_ok != GL_TRUE)
+				{
+					fprintf(stderr, "ERROR, failed to link shader program\n");
+					glGetProgramInfoLog(program, 8192, &log_length, info_log);
+					fprintf(stderr, "ERROR: \n%s\n\n", info_log);
+					glDeleteProgram(program);
+					glDeleteShader(fragment_shader);
+					glDeleteShader(vertex_shader);
+					program = 0u;
+				}
+			}
+		}
+		else
+		{
+			fprintf(stderr, "ERROR: Unable to load fragment shader\n");
+			glDeleteShader(vertex_shader);
+		}
+	}
+	else
+	{
+		fprintf(stderr, "ERROR: Unable to load vertex shader\n");
+	}
+	return program;
 }
 
-std::string GLDrawContext::LoadShaderFromFile(std::string filename)
+std::string GLDrawContext::LoadShaderFromFile(const char* filename) const
 {
 	std::ifstream ifile(filename);
 	std::string outstr;
@@ -117,18 +179,14 @@ std::string GLDrawContext::LoadShaderFromFile(std::string filename)
 	return outstr;
 }
 
-void  GLDrawContext::OutputShaderErrorMessage(unsigned int shaderId, std::string shaderFilename)
+GLuint GLDrawContext::LoadShaderProgramFromFile(const char* filename) const
 {
-	int logSize = 0;
-	glGetShaderiv(shaderId, GL_INFO_LOG_LENGTH, &logSize);
+	std::string vertFilename = filename;
+	vertFilename += ".vert";
+	std::string fragFilename = filename;
+	fragFilename += ".frag";
+	std::string vertText = LoadShaderFromFile(vertFilename.c_str());
+	std::string fragText = LoadShaderFromFile(fragFilename.c_str());
 
-	GLchar* infoLog;
-	infoLog = new GLchar[logSize+1];
-	glGetShaderInfoLog(shaderId, logSize, &logSize, infoLog);
-	fprintf(stderr, "Compiler/Linker error: %s\n", infoLog);
-
-	std::wstring msg = L"Error compiling shader. " + Util::StringToWString(shaderFilename);
-	MessageBox(nullptr, msg.c_str(), Util::StringToWString(infoLog).c_str(), MB_OK);
-
-	delete[] infoLog;
+	return LoadShaderProgram(vertText.c_str(), fragText.c_str());
 }

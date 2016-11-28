@@ -4,11 +4,25 @@
 #include "Interfaces.h"
 #include "Frustum.h"
 
-class Camera
+class CameraSimpleOrtho
 {
 public:
-	Camera();
-	~Camera();
+	CameraSimpleOrtho();
+	~CameraSimpleOrtho();
+
+	void Update(float ratio);
+	Matrix GetModelView() const;
+private:
+	Matrix model;
+	Matrix perspective;
+	Matrix modelViewPerspective;
+};
+
+class CameraPerspective
+{
+public:
+	CameraPerspective();
+	~CameraPerspective();
 
 	void Update();
 

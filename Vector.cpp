@@ -26,6 +26,16 @@ bool Vector2f::operator!=(const Vector2f& other) const
 	return !(other.x == x && other.y == y);
 }
 
+float Vector2f::operator[](const int index) const
+{
+	return (&x)[index];
+}
+
+float& Vector2f::operator[](const int index)
+{
+	return (&x)[index];
+}
+
 Vector2f& Vector2f::operator=(const Vector2f& other)
 {
 	x = other.x;
@@ -192,6 +202,16 @@ Vector3f& Vector3f::operator/=(float s)
 Vector3f Vector3f::operator-() const
 {
 	return Vector3f(-x, -y, -z);
+}
+
+float Vector3f::operator[](const int index) const
+{
+	return (&x)[index];
+}
+
+float& Vector3f::operator[](const int index)
+{
+	return (&x)[index];
 }
 
 Vector3f Vector3f::operator+(const Vector3f& other) const
@@ -363,6 +383,16 @@ Vector4f Vector4f::operator-() const
 	return Vector4f(-x, -y, -z, -w);
 }
 
+float Vector4f::operator[](const int index) const
+{
+	return (&x)[index];
+}
+
+float& Vector4f::operator[](const int index)
+{
+	return (&x)[index];
+}
+
 Vector4f Vector4f::operator+(const Vector4f& other) const
 {
 	return Vector4f(x + other.x, y + other.y, z + other.z, w + other.w);
@@ -385,3 +415,30 @@ Vector4f Vector4f::operator/(const float s) const
 }
 
 #pragma endregion Vector4
+
+Color::Color()
+{
+	r = 0.0f;
+	b = 0.0f;
+	g = 0.0f;
+	a = 1.0f;
+}
+
+Color::Color(float r_, float g_, float b_)
+	: r(r_), g(g_), b(b_), a(1.0f) { }
+
+Color::Color(float r_, float g_, float b_, float a_)
+	: r(r_), g(g_), b(b_), a(a_) { }
+
+Color::Color(const float* pArray)
+	: r(pArray[0]), g(pArray[1]), b(pArray[2]), a(pArray[3]) { }
+
+float Color::operator[](const int index) const
+{
+	return (&r)[index];
+}
+
+float& Color::operator[](const int index)
+{
+	return (&r)[index];
+}

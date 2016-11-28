@@ -26,5 +26,4 @@ private:
 	std::vector<int> m_vertIndices;
 	std::vector<int> m_normalIndices;
 	std::vector<int> m_uvIndices;
-
 };

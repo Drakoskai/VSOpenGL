@@ -1,24 +1,12 @@
 #version 450
 
-#define POSITION    0
-#define TRANSFORM0  1
-#define BLOCK       0
+uniform mat4 MVP;
+attribute vec3 vCol;
+attribute vec2 vPos;
+varying vec3 color;
 
-precision highp float;
-precision highp int;
-layout(std140, column_major) uniform;
-layout(std430, column_major) buffer;
-
-layout (location = POSITION) in vec3 position;
-
-layout (binding = TRANSFORM0) uniform Transform
+void main()
 {
-    mat4 modelToClipMatrix;
-} transform;
-
-layout (location = 0) out vec3 interpolatedColor;
-
-void main() {
-    gl_Position = transform.modelToClipMatrix * vec4(position, 1.0);
-    interpolatedColor = vec3(clamp(position, 0, 1));
-}
+    gl_Position = MVP * vec4(vPos, 0.0, 1.0);
+    color = vCol;
+};

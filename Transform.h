@@ -2,10 +2,6 @@
 
 #include "Matrix.h"
 
-/**
- * Component that controls the movement of an object
- * in 3d space.
- */
 class Transform
 {
 public:

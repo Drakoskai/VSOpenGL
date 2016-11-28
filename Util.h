@@ -1,7 +1,6 @@
 #pragma once
 
 #include <vector>
-#include <GL/glew.h>
 #include <iostream>
 
 namespace Util
@@ -14,6 +13,7 @@ namespace Util
 
 	std::vector<std::string> split(const std::string& s, char delim);
 
-	void ReadObjFile(std::string filename);
+	int VDebugPrintF(const char* format, va_list argList);
 
+	int DebugPrintF(const char* format, ...);
 }

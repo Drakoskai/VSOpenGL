@@ -31,21 +31,3 @@ struct DisplayState
 		ScreenDepth(Display::DefaultScreenDepth),
 		ScreenNear(Display::DefaultScreenNear) { }
 };
-
-class Window
-{
-public:
-	virtual ~Window() { }
-	virtual HWND Create(const DisplayState & displayState) = 0;
-};
-
-class DrawContext
-{
-public:
-	virtual	~DrawContext() { }
-	virtual void Init() = 0;
-	virtual Window* GetWindow() = 0;
-	virtual void BeginScene() = 0;
-	virtual void Draw() const = 0;
-	virtual void EndScene() const = 0;
-};

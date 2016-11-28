@@ -1,40 +1,62 @@
 #pragma once
 
-#include "GLDevice.h"
-#include <string>
 #include "Interfaces.h"
-#include "GLWindow.h"
+#include "Matrix.h"
+#include <windows.h>
+#include "glad.h"
+#include "Util.h"
+#include <GLFW/glfw3.h>
 
-class Model;
+#ifdef GLAD_DEBUG
+inline void PreGLCall(const char *name, void *funcptr, int len_args, ...)
+{
+	//Util::DebugPrintF("Calling: %s (%d arguments)\n", name, len_args);
+}
 
-class GLDrawContext : DrawContext
+inline void PostCallback(const char *name, void *funcptr, int len_args, ...) {
+	GLenum error_code;
+	error_code = glad_glGetError();
+
+	if (error_code != GL_NO_ERROR)
+	{
+		Util::DebugPrintF("ERROR %d in %s\n", error_code, name);
+	}
+}
+#endif
+
+inline void DefaultKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+	Util::DebugPrintF("Pressed key: %i\n", key);
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, GL_TRUE);
+}
+
+class GLDrawContext 
 {
 public:
 	GLDrawContext();
 	~GLDrawContext();
 
-	void Init() override;
-	void BeginScene() override;
-	void Draw() const override;
-	void EndScene() const override;
-	Window* GetWindow() override;
-	unsigned int GetVaoId() const;
-	void GetWorldMatrix(Matrix& matrix) const;
+	bool Init();
+	void BeginScene();
+	void Draw() const;
+	void EndScene() const;
+	GLFWwindow* GLDrawContext::GetWindow() const;
 	void Release() const;
 
-	unsigned int LoadShader(std::string filename, GLuint type);
-	void OutputShaderErrorMessage(unsigned int shaderId, std::string shaderFilename);
-	std::string LoadShaderFromFile(std::string filename);
+	
+	std::string LoadShaderFromFile(const char* filename) const;
+	GLuint LoadShaderProgramFromFile(const char* filename) const;
+	GLuint LoadShader(const char*, GLenum type) const;
+	GLuint LoadShaderProgram(const char* vs_text, const char* fs_text)const;
 
 private:
 	DisplayState m_currentDisplayState;
 	GLuint m_vaoId;
-	int m_voaName[1];
+	
 	GLfloat m_clearColor[4];
 	float m_clearDepth;
-	HWND m_hWnd;
-	GLDevice* m_gl;
-	GLWindow* m_window;
+	GLFWwindow* m_window;
 
 	Matrix m_worldMatrix;
 	Matrix m_projectionMatrix;

@@ -19,6 +19,9 @@ struct Vector2f
 	bool operator ==(const Vector2f& v)const;
 	bool operator !=(const Vector2f& v)const;
 
+	float operator[](const int index) const;
+	float& operator[](const int index);
+
 	Vector2f& operator= (const Vector2f& other);
 	Vector2f& operator+= (const Vector2f& other);
 	Vector2f& operator-= (const Vector2f& other);
@@ -61,11 +64,13 @@ struct Vector3f
 	Vector3f& operator/= (float s);
 
 	Vector3f operator-() const;
+	float operator[](const int index) const;
+	float& operator[](const int index);
 	Vector3f operator+(const Vector3f& other) const;
 	Vector3f operator-(const Vector3f& other) const;
 	Vector3f operator*(const float s) const;
 	Vector3f operator/(const float s) const;
-	
+
 	float GetLength() const;
 	float GetLengthSqrd() const;
 
@@ -119,6 +124,9 @@ struct Vector4f
 	Vector4f& operator/= (float s);
 
 	Vector4f operator-() const;
+	float operator[](const int index) const;
+	float& operator[](const int index);
+
 	Vector4f operator+(const Vector4f& other) const;
 	Vector4f operator-(const Vector4f& other) const;
 	Vector4f operator*(const float s) const;
@@ -139,10 +147,18 @@ struct Vector4f
 
 struct Color
 {
-	float x;
-	float y;
-	float z;
+	float r;
+	float g;
+	float b;
 	float a;
+	
+	Color();
+	Color(float r, float g, float b);
+	Color(float r, float g, float b, float a);
+	explicit Color(const float *pArray);
+
+	float operator[](const int index) const;
+	float& operator[](const int index);
 };
 
 #pragma endregion Color
