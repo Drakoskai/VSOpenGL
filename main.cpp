@@ -53,22 +53,21 @@ int main(int, char **)
 	GLFWwindow* window = dc->GetWindow();
 
 	CameraSimpleOrtho camera = CameraSimpleOrtho();
-
+	ViewProps viewProps= {};
 	while (!glfwWindowShouldClose(window))
 	{
-		float ratio;
 		int width;
 		int height;
 
 		glfwGetFramebufferSize(window, &width, &height);
-		ratio = width / static_cast<float>(height);
-
+			
+		viewProps.height = height;
+		viewProps.width = width;
 		glViewport(0, 0, width, height);
-		glClear(GL_COLOR_BUFFER_BIT);
-
-		camera.Update(ratio);
+		camera.Update(viewProps);
 		Matrix modelViewPerspective = camera.GetModelView();
 
+		glClear(GL_COLOR_BUFFER_BIT);
 		glUseProgram(program);
 
 		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, reinterpret_cast<const GLfloat*>(modelViewPerspective.mat));
@@ -78,7 +77,7 @@ int main(int, char **)
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-
+	
 	delete dc;
 
 	return 0;

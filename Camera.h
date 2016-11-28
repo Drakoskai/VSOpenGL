@@ -4,18 +4,28 @@
 #include "Interfaces.h"
 #include "Frustum.h"
 
+struct ViewProps
+{
+	int width;
+	int height;
+};
+
 class CameraSimpleOrtho
 {
 public:
 	CameraSimpleOrtho();
 	~CameraSimpleOrtho();
 
-	void Update(float ratio);
+	void Update(ViewProps viewProps);
 	Matrix GetModelView() const;
 private:
-	Matrix model;
-	Matrix perspective;
-	Matrix modelViewPerspective;
+	Matrix m_model;
+	Matrix m_perspective;
+	Matrix m_modelViewPerspective;
+
+	float m_aspectRatio;
+	int m_viewportWidth;
+	int m_viewportHeight;
 };
 
 class CameraPerspective
@@ -51,7 +61,7 @@ private:
 	float m_fieldofView;
 	float m_screenAspect;
 
-	float m_viewportWidth;
-	float m_viewportHeight;
+	int m_viewportWidth;
+	int m_viewportHeight;
 
 };
