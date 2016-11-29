@@ -45,9 +45,6 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GLDrawContext.cpp">
-      <Filter>Source Files\GL</Filter>
-    </ClCompile>
     <ClCompile Include="Matrix.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
@@ -66,9 +63,6 @@
     <ClCompile Include="ObjFile.cpp">
       <Filter>Source Files\Util</Filter>
     </ClCompile>
-    <ClCompile Include="Frustum.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Plane.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
@@ -81,11 +75,14 @@
     <ClCompile Include="glad.cpp">
       <Filter>Source Files\GL</Filter>
     </ClCompile>
+    <ClCompile Include="Angle.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawContext.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GLDrawContext.h">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
@@ -110,9 +107,6 @@
     <ClInclude Include="Plane.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Frustum.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -128,18 +122,27 @@
     <ClInclude Include="Vertex.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="Angle.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawContext.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="Teapot.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="triangle.frag">
+    <None Include="teapot.cont">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="triangle.vert">
+    <None Include="teapot.eval">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="test.frag">
+    <None Include="teapot.frag">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="test.vert">
+    <None Include="teapot.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

@@ -1,8 +1,8 @@
-#include "GLDrawContext.h"
+#include "DrawContext.h"
 #include <fstream>
 #include "Util.h"
 
-GLDrawContext::GLDrawContext()
+DrawContext::DrawContext()
 	: m_vaoId(0), m_clearDepth(0), m_window(nullptr)
 {
 	m_clearColor[0] = 0.0f;
@@ -11,7 +11,7 @@ GLDrawContext::GLDrawContext()
 	m_clearColor[3] = 0.0f;
 }
 
-GLDrawContext::~GLDrawContext()
+DrawContext::~DrawContext()
 {
 	if (m_window)
 	{
@@ -22,7 +22,7 @@ GLDrawContext::~GLDrawContext()
 	glfwTerminate();
 }
 
-bool GLDrawContext::Init()
+bool DrawContext::Init()
 {
 	if (!glfwInit())
 	{
@@ -67,20 +67,17 @@ bool GLDrawContext::Init()
 
 	Util::DebugPrintF("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
 
-	glGenVertexArrays(1, &m_vaoId);
-	glBindVertexArray(m_vaoId);
-
 	return true;
 
 }
 
-void GLDrawContext::BeginScene() { }
+void DrawContext::BeginScene() { }
 
-void GLDrawContext::Draw() const { }
+void DrawContext::Draw() const { }
 
-void GLDrawContext::EndScene() const { }
+void DrawContext::EndScene() const { }
 
-void GLDrawContext::Release() const
+void DrawContext::Release() const
 {
 	if (m_window)
 	{
@@ -90,12 +87,90 @@ void GLDrawContext::Release() const
 	glfwTerminate();
 }
 
-GLFWwindow* GLDrawContext::GetWindow() const
+GLuint DrawContext::LoadShader(ShaderInfo* shaders) const
+{
+	if (shaders == nullptr)
+	{
+		return 0;
+	}
+
+	GLuint program = glCreateProgram();
+
+	ShaderInfo* entry = shaders;
+	while (entry->type != GL_NONE) {
+		GLuint shader = glCreateShader(entry->type);
+
+		entry->shader = shader;
+
+		std::string src = LoadShaderFromFile(entry->filename);	
+		
+		if (src.length() == 0) {
+			
+			for (entry = shaders; entry->type != GL_NONE; ++entry) {
+				glDeleteShader(entry->shader);
+				entry->shader = 0;
+			}
+
+			return 0;
+		}
+		const char* source = src.c_str();
+		glShaderSource(shader, 1, &source, nullptr);
+
+		glCompileShader(shader);
+
+		GLint compiled;
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &compiled);
+		if (!compiled) {
+#ifdef _DEBUG
+			GLsizei len;
+			glGetShaderiv(shader, GL_INFO_LOG_LENGTH, &len);
+
+			GLchar* log = new GLchar[len + 1];
+			glGetShaderInfoLog(shader, len, &len, log);
+			std::cerr << "Shader compilation failed: " << log << std::endl;
+			delete[] log;
+#endif /* DEBUG */
+
+			return 0;
+		}
+
+		glAttachShader(program, shader);
+
+		++entry;
+	}
+
+	glLinkProgram(program);
+
+	GLint linked;
+	glGetProgramiv(program, GL_LINK_STATUS, &linked);
+	if (!linked) {
+#ifdef _DEBUG
+		GLsizei len;
+		glGetProgramiv(program, GL_INFO_LOG_LENGTH, &len);
+
+		GLchar* log = new GLchar[len + 1];
+		glGetProgramInfoLog(program, len, &len, log);
+		std::cerr << "Shader linking failed: " << log << std::endl;
+		delete[] log;
+#endif /* DEBUG */
+
+		for (entry = shaders; entry->type != GL_NONE; ++entry) {
+			glDeleteShader(entry->shader);
+			entry->shader = 0;
+		}
+
+		return 0;
+	}
+
+	return program;
+}
+
+GLFWwindow* DrawContext::GetWindow() const
 {
 	return m_window;
 }
 
-GLuint GLDrawContext::LoadShader(const char* text, GLenum type) const
+GLuint DrawContext::LoadShader(const char* text, GLenum type) const
 {
 	GLuint shader;
 	GLint shader_ok;
@@ -120,7 +195,7 @@ GLuint GLDrawContext::LoadShader(const char* text, GLenum type) const
 	return shader;
 }
 
-GLuint GLDrawContext::LoadShaderProgram(const char* vs_text, const char* fs_text) const
+GLuint DrawContext::LoadShaderProgram(const char* vs_text, const char* fs_text) const
 {
 	GLuint program = 0u;
 	GLint program_ok;
@@ -170,7 +245,7 @@ GLuint GLDrawContext::LoadShaderProgram(const char* vs_text, const char* fs_text
 	return program;
 }
 
-std::string GLDrawContext::LoadShaderFromFile(const char* filename) const
+std::string DrawContext::LoadShaderFromFile(const char* filename) const
 {
 	std::ifstream ifile(filename);
 	std::string outstr;
@@ -179,7 +254,7 @@ std::string GLDrawContext::LoadShaderFromFile(const char* filename) const
 	return outstr;
 }
 
-GLuint GLDrawContext::LoadShaderProgramFromFile(const char* filename) const
+GLuint DrawContext::LoadShaderProgramFromFile(const char* filename) const
 {
 	std::string vertFilename = filename;
 	vertFilename += ".vert";

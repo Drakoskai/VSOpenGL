@@ -309,7 +309,8 @@ const Vector4f Vector4f::UnitZ(0.0f, 0.0f, 1.0f, 0.0f);
 const Vector4f Vector4f::UnitW(0.0f, 0.0f, 0.0f, 1.0f);
 
 Vector4f::Vector4f() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) { }
-Vector4f::Vector4f(float f) : x(f), y(f), z(f), w(f) { }
+Vector4f::Vector4f(float s) : x(s), y(s), z(s), w(s) { }
+Vector4f::Vector4f(const Vector3f& v, const float s) : x(v.x), y(v.y), z(v.z), w(s) { }
 Vector4f::Vector4f(float x_, float y_) : x(x_), y(y_), z(0.0f), w(0.0f) { }
 Vector4f::Vector4f(float x_, float y_, float z_) : x(x_), y(y_), z(z_), w(0.0f) { }
 Vector4f::Vector4f(float x_, float y_, float z_, float w_) : x(x_), y(y_), z(z_), w(w_) { }
@@ -412,6 +413,21 @@ Vector4f Vector4f::operator/(const float s) const
 {
 	float inva = 1.0f / s;
 	return Vector4f(x * inva, y * inva, z * inva, w * inva);
+}
+
+float Vector4f::Dot(const Vector4f& v) const
+{
+	return x*v.x + y*v.y + z*v.z + w + v.w;
+}
+
+float Vector4f::Length() const
+{
+	return std::sqrt(Dot(*this));
+}
+
+Vector4f Vector4f::Normalize() const
+{
+	return *this / Length();
 }
 
 #pragma endregion Vector4

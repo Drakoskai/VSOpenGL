@@ -1,21 +1,46 @@
 #include "Transform.h"
 
-Transform::Transform() { }
+Transform::Transform()
+{
+	m_scale = MakeScale(1.0f, 1.0f, 1.0f);
+}
 
 Transform::~Transform() { }
 
-void Transform::Update() { }
+void Transform::Update()
+{
+	m_modelview *= m_trans * m_rot * m_scale;
+	m_trans.Identity();
+	m_rot.Identity();
+	m_scale.Identity();
+}
 
-void Transform::Translate(Vector3f vector) { }
+void Transform::Translate(Vector3f vector)
+{
+	m_trans *= MakeTranslate(vector);
+}
 
-void Transform::Translate(float x, float y, float z) { }
+void Transform::Scale(Vector3f vec)
+{
+	m_scale *= MakeScale(vec);
+}
 
-void Transform::Scale(float factor) { }
+void Transform::RotateX(float theta)
+{
+	m_rot *= MakeRotationX(theta);
+}
 
-void Transform::Scale(float h, float w, float d) { }
+void Transform::RotateY(float theta)
+{
+	m_rot *= MakeRotationY(theta);
+}
 
-void Transform::Rotate(float angle, Vector3f axis) { }
+void Transform::RotateZ(float theta)
+{
+	m_rot *= MakeRotationZ(theta);
+}
 
-void Transform::Rotate(float angle, float x, float y, float z) { }
-
-float* Transform::GetModelToClipMatrix() { 	return nullptr; }
+Matrix& Transform::GetModelView()
+{
+	return m_modelview;
+}

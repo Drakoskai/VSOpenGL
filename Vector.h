@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "glad.h"
 
 
 #pragma region Vector2f
@@ -71,6 +72,26 @@ struct Vector3f
 	Vector3f operator*(const float s) const;
 	Vector3f operator/(const float s) const;
 
+	friend std::ostream& operator << (std::ostream& os, const Vector3f& v) {
+		return os << "( " << v.x << ", " << v.y
+			<< ", " << v.z << ", " << " )";
+	}
+
+	friend std::istream& operator >> (std::istream& is, Vector3f& v)
+	{
+		return is >> v.x >> v.y >> v.z;
+	}
+
+	operator const GLfloat* () const
+	{
+		return static_cast<const GLfloat*>(&x);
+	}
+
+	operator GLfloat* ()
+	{
+		return static_cast<GLfloat*>(&x);
+	}
+
 	float GetLength() const;
 	float GetLengthSqrd() const;
 
@@ -108,6 +129,7 @@ struct Vector4f
 
 	Vector4f();
 	explicit Vector4f(float f);
+	Vector4f(const Vector3f& v, const float s = 1.0);
 	Vector4f(float x, float y);
 	Vector4f(float x, float y, float z);
 	Vector4f(float x, float y, float z, float w);
@@ -132,6 +154,30 @@ struct Vector4f
 	Vector4f operator*(const float s) const;
 	Vector4f operator/(const float s) const;
 
+	friend std::ostream& operator << (std::ostream& os, const Vector4f& v) {
+		return os << "( " << v.x << ", " << v.y
+			<< ", " << v.z << ", " << v.w << " )";
+	}
+
+	friend std::istream& operator >> (std::istream& is, Vector4f& v)
+	{
+		return is >> v.x >> v.y >> v.z >> v.w;
+	}
+
+	operator const GLfloat* () const
+	{
+		return static_cast<const GLfloat*>(&x);
+	}
+
+	operator GLfloat* ()
+	{
+		return static_cast<GLfloat*>(&x);
+	}
+
+	float Dot(const Vector4f& v) const;
+	float Length() const;
+	Vector4f Normalize() const;
+
 	static const Vector4f Zero;
 	static const Vector4f One;
 	static const Vector4f UnitX;
@@ -140,6 +186,25 @@ struct Vector4f
 	static const Vector4f UnitW;
 
 };
+
+inline float Dot(const Vector4f& u, const Vector4f& v) {
+	return u.x*v.x + u.y*v.y + u.z*v.z + u.w + v.w;
+}
+
+inline float Length(const Vector4f& v) {
+	return std::sqrt(Dot(v, v));
+}
+
+inline Vector4f Normalize(const Vector4f& v) {
+	return v / Length(v);
+}
+
+inline Vector3f Cross(const Vector4f& a, const Vector4f& b)
+{
+	return Vector3f(a.y * b.z - a.z * b.y,
+		a.z * b.x - a.x * b.z,
+		a.x * b.y - a.y * b.x);
+}
 
 #pragma endregion Vector4f
 

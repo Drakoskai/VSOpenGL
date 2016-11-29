@@ -17,8 +17,8 @@ void CameraSimpleOrtho::Update(ViewProps viewProps)
 	}
 
 	m_model.Identity();
-	m_model *= Matrix::MakeRotationZ(static_cast<float>(glfwGetTime()));
-	m_perspective = Matrix::MakeOrtho(-m_aspectRatio, m_aspectRatio, -1.0f, 1.0f, 1.0f, -1.0f);
+	m_model *= MakeRotationZ(static_cast<float>(glfwGetTime()));
+	m_perspective = MakeOrtho(-m_aspectRatio, m_aspectRatio, -1.0f, 1.0f, 1.0f, -1.0f);
 
 	m_modelViewPerspective = m_perspective * m_model;
 }
@@ -29,7 +29,7 @@ Matrix CameraSimpleOrtho::GetModelView() const
 }
 
 CameraPerspective::CameraPerspective()
-	: m_frustum(), m_nearClip(Display::DefaultScreenNear), m_farClip(Display::DefaultScreenDepth),
+	: m_nearClip(Display::DefaultScreenNear), m_farClip(Display::DefaultScreenDepth),
 	m_fieldofView(Display::DefaultFieldOfView), m_screenAspect(Display::DefaultAspectRatio),
 	m_viewportWidth(Display::DefaultWidth), m_viewportHeight(Display::DefaultHeight)
 {
@@ -40,9 +40,8 @@ CameraPerspective::~CameraPerspective() { }
 
 void CameraPerspective::Update()
 {
-	m_modelView = Matrix::MakeLookAt(m_position, m_lookAt, m_up);
-	m_projection = Matrix::MakePerspective(m_fieldofView, m_screenAspect, m_nearClip, m_farClip);
-	m_frustum = Frustum(m_fieldofView, m_viewportWidth, m_viewportHeight, m_nearClip, m_farClip);
+	m_modelView = MakeLookAt(m_position, m_lookAt, m_up);
+	m_projection = MakePerspective(m_fieldofView, m_screenAspect, m_nearClip, m_farClip);
 }
 
 void CameraPerspective::GetModelView(Matrix& modelView) const { modelView = m_modelView; }

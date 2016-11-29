@@ -7,6 +7,13 @@
 #include "Util.h"
 #include <GLFW/glfw3.h>
 
+struct ShaderInfo
+{
+	GLenum type;
+	const char* filename;
+	GLuint shader;
+};
+
 #ifdef GLAD_DEBUG
 inline void PreGLCall(const char *name, void *funcptr, int len_args, ...)
 {
@@ -27,24 +34,32 @@ inline void PostCallback(const char *name, void *funcptr, int len_args, ...) {
 inline void DefaultKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
 	Util::DebugPrintF("Pressed key: %i\n", key);
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
+	if (action == GLFW_PRESS)
+	{
+		switch (key)
+		{
+		case GLFW_KEY_ESCAPE:
+			glfwSetWindowShouldClose(window, GL_TRUE);
+			break;
+		default: break;
+		}
+	}
 }
 
-class GLDrawContext 
+class DrawContext
 {
 public:
-	GLDrawContext();
-	~GLDrawContext();
+	DrawContext();
+	~DrawContext();
 
 	bool Init();
 	void BeginScene();
 	void Draw() const;
 	void EndScene() const;
-	GLFWwindow* GLDrawContext::GetWindow() const;
+	GLFWwindow* DrawContext::GetWindow() const;
 	void Release() const;
 
-	
+	GLuint LoadShader(ShaderInfo* shaderInfo) const;
 	std::string LoadShaderFromFile(const char* filename) const;
 	GLuint LoadShaderProgramFromFile(const char* filename) const;
 	GLuint LoadShader(const char*, GLenum type) const;
@@ -53,7 +68,7 @@ public:
 private:
 	DisplayState m_currentDisplayState;
 	GLuint m_vaoId;
-	
+
 	GLfloat m_clearColor[4];
 	float m_clearDepth;
 	GLFWwindow* m_window;

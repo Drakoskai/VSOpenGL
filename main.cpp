@@ -1,21 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "GLDrawContext.h"
+#include "DrawContext.h"
 #include <iostream>
 #include "Model.h"
-#include "Vertex.h"
 #include "Camera.h"
+#include "Teapot.h"
 
-static const struct VertexP2C vertices[3] =
-{
-	{ Vector2f(-0.6f, -0.4f), Color(1.f, 0.f, 0.f) },
-	{ Vector2f(0.6f, -0.4f), Color(0.0f, 1.0f, 0.0f) },
-	{ Vector2f(0.f, 0.6f), Color(0.f, 0.f, 1.f) }
-};
+GLfloat  Inner = 10.0f;
+GLfloat  Outer = 10.0f;
+
+GLuint InnerLoc;
+GLuint OuterLoc;
+
+void OnKey(GLFWwindow* window, int key, int scancode, int action, int mode);
 
 int main(int, char **)
 {
-	GLDrawContext* dc = new GLDrawContext();
+	DrawContext* dc = new DrawContext();
 
 	if (!dc->Init())
 	{
@@ -24,61 +25,179 @@ int main(int, char **)
 		return -1;
 	}
 
-	GLuint vertex_buffer;
-	GLuint program;
-	GLint mvp_location;
-	GLint vpos_location;
-	GLint vcol_location;
+	GLFWwindow* window = dc->GetWindow();
+
+	enum { ArrayBuffer, ElementBuffer, NumVertexBuffers };
+
+	GLuint buffers[NumVertexBuffers];
 
 	GLuint vao;
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
-	glGenBuffers(1, &vertex_buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, vertex_buffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	glGenBuffers(NumVertexBuffers, buffers);
 
-	program = dc->LoadShaderProgramFromFile("test");
+	glBindBuffer(GL_ARRAY_BUFFER, buffers[ArrayBuffer]);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(TeapotVertices), TeapotVertices, GL_STATIC_DRAW);
 
-	mvp_location = glGetUniformLocation(program, "MVP");
-	vpos_location = glGetAttribLocation(program, "vPos");
-	vcol_location = glGetAttribLocation(program, "vCol");
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffers[ElementBuffer]);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(TeapotIndices), TeapotIndices, GL_STATIC_DRAW);
 
-	glEnableVertexAttribArray(vpos_location);
-	glVertexAttribPointer(vpos_location, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 5, static_cast<void*>(nullptr));
+	ShaderInfo shaders[] = {
+		{ GL_VERTEX_SHADER, "teapot.vert" },
+		{ GL_TESS_CONTROL_SHADER, "teapot.cont" },
+		{ GL_TESS_EVALUATION_SHADER, "teapot.eval" },
+		{ GL_FRAGMENT_SHADER, "teapot.frag" },
+		{ GL_NONE, nullptr }
+	};
 
-	glEnableVertexAttribArray(vcol_location);
-	glVertexAttribPointer(vcol_location, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 5, reinterpret_cast<void*>(sizeof(float) * 2));
+	GLuint program;
+	GLint vPosition;
+	GLuint PLoc;
+	GLint mv;
 
-	GLFWwindow* window = dc->GetWindow();
+	program = dc->LoadShader(shaders);
+	glUseProgram(program);
 
-	CameraSimpleOrtho camera = CameraSimpleOrtho();
-	ViewProps viewProps= {};
+	vPosition = glGetAttribLocation(program, "vPosition");
+	glEnableVertexAttribArray(vPosition);
+	glVertexAttribPointer(vPosition, 3, GL_FLOAT, GL_FALSE, 0, static_cast<void*>(nullptr));
+
+	PLoc = glGetUniformLocation(program, "P");
+	mv = glGetUniformLocation(program, "MV");
+
+	InnerLoc = glGetUniformLocation(program, "Inner");
+	OuterLoc = glGetUniformLocation(program, "Outer");
+
+	glUniform1f(InnerLoc, Inner);
+	glUniform1f(OuterLoc, Outer);
+
+	Transform trans = Transform();
+	trans.Translate(Vector3f(-0.2625f, -1.575f, -1.0f));
+	trans.Translate(Vector3f(0.0f, 0.0f, -7.5f));
+
+	glUniformMatrix4fv(mv, 1, GL_TRUE, trans.GetModelView());
+	glPatchParameteri(GL_PATCH_VERTICES, NumTeapotVerticesPerPatch);
+
+	glClearColor(0.0, 0.0, 0.0, 1.0);
+
+	int width;
+	int height;
+
+	glfwGetFramebufferSize(window, &width, &height);
+
+	float aspect = GLfloat(width) / height;
+
+	glfwSetKeyCallback(window, OnKey);
+
+	/*float ** vertices = new float*[NumTeapotVertices];
+	for (int i = 0; i < NumTeapotVertices; i++)
+	{
+		vertices[i] = new float[3];
+		for (int j = 0; j < 3; j++)
+		{
+			vertices[i][j] = TeapotVertices[i][j];
+		}
+	}
+
+	GLint *** elements = new GLint**[NumTeapotIndices];
+	for (int i = 0; i < NumTeapotIndices; i++)
+	{
+		GLint ** temp = new GLint*[4];
+		for (int j = 0; j < NumTeapotIndices; j++)
+		{
+			temp[j] = new GLint[4];
+			for (int k = 0; k < 4; k++)
+			{
+				temp[j][k] = TeapotIndices[i][j][k];
+			}
+		}
+		elements[i] = temp;
+	}*/
+
+
+	//Model m = Model(vertices, NumTeapotVertices, elements, NumTeapotIndices, NumTeapotVerticesPerPatch);
+
+	//m.Init(*dc);
+	//Transform t = m.GetTransform();
+	//t.Translate(Vector3f(-0.2625f, -1.575f, -1.0f));
+	//t.Translate(Vector3f(0.0f, 0.0f, -7.5f));
+
 	while (!glfwWindowShouldClose(window))
 	{
-		int width;
-		int height;
+		Matrix projection = MakePerspective(60.0, aspect, 5, 10);
+		//m.Update(projection);
+		
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//m.Draw();
+		trans.RotateY(static_cast<float>(glfwGetTime()));
 
-		glfwGetFramebufferSize(window, &width, &height);
-			
-		viewProps.height = height;
-		viewProps.width = width;
-		glViewport(0, 0, width, height);
-		camera.Update(viewProps);
-		Matrix modelViewPerspective = camera.GetModelView();
+		trans.Update();
 
-		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(program);
+		glUniformMatrix4fv(mv, 1, GL_TRUE, trans.GetModelView());
 
-		glUniformMatrix4fv(mvp_location, 1, GL_FALSE, reinterpret_cast<const GLfloat*>(modelViewPerspective.mat));
+		glUniformMatrix4fv(PLoc, 1, GL_TRUE, projection);
 
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		glDrawElements(GL_PATCHES, NumTeapotVertices, GL_UNSIGNED_INT, static_cast<void*>(nullptr));
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
-	
+
 	delete dc;
 
 	return 0;
+}
+
+void OnKey(GLFWwindow* window, int key, int scancode, int action, int mode)
+{
+	if (action == GLFW_PRESS)
+	{
+		switch (key)
+		{
+		case GLFW_KEY_ESCAPE:
+			glfwSetWindowShouldClose(window, GL_TRUE);
+			break;
+
+		case GLFW_KEY_K:
+			Inner--;
+			if (Inner < 1.0)  Inner = 1.0;
+			glUniform1f(InnerLoc, Inner);
+			break;
+
+		case GLFW_KEY_I:
+			Inner++;
+			if (Inner > 64)  Inner = 64.0;
+			glUniform1f(InnerLoc, Inner);
+			break;
+
+		case GLFW_KEY_L:
+			Outer--;
+			if (Outer < 1.0)  Outer = 1.0;
+			glUniform1f(OuterLoc, Outer);
+			break;
+
+		case GLFW_KEY_O:
+			Outer++;
+			if (Outer > 64)  Outer = 64.0;
+			glUniform1f(OuterLoc, Outer);
+			break;
+
+		case GLFW_KEY_R:
+			Inner = 1.0;
+			Outer = 1.0;
+			glUniform1f(InnerLoc, Inner);
+			glUniform1f(OuterLoc, Outer);
+			break;
+
+		case GLFW_KEY_M: {
+			static GLenum glmode = GL_LINE;
+			glmode = (glmode == GL_FILL ? GL_LINE : GL_FILL);
+			glPolygonMode(GL_FRONT_AND_BACK, glmode);
+		} break;
+		default: break;
+		}
+	}
 }

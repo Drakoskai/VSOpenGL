@@ -10,14 +10,17 @@ public:
 
 	void Update();
 	void Translate(Vector3f vector);
-	void Translate(float x, float y, float z);
-	void Scale(float factor);
-	void Scale(float h, float w, float d);
-	void Rotate(float angle, Vector3f axis);
-	void Rotate(float angle, float x, float y, float z);
-	float * GetModelToClipMatrix();
+	void Scale(Vector3f vec);
+	void RotateX(float theta);
+	void RotateY(float theta);
+	void RotateZ(float theta);
+	Matrix& GetModelView();
+
+	Matrix m_scale;
+	Matrix m_trans;
+	Matrix m_rot;
+	Matrix m_modelview;
 
 private:
-	Matrix translationMatrix;
-	Matrix rotationMatrix;
+
 };

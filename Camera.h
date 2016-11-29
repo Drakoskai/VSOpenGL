@@ -2,7 +2,6 @@
 #include "Vector.h"
 #include "Matrix.h"
 #include "Interfaces.h"
-#include "Frustum.h"
 
 struct ViewProps
 {
@@ -48,8 +47,6 @@ public:
 private:
 	Matrix m_modelView;
 	Matrix m_projection;
-
-	Frustum m_frustum;
 
 	Vector3f m_up;
 	Vector3f m_lookAt;

@@ -155,10 +155,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Frustum.cpp" />
+    <ClCompile Include="Angle.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="glad.cpp" />
-    <ClCompile Include="GLDrawContext.cpp" />
+    <ClCompile Include="DrawContext.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Model.cpp" />
@@ -170,16 +170,17 @@
     <ClCompile Include="Camera.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Frustum.h" />
+    <ClInclude Include="Angle.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="glad.h" />
-    <ClInclude Include="GLDrawContext.h" />
+    <ClInclude Include="DrawContext.h" />
     <ClInclude Include="Interfaces.h" />
     <ClInclude Include="khrplatform.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ObjFile.h" />
     <ClInclude Include="Plane.h" />
+    <ClInclude Include="Teapot.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Util.h" />
     <ClInclude Include="Vector.h" />
@@ -187,10 +188,10 @@
     <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="test.frag" />
-    <None Include="test.vert" />
-    <None Include="triangle.frag" />
-    <None Include="triangle.vert" />
+    <None Include="teapot.cont" />
+    <None Include="teapot.eval" />
+    <None Include="teapot.frag" />
+    <None Include="teapot.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
