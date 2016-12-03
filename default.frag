@@ -1,6 +1,10 @@
 #version 450 core
 
-out vec4 color;
+#define FRAG_COLOR  0
+
+layout (location = 0) in vec3 interpolatedColor;
+
+layout (location = FRAG_COLOR) out vec4 outputColor;
 
 //uniform vec4 color_ambient = vec4(0.1, 0.2, 0.5, 1.0);
 //uniform vec4 color_diffuse = vec4(0.2, 0.3, 0.6, 1.0);
@@ -10,5 +14,5 @@ out vec4 color;
 
 void main()
 {
-    color = vec4(0.5, 0.4, 0.8, 1.0);
+    outputColor = vec4(interpolatedColor, 1.0);
 }

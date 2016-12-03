@@ -28,11 +28,11 @@ int main(int, char **)
 	glfwGetFramebufferSize(window, &width, &height);
 
 	float aspect = GLfloat(width) / height;
-	Transform t = m.GetTransform();
 	m.GetTransform().Scale(Vector3f(.3f,.3f,.3f));
 	while (!glfwWindowShouldClose(window))
 	{
 		Matrix projection = MakePerspective(60.0f, aspect, 0.1f, 1000.0f);
+		m.GetTransform().RotateY(1.0f);
 		m.Update(projection);
 
 		dc->BeginScene();

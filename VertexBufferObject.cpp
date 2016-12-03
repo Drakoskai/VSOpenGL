@@ -10,15 +10,12 @@ void VertexBufferObject::Load(const char* filename)
 {
 	ObjFile f = ObjFile(filename);
 
-	//std::vector<Vector3f> pos;
-	//std::vector<Vector2f> uvs;
-	//std::vector<Vector3f> normals;
 	std::vector<GLuint> indices;
 	std::vector<Vertex> verts;
 	f.GetMeshData(verts, indices);
 
 	int len = verts.size();
-	m_info.numVertices = len * 3;
+	m_info.numVertices = len;
 	m_info.numIndices = indices.size();
 	m_info.size = len * sizeof(Vertex);
 
@@ -39,7 +36,6 @@ void VertexBufferObject::Load(const char* filename)
 
 	glVertexAttribPointer(Attrib::Position, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), static_cast<void*>(0));
 	glVertexAttribPointer(Attrib::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>((sizeof(float) * 3)));
-	
 }
 
 void VertexBufferObject::Render() const

@@ -73,7 +73,9 @@ bool DrawContext::Init()
 void DrawContext::BeginScene()
 {
 	static const float black[] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	static const float depth[] = { 1.0f };
 	glClearBufferfv(GL_COLOR, 0, black);
+	glClearBufferfv(GL_DEPTH, 0, depth);
 
 }
 
