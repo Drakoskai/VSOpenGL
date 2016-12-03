@@ -10,17 +10,17 @@ void VertexBufferObject::Load(const char* filename)
 {
 	ObjFile f = ObjFile(filename);
 
-	std::vector<Vector3f> pos;
-	std::vector<Vector2f> uvs;
-	std::vector<Vector3f> normals;
+	//std::vector<Vector3f> pos;
+	//std::vector<Vector2f> uvs;
+	//std::vector<Vector3f> normals;
 	std::vector<GLuint> indices;
+	std::vector<Vertex> verts;
+	f.GetMeshData(verts, indices);
 
-	f.GetMeshData(pos, uvs, normals, indices);
-
-	int len = pos.size();
+	int len = verts.size();
 	m_info.numVertices = len * 3;
 	m_info.numIndices = indices.size();
-	m_info.size = len * 3 * sizeof(float);
+	m_info.size = len * sizeof(Vertex);
 
 	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
@@ -28,7 +28,7 @@ void VertexBufferObject::Load(const char* filename)
 	glCreateBuffers(1, &m_attributeBuffer);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_attributeBuffer);
-	glBufferStorage(GL_ARRAY_BUFFER, m_info.size, &pos[0], 0);
+	glBufferStorage(GL_ARRAY_BUFFER, m_info.size, &verts[0], 0);
 
 	glCreateBuffers(1, &m_indexBuffer);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);

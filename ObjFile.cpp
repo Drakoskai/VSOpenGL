@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "Vector.h"
 #include <regex>
+#include "Vertex.h"
 
 using namespace std;
 
@@ -27,7 +28,7 @@ bool ObjFile::Exists()
 	return m_exists;
 }
 
-void ObjFile::GetMeshData(vector<Vector3f>& vertices, vector<Vector2f>& uvs, vector<Vector3f>& normals, vector<GLuint>& indices)
+void ObjFile::GetMeshData(vector<Vector3f>& positions, vector<Vector2f>& uvs, vector<Vector3f>& normals, vector<GLuint>& indices)
 {
 	if (!m_isLoaded)
 	{
@@ -39,7 +40,7 @@ void ObjFile::GetMeshData(vector<Vector3f>& vertices, vector<Vector2f>& uvs, vec
 		
 		unsigned int normalIndex = m_normalIndices[i];
 
-		Vector3f vertex = m_verts[vertexIndex - 1];
+		Vector3f pos = m_verts[vertexIndex - 1];
 		if (m_uvs.size() > 0)
 		{
 			unsigned int uvIndex = m_uvIndices[i];
@@ -49,9 +50,26 @@ void ObjFile::GetMeshData(vector<Vector3f>& vertices, vector<Vector2f>& uvs, vec
 		
 		Vector3f normal = m_normals[normalIndex - 1];
 
-		vertices.push_back(vertex);
+		positions.push_back(pos);
 		
 		normals.push_back(normal);
+		indices.push_back(static_cast<GLuint>(positions.size()) - 1);
+	}
+}
+
+void ObjFile::GetMeshData(vector<Vertex>& vertices, vector<GLuint>& indices)
+{
+	if (!m_isLoaded)
+	{
+		LoadData();
+	}
+
+	for (unsigned int i = 0; i < m_vertIndices.size(); i++){
+		unsigned int vertexIndex = m_vertIndices[i];
+		Vertex v;
+		v.position = m_verts[vertexIndex - 1];
+
+		vertices.push_back(v);
 		indices.push_back(static_cast<GLuint>(vertices.size()) - 1);
 	}
 }

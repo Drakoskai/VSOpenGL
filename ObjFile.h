@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "Vector.h"
+#include "Vertex.h"
 
 class ObjFile
 {
@@ -12,6 +13,8 @@ public:
 
 	bool Exists();
 	void GetMeshData(std::vector<Vector3f>& vertices, std::vector<Vector2f>& uvs, std::vector<Vector3f>& normals, std::vector<GLuint>& indices);
+	void GetMeshData(std::vector<Vertex>& positions, std::vector<GLuint>& indices);
+
 	std::string ToString();
 
 private:
