@@ -68,8 +68,10 @@ void ObjFile::GetMeshData(vector<Vertex>& vertices, vector<GLuint>& indices)
 		unsigned int vertexIndex = m_vertIndices[i];
 		Vertex v;
 		v.position = m_verts[vertexIndex - 1];
+		v.normal = m_normals[vertexIndex - 1];
 
 		vertices.push_back(v);
+
 		indices.push_back(static_cast<GLuint>(vertices.size()) - 1);
 	}
 }

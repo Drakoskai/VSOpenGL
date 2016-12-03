@@ -34,11 +34,12 @@ void VertexBufferObject::Load(const char* filename)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 	glBufferStorage(GL_ELEMENT_ARRAY_BUFFER, m_info.numIndices * sizeof(GLuint), &indices[0], 0);
 
-	glVertexAttribPointer(Attrib::Position, 3, GL_FLOAT, GL_FALSE, 0, static_cast<void*>(nullptr));
 	glEnableVertexAttribArray(Attrib::Position);
+	glEnableVertexAttribArray(Attrib::Normal);
 
-	/*glVertexAttribPointer(Attrib::Normal, 3, GL_FLOAT, GL_FALSE, 0, static_cast<void*>(&m_info.size));
-	glEnableVertexAttribArray(Attrib::Normal);*/
+	glVertexAttribPointer(Attrib::Position, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), static_cast<void*>(0));
+	glVertexAttribPointer(Attrib::Normal, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<void*>((sizeof(float) * 3)));
+	
 }
 
 void VertexBufferObject::Render() const

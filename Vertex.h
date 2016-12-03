@@ -5,4 +5,5 @@
 struct Vertex
 {
 	Vector3f position;
+	Vector3f normal;
 };
