@@ -14,13 +14,10 @@ public:
 	void RotateX(float theta);
 	void RotateY(float theta);
 	void RotateZ(float theta);
-	Matrix& GetModelView();
+	Matrix& GetModelMatrix();
 
 	Matrix m_scale;
 	Matrix m_trans;
 	Matrix m_rot;
-	Matrix m_modelview;
-
-private:
-
+	Matrix m_model;
 };

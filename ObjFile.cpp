@@ -27,7 +27,7 @@ bool ObjFile::Exists()
 	return m_exists;
 }
 
-void ObjFile::GetMeshData(vector<Vector3f>& vertices, vector<Vector2f>& uvs, vector<Vector3f>& normals, vector<unsigned int>& indices)
+void ObjFile::GetMeshData(vector<Vector3f>& vertices, vector<Vector2f>& uvs, vector<Vector3f>& normals, vector<GLuint>& indices)
 {
 	if (!m_isLoaded)
 	{
@@ -36,17 +36,23 @@ void ObjFile::GetMeshData(vector<Vector3f>& vertices, vector<Vector2f>& uvs, vec
 
 	for (unsigned int i = 0; i < m_vertIndices.size(); i++){
 		unsigned int vertexIndex = m_vertIndices[i];
-		unsigned int uvIndex = m_uvIndices[i];
+		
 		unsigned int normalIndex = m_normalIndices[i];
 
 		Vector3f vertex = m_verts[vertexIndex - 1];
-		Vector2f uv = m_uvs[uvIndex - 1];
+		if (m_uvs.size() > 0)
+		{
+			unsigned int uvIndex = m_uvIndices[i];
+			Vector2f uv = m_uvs[uvIndex - 1];
+			uvs.push_back(uv);
+		}
+		
 		Vector3f normal = m_normals[normalIndex - 1];
 
 		vertices.push_back(vertex);
-		uvs.push_back(uv);
+		
 		normals.push_back(normal);
-		indices.push_back(static_cast<unsigned int>(vertices.size()) - 1);
+		indices.push_back(static_cast<GLuint>(vertices.size()) - 1);
 	}
 }
 
@@ -107,30 +113,48 @@ void ObjFile::LoadData()
 			if (input == ' ')
 			{
 				char garbage;
-				unsigned int vertidx1;
-				unsigned int vertidx2;
-				unsigned int vertidx3;
-				unsigned int uvidx1;
-				unsigned int uvidx2;
-				unsigned int uvidx3;
-				unsigned int normalidx1;
-				unsigned int normalidx2;
-				unsigned int normalidx3;
-				fileStream >> vertidx1 >> garbage >> uvidx1 >> garbage >> normalidx1
-					>> vertidx2 >> garbage >> uvidx2 >> garbage >> normalidx2
-					>> vertidx3 >> garbage >> uvidx3 >> garbage >> normalidx3;
+				GLuint vertidx1;
+				GLuint vertidx2;
+				GLuint vertidx3;
+				GLuint uvidx1;
+				GLuint uvidx2;
+				GLuint uvidx3;
+				GLuint normalidx1;
+				GLuint normalidx2;
+				GLuint normalidx3;
+				if (m_uvs.size() == 0)
+				{
+					fileStream >> vertidx1 >> garbage >> garbage >> normalidx1
+						>> vertidx2 >> garbage >> garbage >> normalidx2
+						>> vertidx3 >> garbage >> garbage >> normalidx3;
 
-				m_vertIndices.push_back(vertidx1);
-				m_vertIndices.push_back(vertidx2);
-				m_vertIndices.push_back(vertidx3);
+					m_vertIndices.push_back(vertidx1);
+					m_vertIndices.push_back(vertidx2);
+					m_vertIndices.push_back(vertidx3);
 
-				m_uvIndices.push_back(uvidx1);
-				m_uvIndices.push_back(uvidx2);
-				m_uvIndices.push_back(uvidx3);
+		  		    m_normalIndices.push_back(normalidx1);
+					m_normalIndices.push_back(normalidx2);
+					m_normalIndices.push_back(normalidx3);
+				}
+				else
+				{
 
-				m_normalIndices.push_back(normalidx1);
-				m_normalIndices.push_back(normalidx2);
-				m_normalIndices.push_back(normalidx3);
+					fileStream >> vertidx1 >> garbage >> uvidx1 >> garbage >> normalidx1
+						>> vertidx2 >> garbage >> uvidx2 >> garbage >> normalidx2
+						>> vertidx3 >> garbage >> uvidx3 >> garbage >> normalidx3;
+
+					m_vertIndices.push_back(vertidx1);
+					m_vertIndices.push_back(vertidx2);
+					m_vertIndices.push_back(vertidx3);
+
+					m_uvIndices.push_back(uvidx1);
+					m_uvIndices.push_back(uvidx2);
+					m_uvIndices.push_back(uvidx3);
+
+					m_normalIndices.push_back(normalidx1);
+					m_normalIndices.push_back(normalidx2);
+					m_normalIndices.push_back(normalidx3);
+				}
 			}
 		}
 
@@ -138,7 +162,6 @@ void ObjFile::LoadData()
 		{
 			fileStream.get(input);
 		}
-
 		fileStream.get(input);
 	}
 

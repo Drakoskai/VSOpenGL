@@ -7,13 +7,6 @@
 #include "Util.h"
 #include <GLFW/glfw3.h>
 
-struct ShaderInfo
-{
-	GLenum type;
-	const char* filename;
-	GLuint shader;
-};
-
 #ifdef GLAD_DEBUG
 inline void PreGLCall(const char *name, void *funcptr, int len_args, ...)
 {
@@ -58,12 +51,6 @@ public:
 	void EndScene() const;
 	GLFWwindow* DrawContext::GetWindow() const;
 	void Release() const;
-
-	GLuint LoadShader(ShaderInfo* shaderInfo) const;
-	std::string LoadShaderFromFile(const char* filename) const;
-	GLuint LoadShaderProgramFromFile(const char* filename) const;
-	GLuint LoadShader(const char*, GLenum type) const;
-	GLuint LoadShaderProgram(const char* vs_text, const char* fs_text)const;
 
 private:
 	DisplayState m_currentDisplayState;

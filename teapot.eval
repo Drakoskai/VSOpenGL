@@ -2,8 +2,8 @@
 
 layout (quads, equal_spacing, ccw) in;
 
-uniform mat4  MV;
-uniform mat4  P;
+uniform mat4 MV;
+uniform mat4 P;
 
 float B( int i, float u )
 {

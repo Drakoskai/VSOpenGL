@@ -3,17 +3,17 @@
 #include <sstream>
 #include "Geometry.h"
 
-
 #pragma region Vector2
 
+const Vector2f Vector2f::Zero(0.f, 0.f);
+const Vector2f Vector2f::One(1.0f, 1.0f);
+const Vector2f Vector2f::UnitX(1.0f, 0.0f);
+const Vector2f Vector2f::UnitY(0.0f, 1.0f);
+
 Vector2f::Vector2f() : x(0.0f), y(0.0f) { }
-
 Vector2f::Vector2f(float s) : x(s), y(s) { }
-
 Vector2f::Vector2f(float x_, float y_) : x(x_), y(y_) { }
-
 Vector2f::Vector2f(const float* arr) : x(arr[0]), y(arr[1]) { }
-
 Vector2f::Vector2f(const Vector2f& other) : x(other.x), y(other.y) { }
 
 bool Vector2f::operator==(const Vector2f& other) const
@@ -104,7 +104,6 @@ Vector2f Vector2f::operator/(const float s) const
 	return Vector2f(x * inva, y * inva);
 }
 
-
 std::string Vector2f::ToString() const
 {
 	std::stringstream ss;
@@ -124,17 +123,17 @@ std::string Vector2f::ToString() const
 
 #pragma region Vector3
 
-const Vector3f Vector3f::Zero(0.f, 0.f, 0.f);
-const Vector3f Vector3f::One(1.f, 1.f, 1.f);
-const Vector3f Vector3f::UnitX(1.f, 0.f, 0.f);
-const Vector3f Vector3f::UnitY(0.f, 1.f, 0.f);
-const Vector3f Vector3f::UnitZ(0.f, 0.f, 1.f);
-const Vector3f Vector3f::Up(0.f, 1.f, 0.f);
-const Vector3f Vector3f::Down(0.f, -1.f, 0.f);
-const Vector3f Vector3f::Right(1.f, 0.f, 0.f);
-const Vector3f Vector3f::Left(-1.f, 0.f, 0.f);
-const Vector3f Vector3f::Forward(0.f, 0.f, -1.f);
-const Vector3f Vector3f::Backward(0.f, 0.f, 1.f);
+const Vector3f Vector3f::Zero(0.0f, 0.0f, 0.0f);
+const Vector3f Vector3f::One(1.0f, 1.0f, 1.0f);
+const Vector3f Vector3f::UnitX(1.0f, 0.0f, 0.0f);
+const Vector3f Vector3f::UnitY(0.0f, 1.0f, 0.0f);
+const Vector3f Vector3f::UnitZ(0.0f, 0.0f, 1.0f);
+const Vector3f Vector3f::Up(0.0f, 1.0f, 0.0f);
+const Vector3f Vector3f::Down(0.0f, -1.0f, 0.0f);
+const Vector3f Vector3f::Right(1.0f, 0.0f, 0.0f);
+const Vector3f Vector3f::Left(-1.0f, 0.0f, 0.0f);
+const Vector3f Vector3f::Forward(0.0f, 0.0f, -1.0f);
+const Vector3f Vector3f::Backward(0.0f, 0.0f, 1.0f);
 
 Vector3f::Vector3f() : x(0.0f), y(0.0f), z(0.0f) { }
 Vector3f::Vector3f(float x_) : x(x_), y(x_), z(x_) { }

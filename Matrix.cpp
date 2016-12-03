@@ -20,7 +20,7 @@ Matrix::Matrix(
 	mat[3][0] = m30; mat[3][1] = m31; mat[3][2] = m32; mat[3][3] = m33;
 }
 
-Matrix::Matrix(Vector4f a, Vector4f b, Vector4f c, Vector4f d) 
+Matrix::Matrix(const Vector4f& a, const Vector4f& b, const Vector4f& c, const Vector4f& d)
 {
 	mat[0] = a;
 	mat[1] = b;
@@ -116,6 +116,35 @@ Matrix Matrix::operator*(const Matrix& a) const
 	return dst;
 }
 
+Vector4f Matrix::operator*(const Vector4f& vec) const
+{
+	return Vector4f(
+		mat[0][0] * vec.x + mat[0][1] * vec.y + mat[0][2] * vec.z + mat[0][3] * vec.w,
+		mat[1][0] * vec.x + mat[1][1] * vec.y + mat[1][2] * vec.z + mat[1][3] * vec.w,
+		mat[2][0] * vec.x + mat[2][1] * vec.y + mat[2][2] * vec.z + mat[2][3] * vec.w,
+		mat[3][0] * vec.x + mat[3][1] * vec.y + mat[3][2] * vec.z + mat[3][3] * vec.w);
+}
+
+Vector3f Matrix::operator*(const Vector3f& vec) const
+{
+	float s = mat[3].x * vec.x + mat[3].y * vec.y + mat[3].z * vec.z + mat[3].w;
+	if (s == 0.0f) {
+		return Vector3f(0.0f, 0.0f, 0.0f);
+	}
+	if (s == 1.0f) {
+		return Vector3f(
+			mat[0].x * vec.x + mat[0].y * vec.y + mat[0].z * vec.z + mat[0].w,
+			mat[1].x * vec.x + mat[1].y * vec.y + mat[1].z * vec.z + mat[1].w,
+			mat[2].x * vec.x + mat[2].y * vec.y + mat[2].z * vec.z + mat[2].w);
+	}
+	
+	float invS = 1.0f / s;
+
+	return Vector3f(
+		(mat[0].x * vec.x + mat[0].y * vec.y + mat[0].z * vec.z + mat[0].w) * invS,
+		(mat[1].x * vec.x + mat[1].y * vec.y + mat[1].z * vec.z + mat[1].w) * invS,
+		(mat[2].x * vec.x + mat[2].y * vec.y + mat[2].z * vec.z + mat[2].w) * invS);
+}
 
 void Matrix::Identity()
 {

@@ -2,25 +2,11 @@
 
 #include "Vector.h"
 
-struct VertexP2C
+struct Vertex
 {
-	Vector2f pos;
+	Vector3f position;
 	Color color;
+	Vector3f normal;
 
-} VertexP2C;
-
-struct VertexP2CI
-{
-	Vector2f pos;
-	Color color;
-	short idx;
-
-} VertexP2CI;
-
-
-struct VertexP3C
-{
-	Vector3f pos;
-	Color color;
-
-} VertexP3C;
+	Vertex();
+};

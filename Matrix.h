@@ -13,7 +13,7 @@ struct Matrix
 		float m10, float m11, float m12, float m13,
 		float m20, float m21, float m22, float m23,
 		float m30, float m31, float m32, float m33);
-	Matrix(Vector4f a, Vector4f b, Vector4f c, Vector4f d);
+	Matrix(const Vector4f& a, const Vector4f& b, const Vector4f& c, const Vector4f& d);
 	Matrix(const Matrix& other);
 	explicit Matrix(const float src[4][4]);
 
@@ -29,15 +29,17 @@ struct Matrix
 	Matrix& operator= (const Matrix& other);
 	Matrix operator*(const float s) const;
 	Matrix operator*(const Matrix& other) const;
+	Vector4f operator*(const Vector4f& other) const;
+	Vector3f Matrix::operator*(const Vector3f& vec) const;
 
 	operator const GLfloat* () const
 	{
 		return static_cast<const GLfloat*>(&mat[0].x);
 	}
 
-	operator GLfloat* ()
+	operator float* ()
 	{
-		return static_cast<GLfloat*>(&mat[0].x);
+		return static_cast<float*>(&mat[0].x);
 	}
 
 	friend std::ostream& operator << (std::ostream& os, const Matrix& m) {
@@ -64,7 +66,6 @@ inline Matrix MakeTranslate(const float x, const float y, const float z)
 	matrix[2][3] = z;
 
 	return matrix;
-
 }
 
 inline Matrix MakeTranslate(const Vector3f& vector)

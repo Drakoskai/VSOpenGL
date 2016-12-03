@@ -35,8 +35,31 @@ struct Vector2f
 	Vector2f operator*(const float s) const;
 	Vector2f operator/(const float s) const;
 
+	operator const GLfloat* () const
+	{
+		return static_cast<const GLfloat*>(&x);
+	}
+
+	operator GLfloat* ()
+	{
+		return static_cast<GLfloat*>(&x);
+	}
+
 	std::string ToString() const;
 
+	friend std::ostream& operator << (std::ostream& os, const Vector2f& v) {
+		return os << "( " << v.x << ", " << v.y << " )";
+	}
+
+	friend std::istream& operator >> (std::istream& is, Vector2f& v)
+	{
+		return is >> v.x >> v.y;
+	}
+
+	static const Vector2f Zero;
+	static const Vector2f One;
+	static const Vector2f UnitX;
+	static const Vector2f UnitY;
 };
 
 #pragma endregion Vector2f
@@ -74,7 +97,7 @@ struct Vector3f
 
 	friend std::ostream& operator << (std::ostream& os, const Vector3f& v) {
 		return os << "( " << v.x << ", " << v.y
-			<< ", " << v.z << ", " << " )";
+			<< ", " << v.z << " )";
 	}
 
 	friend std::istream& operator >> (std::istream& is, Vector3f& v)
@@ -216,11 +239,30 @@ struct Color
 	float g;
 	float b;
 	float a;
-	
+
 	Color();
 	Color(float r, float g, float b);
 	Color(float r, float g, float b, float a);
 	explicit Color(const float *pArray);
+
+	operator const GLfloat* () const
+	{
+		return static_cast<const GLfloat*>(&r);
+	}
+
+	operator GLfloat* ()
+	{
+		return static_cast<GLfloat*>(&r);
+	}
+
+	friend std::ostream& operator << (std::ostream& os, const Color& c) {
+		return os << "( " << c.r << ", " << c.g << ", " << c.b << ", " << c.a << " )";
+	}
+
+	friend std::istream& operator >> (std::istream& is, Color& c)
+	{
+		return is >> c.r >> c.g >> c.b >> c.a;
+	}
 
 	float operator[](const int index) const;
 	float& operator[](const int index);

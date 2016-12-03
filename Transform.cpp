@@ -2,14 +2,14 @@
 
 Transform::Transform()
 {
-	m_scale = MakeScale(1.0f, 1.0f, 1.0f);
+	m_scale = MakeScale(1.0f,1.0f, 1.0f);
 }
 
 Transform::~Transform() { }
 
 void Transform::Update()
 {
-	m_modelview *= m_trans * m_rot * m_scale;
+	m_model *= m_trans * m_rot * m_scale;
 	m_trans.Identity();
 	m_rot.Identity();
 	m_scale.Identity();
@@ -40,7 +40,7 @@ void Transform::RotateZ(float theta)
 	m_rot *= MakeRotationZ(theta);
 }
 
-Matrix& Transform::GetModelView()
+Matrix& Transform::GetModelMatrix()
 {
-	return m_modelview;
+	return m_model;
 }

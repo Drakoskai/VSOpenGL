@@ -81,6 +81,12 @@
     <ClCompile Include="DrawContext.cpp">
       <Filter>Source Files\GL</Filter>
     </ClCompile>
+    <ClCompile Include="Vertex.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="VertexBufferObject.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -131,6 +137,15 @@
     <ClInclude Include="Teapot.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
+    <ClInclude Include="ShaderUtil.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Semantic.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexBufferObject.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="teapot.cont">
@@ -143,6 +158,12 @@
       <Filter>Source Files\Shaders</Filter>
     </None>
     <None Include="teapot.vert">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="default.frag">
+      <Filter>Source Files\Shaders</Filter>
+    </None>
+    <None Include="default.vert">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>
