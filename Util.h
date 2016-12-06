@@ -1,10 +1,37 @@
 #pragma once
 
 #include <vector>
-#include <iostream>
+
+template<typename T>
+void SafeDelete(T* ptr)
+{
+	if (ptr)
+	{
+		delete ptr;
+		ptr = nullptr;
+	}
+}
+
+template<typename T>
+void SafeDeleteArr(T* ar)
+{
+	if (ar)
+	{
+		delete[] ar;
+		ar = nullptr;
+	}
+}
+
+template <typename T>
+void* BfrStorage(const T& t)
+{
+	return reinterpret_cast<void*>(t);
+}
 
 namespace Util
 {
+	static const bool IsDebug = true;
+
 	std::wstring StringToWString(const std::string& s);
 
 	char* concat(char dest[], char src[]);

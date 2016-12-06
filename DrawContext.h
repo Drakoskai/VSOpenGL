@@ -1,13 +1,12 @@
 #pragma once
 
-#include "Interfaces.h"
-#include "Matrix.h"
 #include <windows.h>
 #include "glad.h"
-#include "Util.h"
 #include <GLFW/glfw3.h>
+#include "Interfaces.h"
+#include "Matrix.h"
+#include "Util.h"
 
-#ifdef GLAD_DEBUG
 inline void PreGLCall(const char *name, void *funcptr, int len_args, ...)
 {
 	//Util::DebugPrintF("Calling: %s (%d arguments)\n", name, len_args);
@@ -22,7 +21,6 @@ inline void PostCallback(const char *name, void *funcptr, int len_args, ...) {
 		Util::DebugPrintF("ERROR %d in %s\n", error_code, name);
 	}
 }
-#endif
 
 inline void DefaultKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
@@ -44,22 +42,26 @@ class DrawContext
 public:
 	DrawContext();
 	~DrawContext();
-
-	bool Init();
+	
 	void BeginScene();
 	void Draw() const;
 	void EndScene() const;
 	GLFWwindow* DrawContext::GetWindow() const;
-	void Release() const;
+
+	static const Color DefaultClearColor;
 
 private:
+	bool Init();
+
 	DisplayState m_currentDisplayState;
 	GLuint m_vaoId;
 
-	GLfloat m_clearColor[4];
+	Color m_clearColor;
+
 	float m_clearDepth;
 	GLFWwindow* m_window;
 
 	Matrix m_worldMatrix;
 	Matrix m_projectionMatrix;
+
 };

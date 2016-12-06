@@ -3,7 +3,6 @@
 #include <string>
 #include "glad.h"
 
-
 #pragma region Vector2f
 
 struct Vector2f
@@ -240,10 +239,22 @@ struct Color
 	float b;
 	float a;
 
-	Color();
-	Color(float r, float g, float b);
-	Color(float r, float g, float b, float a);
-	explicit Color(const float *pArray);
+	Color()
+	{
+		r = 0.0f;
+		b = 0.0f;
+		g = 0.0f;
+		a = 1.0f;
+	}
+
+	Color(float r_, float g_, float b_)
+		: r(r_), g(g_), b(b_), a(1.0f) { }
+
+	Color(float r_, float g_, float b_, float a_)
+		: r(r_), g(g_), b(b_), a(a_) { }
+
+	Color(const float* pArray)
+		: r(pArray[0]), g(pArray[1]), b(pArray[2]), a(pArray[3]) { }
 
 	operator const GLfloat* () const
 	{
@@ -266,6 +277,12 @@ struct Color
 
 	float operator[](const int index) const;
 	float& operator[](const int index);
+
 };
+
+namespace Colors
+{
+	static const Color Black(0.0f, 0.0f, 0.0f, 0.0f);
+}
 
 #pragma endregion Color

@@ -1,6 +1,6 @@
+#include "pch.h";
 #include "Angle.h"
 #include "Geometry.h"
-#include <math.h>
 
 Angle::Angle() : degrees(0.0f), radians(0.0f) { }
 

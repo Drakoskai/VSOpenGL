@@ -1,6 +1,5 @@
+#include "pch.h"
 #include "Vector.h"
-#include "math.h"
-#include <sstream>
 #include "Geometry.h"
 
 #pragma region Vector2
@@ -430,23 +429,6 @@ Vector4f Vector4f::Normalize() const
 }
 
 #pragma endregion Vector4
-
-Color::Color()
-{
-	r = 0.0f;
-	b = 0.0f;
-	g = 0.0f;
-	a = 1.0f;
-}
-
-Color::Color(float r_, float g_, float b_)
-	: r(r_), g(g_), b(b_), a(1.0f) { }
-
-Color::Color(float r_, float g_, float b_, float a_)
-	: r(r_), g(g_), b(b_), a(a_) { }
-
-Color::Color(const float* pArray)
-	: r(pArray[0]), g(pArray[1]), b(pArray[2]), a(pArray[3]) { }
 
 float Color::operator[](const int index) const
 {

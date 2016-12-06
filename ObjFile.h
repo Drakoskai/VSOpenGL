@@ -12,18 +12,17 @@ public:
 	~ObjFile();
 
 	bool Exists();
-	void GetMeshData(std::vector<Vector3f>& vertices, std::vector<Vector2f>& uvs, std::vector<Vector3f>& normals, std::vector<GLuint>& indices);
-	void GetMeshData(std::vector<Vertex>& positions, std::vector<GLuint>& indices);
-
+	void GetVertices(std::vector<Vertex>& vertices, std::vector<GLuint>& indices);
 	std::string ToString();
 
 private:
 	void LoadData();
+
 	bool m_exists;
 	bool m_isLoaded;
 
 	std::string m_filename;
-	std::vector<Vector3f> m_verts;
+	std::vector<Vector3f> m_positions;
 	std::vector<Vector3f> m_normals;
 	std::vector<Vector2f> m_uvs;
 	std::vector<GLuint> m_vertIndices;

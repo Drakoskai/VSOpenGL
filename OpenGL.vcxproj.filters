@@ -87,6 +87,12 @@
     <ClCompile Include="VertexBufferObject.cpp">
       <Filter>Source Files\GL</Filter>
     </ClCompile>
+    <ClCompile Include="ShaderUtil.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Model.h">
@@ -140,11 +146,11 @@
     <ClInclude Include="ShaderUtil.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="Semantic.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="VertexBufferObject.h">
       <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

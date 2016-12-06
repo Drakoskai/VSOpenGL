@@ -1,5 +1,5 @@
+#include "pch.h"
 #include "Geometry.h"
-#include "math.h"
 
 float Geometry::InvSqrt(const float x)
 {

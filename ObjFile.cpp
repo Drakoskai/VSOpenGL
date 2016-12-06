@@ -1,12 +1,6 @@
+#include "pch.h"
 #include "ObjFile.h"
-#include <iostream>
-#include <sstream>
-#include <string>
-#include <fstream>
 #include "Util.h"
-#include "Vector.h"
-#include <regex>
-#include "Vertex.h"
 
 using namespace std;
 
@@ -28,48 +22,34 @@ bool ObjFile::Exists()
 	return m_exists;
 }
 
-void ObjFile::GetMeshData(vector<Vector3f>& positions, vector<Vector2f>& uvs, vector<Vector3f>& normals, vector<GLuint>& indices)
+void ObjFile::GetVertices(vector<Vertex>& vertices, vector<GLuint>& indices)
 {
 	if (!m_isLoaded)
 	{
 		LoadData();
 	}
 
-	for (unsigned int i = 0; i < m_vertIndices.size(); i++){
-		unsigned int vertexIndex = m_vertIndices[i];
-		
-		unsigned int normalIndex = m_normalIndices[i];
+	size_t numNormals = m_normals.size();
+	size_t numVertices = m_vertIndices.size();
+	//size_t numUvs = m_uvs.size();
 
-		Vector3f pos = m_verts[vertexIndex - 1];
-		if (m_uvs.size() > 0)
+	for (uint32_t i = 0; i < numVertices; i++){
+		GLuint vertexIndex = m_vertIndices[i];
+		
+		Vertex v;
+		v.position = m_positions[vertexIndex - 1];
+
+		if (numNormals > 0)
 		{
-			unsigned int uvIndex = m_uvIndices[i];
-			Vector2f uv = m_uvs[uvIndex - 1];
-			uvs.push_back(uv);
+			v.normal = m_normals[vertexIndex - 1];
 		}
 		
-		Vector3f normal = m_normals[normalIndex - 1];
-
-		positions.push_back(pos);
-		
-		normals.push_back(normal);
-		indices.push_back(static_cast<GLuint>(positions.size()) - 1);
-	}
-}
-
-void ObjFile::GetMeshData(vector<Vertex>& vertices, vector<GLuint>& indices)
-{
-	if (!m_isLoaded)
-	{
-		LoadData();
-	}
-
-	for (unsigned int i = 0; i < m_vertIndices.size(); i++){
-		unsigned int vertexIndex = m_vertIndices[i];
-		Vertex v;
-		v.position = m_verts[vertexIndex - 1];
-		v.normal = m_normals[vertexIndex - 1];
-
+		/*if (numUvs > 0)
+		{
+			GLuint uvIndex = m_uvIndices[i];
+			Vector2f uv = m_uvs[uvIndex - 1];
+			v.uv = uv;
+		}*/
 		vertices.push_back(v);
 
 		indices.push_back(static_cast<GLuint>(vertices.size()) - 1);
@@ -102,7 +82,7 @@ void ObjFile::LoadData()
 				fileStream >> z;
 
 				Vector3f vert = Vector3f(x, y, z);
-				m_verts.push_back(vert);
+				m_positions.push_back(vert);
 			}
 			else if (input == 't')
 			{
@@ -189,7 +169,6 @@ void ObjFile::LoadData()
 	m_isLoaded = true;
 }
 
-
 string ObjFile::ToString()
 {
 	if (!m_isLoaded)
@@ -205,7 +184,7 @@ string ObjFile::ToString()
 	ss << "vertices:[" << endl;
 	unsigned int count = 0;
 
-	for (Vector3f vert : m_verts)
+	for (Vector3f vert : m_positions)
 	{
 		ss << '\t';
 		ss << '\t';
@@ -213,7 +192,7 @@ string ObjFile::ToString()
 			<< "y:" << vert.y << ','
 			<< "z:" << vert.z << "}";
 		count++;
-		if (count < m_verts.size())
+		if (count < m_positions.size())
 		{
 			ss << ',';
 		}
@@ -292,11 +271,6 @@ string ObjFile::ToString()
 	ss << '\t';
 	ss << '\t';
 	ss << "]," << endl;
-
-
-
-
-
 	ss << '\t';
 	ss << '}' << endl;
 

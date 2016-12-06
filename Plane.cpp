@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Plane.h"
 
 Plane::Plane(): n(Vector4f::Zero) { }

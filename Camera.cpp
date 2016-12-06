@@ -1,5 +1,6 @@
+#include "pch.h"
 #include "Camera.h"
-#include <GLFW/glfw3.h>
+#include "Interfaces.h"
 
 CameraSimpleOrtho::CameraSimpleOrtho()
 	: m_aspectRatio(0), m_viewportWidth(0), m_viewportHeight(0) { }
@@ -12,8 +13,7 @@ void CameraSimpleOrtho::Update(ViewProps viewProps)
 	int height = viewProps.height;
 	if (height != m_viewportHeight || width != m_viewportWidth)
 	{
-		m_aspectRatio = width / static_cast<float>(height);
-		
+		m_aspectRatio = width / static_cast<float>(height);	
 	}
 
 	m_model.Identity();

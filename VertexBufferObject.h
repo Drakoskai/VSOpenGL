@@ -1,28 +1,42 @@
 #pragma once
 
-#include "Vector.h"
-
-struct VBOInfo
-{
-	unsigned int size;
-	unsigned int numAttribs;
-	unsigned int numVertices;
-	unsigned int numIndices;
-};
+#include "glad.h"
+#include <cstdint>
+#include <vector>
+#include "Vertex.h"
 
 class VertexBufferObject
 {
+	struct VBOInfo
+	{
+		uint32_t size;
+		uint32_t numAttribs;
+		uint32_t numVertices;
+		uint32_t numIndices;
+		GLsizei stride;
+	};
+
+	struct AttribInfo
+	{
+		GLint size;
+		GLenum type;
+		GLboolean normalized;
+		size_t offset;
+	};
+
 public:
 	VertexBufferObject();
 	~VertexBufferObject();
 	void Load(const char * filename);
 	void Render() const;
-	void Release();
 
 private:
+	void GatherInfo(const std::vector<Vertex>& verts, const std::vector<GLuint>& indices);
+	void CreateAttribute(GLuint const index, const GLvoid * pointer) const;
 	GLuint m_vao;
 	GLuint m_attributeBuffer;
 	GLuint m_indexBuffer;
-
 	VBOInfo m_info;
+
+	AttribInfo* m_attributes;
 };

@@ -163,7 +163,9 @@
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ObjFile.cpp" />
+    <ClCompile Include="pch.cpp" />
     <ClCompile Include="Plane.cpp" />
+    <ClCompile Include="ShaderUtil.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="Util.cpp" />
     <ClCompile Include="Vector.cpp" />
@@ -173,7 +175,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Angle.h" />
-    <ClInclude Include="Semantic.h" />
     <ClInclude Include="Geometry.h" />
     <ClInclude Include="glad.h" />
     <ClInclude Include="DrawContext.h" />
@@ -182,6 +183,7 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ObjFile.h" />
+    <ClInclude Include="pch.h" />
     <ClInclude Include="Plane.h" />
     <ClInclude Include="ShaderUtil.h" />
     <ClInclude Include="Teapot.h" />

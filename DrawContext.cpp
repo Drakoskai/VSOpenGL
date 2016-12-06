@@ -1,14 +1,15 @@
+#include "pch.h"
 #include "DrawContext.h"
-#include <fstream>
 #include "Util.h"
+
+const Color DrawContext::DefaultClearColor = Colors::Black;
 
 DrawContext::DrawContext()
 	: m_vaoId(0), m_clearDepth(0), m_window(nullptr)
 {
-	m_clearColor[0] = 0.0f;
-	m_clearColor[1] = 0.0f;
-	m_clearColor[2] = 0.0f;
-	m_clearColor[3] = 0.0f;
+	m_clearColor = DefaultClearColor;
+	m_clearDepth = 1.0f;
+	assert(Init());
 }
 
 DrawContext::~DrawContext()
@@ -54,11 +55,14 @@ bool DrawContext::Init()
 		return false;
 	}
 
-#ifdef GLAD_DEBUG	
-	glad_set_pre_callback(PreGLCall);
-	glad_set_post_callback(PostCallback);
-	glad_debug_glClear = glad_glClear;
-#endif
+	if (Util::IsDebug)
+	{
+		glad_set_pre_callback(PreGLCall);
+		glad_set_post_callback(PostCallback);
+		glad_debug_glClear = glad_glClear;
+	}
+
+
 	Util::DebugPrintF("OpenGL %d.%d\n", GLVersion.major, GLVersion.minor);
 	if (GLVersion.major < 2) {
 		Util::DebugPrintF("Your system doesn't support OpenGL >= 2!\n");
@@ -72,11 +76,8 @@ bool DrawContext::Init()
 
 void DrawContext::BeginScene()
 {
-	static const float black[] = { 0.0f, 0.0f, 0.0f, 0.0f };
-	static const float depth[] = { 1.0f };
-	glClearBufferfv(GL_COLOR, 0, black);
-	glClearBufferfv(GL_DEPTH, 0, depth);
-
+	glClearBufferfv(GL_COLOR, 0, m_clearColor);
+	glClearBufferfv(GL_DEPTH, 0, &m_clearDepth);
 }
 
 void DrawContext::Draw() const { }
@@ -90,14 +91,3 @@ GLFWwindow* DrawContext::GetWindow() const
 {
 	return m_window;
 }
-
-void DrawContext::Release() const
-{
-	if (m_window)
-	{
-		glfwDestroyWindow(m_window);
-	}
-
-	glfwTerminate();
-}
-

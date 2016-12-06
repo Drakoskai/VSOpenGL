@@ -1,24 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include "pch.h"
 #include "DrawContext.h"
 #include "Model.h"
 
 int main(int, char **)
 {
 	DrawContext* dc = new DrawContext();
-
-	if (!dc->Init())
-	{
-		Util::DebugPrintF("Failed to initalize renderer.\n");
-		delete dc;
-		return -1;
-	}
-
 	GLFWwindow* window = dc->GetWindow();
 
 	Model m = Model("Assets/Meshes/teapot.obj");
-	m.Init();
-	glClearColor(0.0, 0.0, 0.0, 1.0);
 
 	//glfwSetKeyCallback(window, OnKey);
 

@@ -1,9 +1,5 @@
+#include "pch.h"
 #include "Util.h"
-#include <fstream>
-#include <iostream>
-#include <string>
-#include <sstream>
-#include <windows.h>
 
 std::wstring Util::StringToWString(const std::string& s)
 {

@@ -1,7 +1,7 @@
 #pragma once
+
 #include "Vector.h"
 #include "Matrix.h"
-#include "Interfaces.h"
 
 struct ViewProps
 {
