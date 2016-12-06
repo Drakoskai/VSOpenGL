@@ -3,7 +3,7 @@
 #include "Transform.h"
 #include "../GL/VertexBufferObject.h"
 #include "../Math3d/Matrix.h"
-#include "../GL/ShaderUtil.h"
+#include "../GL/Shader.h"
 
 namespace Model
 {

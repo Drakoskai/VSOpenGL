@@ -22,7 +22,7 @@
     <ClInclude Include="src\GL\GLDevice.h" />
     <ClInclude Include="src\GL\glad.h" />
     <ClInclude Include="src\GL\khrplatform.h" />
-    <ClInclude Include="src\GL\ShaderUtil.h" />
+    <ClInclude Include="src\GL\Shader.h" />
     <ClInclude Include="src\GL\VertexBufferObject.h" />
     <ClInclude Include="src\Interfaces.h" />
     <ClInclude Include="src\Math3d\Angle.h" />
@@ -42,7 +42,7 @@
   <ItemGroup>
     <ClCompile Include="src\GL\GLDevice.cpp" />
     <ClCompile Include="src\GL\glad.cpp" />
-    <ClCompile Include="src\GL\ShaderUtil.cpp" />
+    <ClCompile Include="src\GL\Shader.cpp" />
     <ClCompile Include="src\GL\VertexBufferObject.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Math3d\Angle.cpp" />

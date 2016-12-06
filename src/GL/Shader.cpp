@@ -1,5 +1,5 @@
 #include "../pch.h"
-#include "ShaderUtil.h"
+#include "Shader.h"
 #include "../Util/Util.h"
 
 namespace OpenGL

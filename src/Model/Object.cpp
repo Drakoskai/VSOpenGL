@@ -1,6 +1,5 @@
 #include "../pch.h"
 #include "Object.h"
-#include "../GL/ShaderUtil.h"
 #include "../Util/ObjFile.h"
 #include "../Util/Util.h"
 
