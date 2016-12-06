@@ -56,7 +56,7 @@ namespace OpenGL
 
 		if (Util::IsDebug)
 		{
-			glad_set_pre_callback(PreGLCall);
+			//glad_set_pre_callback(PreGLCall);
 			glad_set_post_callback(PostCallback);
 			glad_debug_glClear = glad_glClear;
 		}

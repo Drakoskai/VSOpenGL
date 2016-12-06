@@ -22,6 +22,7 @@
     <ClInclude Include="src\GL\GLDevice.h" />
     <ClInclude Include="src\GL\glad.h" />
     <ClInclude Include="src\GL\khrplatform.h" />
+    <ClInclude Include="src\GL\OpenGL.h" />
     <ClInclude Include="src\GL\Shader.h" />
     <ClInclude Include="src\GL\VertexBufferObject.h" />
     <ClInclude Include="src\Interfaces.h" />

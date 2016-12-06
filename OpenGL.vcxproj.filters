@@ -102,6 +102,9 @@
     <ClInclude Include="src\GL\Shader.h">
       <Filter>Header Files\GL</Filter>
     </ClInclude>
+    <ClInclude Include="src\GL\OpenGL.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
