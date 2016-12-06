@@ -14,163 +14,146 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
     <Filter Include="Header Files\GL">
-      <UniqueIdentifier>{70550469-092a-4e8a-ba20-d32bdfa8d52e}</UniqueIdentifier>
+      <UniqueIdentifier>{65eec09f-700d-4379-b336-1514b675fdc1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\GL">
-      <UniqueIdentifier>{2da5501b-0f7c-4711-b2ee-556db5e6e984}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Model">
-      <UniqueIdentifier>{3790ebda-9790-4dbe-9e28-70ce0649680c}</UniqueIdentifier>
+    <Filter Include="Header Files\Math3d">
+      <UniqueIdentifier>{e10cc1ec-bb71-4d90-8e87-dd43aba2ed2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Model">
-      <UniqueIdentifier>{33cb1c2f-6732-4353-a609-231bedf2e5d9}</UniqueIdentifier>
+      <UniqueIdentifier>{ceb7dadd-a94d-4d51-b2f0-a29808e794b7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Math">
-      <UniqueIdentifier>{9e0970d3-c11f-46c6-a50a-036ecd723208}</UniqueIdentifier>
+    <Filter Include="Header Files\View">
+      <UniqueIdentifier>{17fe5410-c77b-4447-ad42-0c1094adc144}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Math">
-      <UniqueIdentifier>{187ce842-c318-418c-85ef-99c92b173b23}</UniqueIdentifier>
+    <Filter Include="Source Files\GL">
+      <UniqueIdentifier>{af062074-8898-4381-8299-0786a11ede9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shaders">
-      <UniqueIdentifier>{d2045c70-92e4-49e3-aa89-80a98377ffe7}</UniqueIdentifier>
+    <Filter Include="Source Files\Math3d">
+      <UniqueIdentifier>{fd7c76e9-75a2-4466-808e-d97e6d81cf22}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\View">
+      <UniqueIdentifier>{7d05220b-49ac-48a9-891b-43619009ba5b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\Util">
-      <UniqueIdentifier>{9b98e3fd-e9f2-4b95-9288-7682691d9999}</UniqueIdentifier>
+      <UniqueIdentifier>{eb7843df-1160-42ae-96f0-c42350065d16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Model">
+      <UniqueIdentifier>{53ac2099-5cd2-4d2d-a310-cab597e75294}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Util">
-      <UniqueIdentifier>{cebab7a6-455c-4e8b-a1c2-d3f8220c431a}</UniqueIdentifier>
+      <UniqueIdentifier>{fbadaf77-8566-4406-a316-704037efeb16}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Vector.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="Util.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjFile.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="Plane.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Geometry.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="glad.cpp">
-      <Filter>Source Files\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="Angle.cpp">
-      <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="DrawContext.cpp">
-      <Filter>Source Files\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="Vertex.cpp">
-      <Filter>Source Files\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="VertexBufferObject.cpp">
-      <Filter>Source Files\GL</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderUtil.cpp">
-      <Filter>Source Files\Util</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Interfaces.h">
+    <ClInclude Include="src\Interfaces.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ObjFile.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Util.h">
-      <Filter>Header Files\Util</Filter>
-    </ClInclude>
-    <ClInclude Include="Plane.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
+    <ClInclude Include="src\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Geometry.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="glad.h">
+    <ClInclude Include="src\GL\glad.h">
       <Filter>Header Files\GL</Filter>
     </ClInclude>
-    <ClInclude Include="khrplatform.h">
+    <ClInclude Include="src\GL\khrplatform.h">
       <Filter>Header Files\GL</Filter>
     </ClInclude>
-    <ClInclude Include="Vertex.h">
+    <ClInclude Include="src\GL\ShaderUtil.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GL\VertexBufferObject.h">
+      <Filter>Header Files\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math3d\Angle.h">
+      <Filter>Header Files\Math3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math3d\Geometry.h">
+      <Filter>Header Files\Math3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math3d\Matrix.h">
+      <Filter>Header Files\Math3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math3d\Plane.h">
+      <Filter>Header Files\Math3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Math3d\Vector.h">
+      <Filter>Header Files\Math3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Model\Teapot.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="Angle.h">
-      <Filter>Header Files\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="DrawContext.h">
-      <Filter>Header Files\GL</Filter>
-    </ClInclude>
-    <ClInclude Include="Teapot.h">
+    <ClInclude Include="src\Model\Transform.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
-    <ClInclude Include="ShaderUtil.h">
+    <ClInclude Include="src\Model\Vertex.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Util\ObjFile.h">
       <Filter>Header Files\Util</Filter>
     </ClInclude>
-    <ClInclude Include="VertexBufferObject.h">
+    <ClInclude Include="src\Util\Util.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\View\Camera.h">
+      <Filter>Header Files\View</Filter>
+    </ClInclude>
+    <ClInclude Include="src\GL\GLDevice.h">
       <Filter>Header Files\GL</Filter>
     </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="src\Model\Object.h">
+      <Filter>Header Files\Model</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="teapot.cont">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="teapot.eval">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="teapot.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="teapot.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="default.frag">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
-    <None Include="default.vert">
-      <Filter>Source Files\Shaders</Filter>
-    </None>
+    <ClCompile Include="src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GL\glad.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GL\ShaderUtil.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GL\VertexBufferObject.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math3d\Angle.cpp">
+      <Filter>Source Files\Math3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math3d\Geometry.cpp">
+      <Filter>Source Files\Math3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math3d\Plane.cpp">
+      <Filter>Source Files\Math3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math3d\Vector.cpp">
+      <Filter>Source Files\Math3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Transform.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Vertex.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Util\ObjFile.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Util\Util.cpp">
+      <Filter>Source Files\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\View\Camera.cpp">
+      <Filter>Source Files\View</Filter>
+    </ClCompile>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Math3d\Matrix.cpp">
+      <Filter>Source Files\Math3d</Filter>
+    </ClCompile>
+    <ClCompile Include="src\GL\GLDevice.cpp">
+      <Filter>Source Files\GL</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Model\Object.cpp">
+      <Filter>Source Files\Model</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

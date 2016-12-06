@@ -18,6 +18,46 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\GL\GLDevice.h" />
+    <ClInclude Include="src\GL\glad.h" />
+    <ClInclude Include="src\GL\khrplatform.h" />
+    <ClInclude Include="src\GL\ShaderUtil.h" />
+    <ClInclude Include="src\GL\VertexBufferObject.h" />
+    <ClInclude Include="src\Interfaces.h" />
+    <ClInclude Include="src\Math3d\Angle.h" />
+    <ClInclude Include="src\Math3d\Geometry.h" />
+    <ClInclude Include="src\Math3d\Matrix.h" />
+    <ClInclude Include="src\Math3d\Plane.h" />
+    <ClInclude Include="src\Math3d\Vector.h" />
+    <ClInclude Include="src\Model\Object.h" />
+    <ClInclude Include="src\Model\Teapot.h" />
+    <ClInclude Include="src\Model\Transform.h" />
+    <ClInclude Include="src\Model\Vertex.h" />
+    <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Util\ObjFile.h" />
+    <ClInclude Include="src\Util\Util.h" />
+    <ClInclude Include="src\View\Camera.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\GL\GLDevice.cpp" />
+    <ClCompile Include="src\GL\glad.cpp" />
+    <ClCompile Include="src\GL\ShaderUtil.cpp" />
+    <ClCompile Include="src\GL\VertexBufferObject.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Math3d\Angle.cpp" />
+    <ClCompile Include="src\Math3d\Geometry.cpp" />
+    <ClCompile Include="src\Math3d\Matrix.cpp" />
+    <ClCompile Include="src\Math3d\Plane.cpp" />
+    <ClCompile Include="src\Math3d\Vector.cpp" />
+    <ClCompile Include="src\Model\Object.cpp" />
+    <ClCompile Include="src\Model\Transform.cpp" />
+    <ClCompile Include="src\Model\Vertex.cpp" />
+    <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Util\ObjFile.cpp" />
+    <ClCompile Include="src\Util\Util.cpp" />
+    <ClCompile Include="src\View\Camera.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6E0C40FE-F2EA-4305-B6D4-70ED19B3324A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -154,54 +194,6 @@
       <AdditionalOptions>/SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup </AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Angle.cpp" />
-    <ClCompile Include="Geometry.cpp" />
-    <ClCompile Include="glad.cpp" />
-    <ClCompile Include="DrawContext.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Model.cpp" />
-    <ClCompile Include="ObjFile.cpp" />
-    <ClCompile Include="pch.cpp" />
-    <ClCompile Include="Plane.cpp" />
-    <ClCompile Include="ShaderUtil.cpp" />
-    <ClCompile Include="Transform.cpp" />
-    <ClCompile Include="Util.cpp" />
-    <ClCompile Include="Vector.cpp" />
-    <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="Vertex.cpp" />
-    <ClCompile Include="VertexBufferObject.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Angle.h" />
-    <ClInclude Include="Geometry.h" />
-    <ClInclude Include="glad.h" />
-    <ClInclude Include="DrawContext.h" />
-    <ClInclude Include="Interfaces.h" />
-    <ClInclude Include="khrplatform.h" />
-    <ClInclude Include="Matrix.h" />
-    <ClInclude Include="Model.h" />
-    <ClInclude Include="ObjFile.h" />
-    <ClInclude Include="pch.h" />
-    <ClInclude Include="Plane.h" />
-    <ClInclude Include="ShaderUtil.h" />
-    <ClInclude Include="Teapot.h" />
-    <ClInclude Include="Transform.h" />
-    <ClInclude Include="Util.h" />
-    <ClInclude Include="Vector.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Vertex.h" />
-    <ClInclude Include="VertexBufferObject.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="default.frag" />
-    <None Include="default.vert" />
-    <None Include="teapot.cont" />
-    <None Include="teapot.eval" />
-    <None Include="teapot.frag" />
-    <None Include="teapot.vert" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
