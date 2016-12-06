@@ -35,7 +35,7 @@ int main(int, char **)
 		device->EndScene();
 	}
 
-	delete device;
+	SafeDelete(device);
 
 	return 0;
 }
