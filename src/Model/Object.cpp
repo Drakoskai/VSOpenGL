@@ -23,7 +23,7 @@ namespace Model
 
 	bool Object::Init()
 	{
-		ShaderInfo shaders[] = {
+		std::vector<ShaderInfo> shaders = {
 			{ GL_VERTEX_SHADER, "Assets/Shaders/default.vert" },
 			{ GL_FRAGMENT_SHADER, "Assets/Shaders/default.frag" },
 			{ GL_NONE, nullptr }

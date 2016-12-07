@@ -1,7 +1,7 @@
 #pragma once
 
 #include "glad.h"
-#include <string>
+#include <vector>
 
 namespace OpenGL
 {
@@ -12,12 +12,10 @@ namespace OpenGL
 		GLuint shader;
 	};
 	
-	
-
 	class Shader
 	{
 	public:
-		Shader(ShaderInfo* shaders);
+		Shader(std::vector<ShaderInfo> shaders);
 		~Shader();
 		void Set() const;
 		static void Unset();
@@ -30,6 +28,6 @@ namespace OpenGL
 		GLint m_uniformModelView;
 		uint32_t m_numShaders;
 
-		ShaderInfo* m_shaderInfo;
+		std::vector<ShaderInfo> m_shaderInfo;
 	};
 }

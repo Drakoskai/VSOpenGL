@@ -4,23 +4,21 @@
 
 namespace OpenGL
 {
-	Shader::Shader(ShaderInfo* shaders)
+	Shader::Shader(std::vector<ShaderInfo> shaders)
 		: m_shaderProg(0), m_uniformMVP(0), m_uniformModelView(0), m_numShaders(0), m_shaderInfo(shaders)
 	{
-		m_shaderProg = LoadShaders(shaders);
-		assert(glIsShader(m_shaderProg));
+		m_shaderProg = LoadShaders(&shaders[0]);
+		assert(m_shaderProg != 0);
 	}
 
 	Shader::~Shader()
 	{
-		if (glIsShader(m_shaderProg))
+		if (m_shaderProg != 0)
 		{
 			glUseProgram(0);
 			glDeleteProgram(m_shaderProg);
 			m_shaderProg = 0;
 		}
-
-		SafeDeleteArr(m_shaderInfo);
 	}
 
 	void Shader::Set() const { glUseProgram(m_shaderProg); }

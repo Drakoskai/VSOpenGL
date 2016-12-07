@@ -23,9 +23,24 @@ namespace Math3d
 		return sinf(radians);
 	}
 
+	float Angle::SinHalfAngle() const
+	{
+		return sinf(0.5f * radians);
+	}
+
 	float Angle::Cos() const
 	{
 		return cosf(radians);
+	}
+
+	float Angle::CosHalfAngle() const
+	{
+		return cosf(0.5f * radians);
+	}
+
+	float Angle::TanHalfAngle() const
+	{
+		return tan(0.5f * radians);
 	}
 
 	Angle Angle::FromDegrees(float degrees)
