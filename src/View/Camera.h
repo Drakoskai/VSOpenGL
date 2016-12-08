@@ -5,24 +5,18 @@
 
 namespace View
 {
-	struct ViewProps
-	{
-		int width;
-		int height;
-	};
-
 	class CameraOrtho
 	{
 	public:
 		CameraOrtho();
 		~CameraOrtho();
 
-		void Update(ViewProps viewProps);
-		Math3d::Matrix GetModelView() const;
+		void Update();
+		Math3d::Matrix GetView() const;
+		Math3d::Matrix GetProjection() const;
 	private:
-		Math3d::Matrix m_model;
-		Math3d::Matrix m_perspective;
-		Math3d::Matrix m_modelViewPerspective;
+		Math3d::Matrix m_view;
+		Math3d::Matrix m_proj;
 
 		float m_aspectRatio;
 		int m_viewportWidth;
@@ -37,7 +31,7 @@ namespace View
 
 		void Update();
 
-		void GetModelView(Math3d::Matrix& modelView) const;
+		void GetView(Math3d::Matrix& modelView) const;
 		void GetProjection(Math3d::Matrix& projection) const;
 
 		void GetPosition(Math3d::Vector3f& pos) const;
@@ -47,8 +41,8 @@ namespace View
 		void GetForward(Math3d::Vector3f& forward) const;
 
 	private:
-		Math3d::Matrix m_modelView;
-		Math3d::Matrix m_projection;
+		Math3d::Matrix m_view;
+		Math3d::Matrix m_proj;
 
 		Math3d::Vector3f m_up;
 		Math3d::Vector3f m_lookAt;

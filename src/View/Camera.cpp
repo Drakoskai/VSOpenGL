@@ -7,29 +7,24 @@ namespace View
 	using namespace Math3d;
 
 	CameraOrtho::CameraOrtho()
-		: m_aspectRatio(0), m_viewportWidth(0), m_viewportHeight(0) { }
+		: m_aspectRatio(0.0f), m_viewportWidth(DefaultWidth), m_viewportHeight(DefaultHeight)
+	{
+		m_aspectRatio = m_viewportWidth / static_cast<float>(m_viewportHeight);
+		m_proj = MakeOrtho(-m_aspectRatio, m_aspectRatio, -1.0f, 1.0f, 1.0f, -1.0f);
+	}
 
 	CameraOrtho::~CameraOrtho() { }
 
-	void CameraOrtho::Update(ViewProps viewProps)
+	void CameraOrtho::Update() 	{ }
+
+	Matrix CameraOrtho::GetView() const
 	{
-		int width = viewProps.width;
-		int height = viewProps.height;
-		if (height != m_viewportHeight || width != m_viewportWidth)
-		{
-			m_aspectRatio = width / static_cast<float>(height);
-		}
-
-		m_model.Identity();
-		m_model *= MakeRotationZ(static_cast<float>(glfwGetTime()));
-		m_perspective = MakeOrtho(-m_aspectRatio, m_aspectRatio, -1.0f, 1.0f, 1.0f, -1.0f);
-
-		m_modelViewPerspective = m_perspective * m_model;
+		return m_view;
 	}
 
-	Matrix CameraOrtho::GetModelView() const
+	Math3d::Matrix CameraOrtho::GetProjection() const
 	{
-		return m_modelViewPerspective;
+		return m_proj;
 	}
 
 	CameraPerspective::CameraPerspective()
@@ -38,19 +33,19 @@ namespace View
 		m_viewportWidth(DefaultWidth), m_viewportHeight(DefaultHeight)
 	{
 		m_up = Vector3f::Up;
+		m_proj = MakePerspective(m_fieldofView, m_screenAspect, m_nearClip, m_farClip);
 	}
 
 	CameraPerspective::~CameraPerspective() { }
 
 	void CameraPerspective::Update()
 	{
-		m_modelView = MakeLookAt(m_position, m_lookAt, m_up);
-		m_projection = MakePerspective(m_fieldofView, m_screenAspect, m_nearClip, m_farClip);
+		m_view = MakeLookAt(m_position, m_lookAt, m_up);	
 	}
 
-	void CameraPerspective::GetModelView(Matrix& modelView) const { modelView = m_modelView; }
+	void CameraPerspective::GetView(Matrix& modelView) const { modelView = m_view; }
 
-	void CameraPerspective::GetProjection(Matrix& projection) const { projection = m_projection; }
+	void CameraPerspective::GetProjection(Matrix& projection) const { projection = m_proj; }
 
 	void CameraPerspective::GetPosition(Vector3f& pos) const { pos = m_position; }
 

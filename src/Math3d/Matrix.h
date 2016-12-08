@@ -61,12 +61,11 @@ namespace Math3d
 
 	inline Matrix MakeTranslate(const float x, const float y, const float z)
 	{
-		Matrix matrix;
-		matrix[0][3] = x;
-		matrix[1][3] = y;
-		matrix[2][3] = z;
-
-		return matrix;
+		return Matrix(
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			x, y, z, 1.0f);
 	}
 
 	inline Matrix MakeTranslate(const Vector3f& vector)
@@ -97,14 +96,16 @@ namespace Math3d
 
 	inline Matrix MakePerspective(const float fieldOfView, const float screenAspect, const float zNear, const float zFar)
 	{
-		float const top = tan(fieldOfView * Geometry::DegToRad / 2) * zNear;
+		float angle = fieldOfView * Geometry::DegToRad;
+		float halfTan = tan(angle * 0.5f);
+		float top = halfTan * zNear;
 		float right = top * screenAspect;
 
 		Matrix m;
 		m[0][0] = zNear / right;
 		m[1][1] = zNear / top;
 		m[2][2] = -(zFar + zNear) / (zFar - zNear);
-		m[2][3] = -2.0f*zFar*zNear / (zFar - zNear);
+		m[2][3] = -2.0f * zFar * zNear / (zFar - zNear);
 		m[3][2] = -1.0f;
 
 		return m;
@@ -162,13 +163,13 @@ namespace Math3d
 
 	inline Matrix MakeLookAt(Vector4f eye, Vector4f lookAt, Vector4f up)
 	{
-		Vector4f n = Normalize(eye - lookAt);
+		Vector4f n = Normalize(lookAt - eye);
 		Vector4f u = Normalize(Cross(up, n));
 		Vector4f v = Normalize(Cross(n, u));
 		Vector4f t = Vector4f(0.0, 0.0, 0.0, 1.0);
 		Matrix matrix = Matrix(u, v, n, t);
 
-		return matrix * MakeTranslate(-eye);
+		return MakeTranslate(-eye);
 	}
 
 	inline Matrix Multiply(const Matrix& a, const Matrix& b)

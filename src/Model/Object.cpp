@@ -40,10 +40,10 @@ namespace Model
 
 	Transform& Object::GetTransform() { return m_transform; }
 
-	void Object::Update(const Matrix& proj)
+	void Object::Update(const Matrix& world)
 	{
 		m_transform.Update();
-		Matrix mvp = m_transform.GetModelMatrix() * proj;
+		m_mvp = m_transform.GetModelToClip() * world;
 	}
 
 	void Object::Draw() const

@@ -11,12 +11,13 @@ namespace Model
 		~Transform();
 
 		void Update();
-		void Translate(Math3d::Vector3f vector);
-		void Scale(Math3d::Vector3f vec);
-		void RotateX(float theta);
-		void RotateY(float theta);
-		void RotateZ(float theta);
-		Math3d::Matrix& GetModelMatrix();
+		void Translate(const Math3d::Vector3f& vector);
+		Transform& Scale(const float s);
+		Transform& Scale(const Math3d::Vector3f& vec);
+		Transform& RotateX(float theta);
+		Transform& RotateY(float theta);
+		Transform& RotateZ(float theta);
+		Math3d::Matrix& GetModelToClip();
 
 	private:
 		Math3d::Matrix m_scale;

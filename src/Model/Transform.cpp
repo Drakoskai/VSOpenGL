@@ -18,32 +18,42 @@ namespace Model
 		m_scale.Identity();
 	}
 
-	void Transform::Translate(Math3d::Vector3f vector)
+	void Transform::Translate(const Math3d::Vector3f& vector)
 	{
 		m_trans *= MakeTranslate(vector);
 	}
 
-	void Transform::Scale(Math3d::Vector3f vec)
+	Transform& Transform::Scale(const float s)
 	{
-		m_scale *= MakeScale(vec);
+		m_scale *= Math3d::MakeScale(Math3d::Vector3f(s));
+		return *this;
 	}
 
-	void Transform::RotateX(float theta)
+	Transform& Transform::Scale(const Math3d::Vector3f& vector)
+	{
+		m_scale *= MakeScale(vector);
+		return *this;
+	}
+
+	Transform& Transform::RotateX(float theta)
 	{
 		m_rot *= Math3d::MakeRotationX(theta);
+		return *this;
 	}
 
-	void Transform::RotateY(float theta)
+	Transform& Transform::RotateY(float theta)
 	{
 		m_rot *= Math3d::MakeRotationY(theta);
+		return *this;
 	}
 
-	void Transform::RotateZ(float theta)
+	Transform&  Transform::RotateZ(float theta)
 	{
 		m_rot *= Math3d::MakeRotationZ(theta);
+		return *this;
 	}
 
-	Math3d::Matrix& Transform::GetModelMatrix()
+	Math3d::Matrix& Transform::GetModelToClip()
 	{
 		return m_model;
 	}
