@@ -28,9 +28,8 @@ namespace Model
 		Matrix scale = MakeScale(m_scale);
 		Matrix rotation = MakeRotation(m_rotation);
 		Matrix translation = MakeTranslate(m_position);
-		
-		m_model.Identity();
-		m_model = translation * rotation * scale;
+		//scale *
+		m_model =  rotation * translation * scale;
 	}
 
 	Transform& Transform::Translate(const Vector3f& position)
@@ -58,6 +57,22 @@ namespace Model
 	Transform& Transform::Scale(const float s)
 	{
 		return Scale(Vector3f(s));
+	}
+
+	Transform& Transform::SetScale(const Math3d::Vector3f& scale)
+	{
+		m_scale = scale;
+		return *this;
+	}
+
+	Transform& Transform::SetScale(const float x, const float y, const float z)
+	{
+		return SetScale(Vector3f(x, y, z));
+	}
+
+	Transform& Transform::SetScale(const float s)
+	{
+		return SetScale(s, s, s);
 	}
 
 	Transform& Transform::Rotate(const Quaternion& rotation)

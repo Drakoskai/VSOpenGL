@@ -38,14 +38,14 @@ namespace Math3d
 		Vector2f operator*(const float s) const;
 		Vector2f operator/(const float s) const;
 
-		operator const GLfloat* () const
+		operator const float* () const
 		{
-			return static_cast<const GLfloat*>(&x);
+			return static_cast<const float*>(&x);
 		}
 
-		operator GLfloat* ()
+		operator float* ()
 		{
-			return static_cast<GLfloat*>(&x);
+			return static_cast<float*>(&x);
 		}
 
 		std::string ToString() const;
@@ -213,7 +213,6 @@ namespace Math3d
 		static const Vector4f UnitY;
 		static const Vector4f UnitZ;
 		static const Vector4f UnitW;
-
 	};
 
 	inline float Dot(const Vector4f& u, const Vector4f& v) {
@@ -221,7 +220,7 @@ namespace Math3d
 	}
 
 	inline float Length(const Vector4f& v) {
-		return std::sqrt(Dot(v, v));
+		return sqrtf(Dot(v, v));
 	}
 
 	inline Vector4f Normalize(const Vector4f& v) {

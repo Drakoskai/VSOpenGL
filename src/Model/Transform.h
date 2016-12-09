@@ -21,6 +21,9 @@ namespace Model
 		Transform& Scale(const Math3d::Vector3f& vec);
 		Transform& Scale(const float x, const float  y, const float z);
 		Transform& Scale(const float s);
+		Transform& SetScale(const Math3d::Vector3f& vec);
+		Transform& SetScale(const float x, const float  y, const float z);
+		Transform& SetScale(const float s);
 		Transform& Rotate(const Math3d::Quaternion& rotation);
 		Transform& RotateX(const float theta);
 		Transform& RotateY(const float theta);

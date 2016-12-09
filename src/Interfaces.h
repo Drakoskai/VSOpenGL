@@ -9,9 +9,9 @@ namespace View
 	static const int DefaultHeight = 720;
 	static const bool DefaultFullScreen = false;
 	static const bool DefaultVsynEnabled = true;
-	static const float DefaultScreenDepth = 100.0f;
+	static const float DefaultScreenDepth = 10000.0f;
 	static const float DefaultScreenNear = 0.1f;
-	static const float DefaultFieldOfView = 45.0f;
+	static const float DefaultFieldOfView = 75.0f;
 	static const float DefaultAspectRatio = static_cast<float>(DefaultWidth) / static_cast<float>(DefaultHeight);
 }
 

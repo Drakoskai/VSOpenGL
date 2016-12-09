@@ -17,37 +17,41 @@ namespace View
 	private:
 		Math3d::Matrix m_view;
 		Math3d::Matrix m_proj;
+		Math3d::Vector4f m_position;
 
 		float m_aspectRatio;
 		int m_viewportWidth;
 		int m_viewportHeight;
 	};
 
-	class CameraPerspective
+	class Camera
 	{
 	public:
-		CameraPerspective();
-		~CameraPerspective();
+		Camera();
+		~Camera();
 
 		void Update();
 
-		void GetView(Math3d::Matrix& modelView) const;
-		void GetProjection(Math3d::Matrix& projection) const;
+		Math3d::Matrix GetView() const;
+		Math3d::Matrix GetProj() const;
+		
+		void SetPosition(const Math3d::Vector4f& position);
+		void SetPosition(const float x, const float y, const float z);
+		Math3d::Vector4f GetPosition() const;
+		void SetRotation(const Math3d::Vector4f& rotation);
+		Math3d::Vector4f GetRotation() const;
 
-		void GetPosition(Math3d::Vector3f& pos) const;
-		void GetRotation(Math3d::Vector3f& rot) const;
-
-		void GetUp(Math3d::Vector3f& up) const;
-		void GetForward(Math3d::Vector3f& forward) const;
+		Math3d::Vector4f GetUp() const;
+		Math3d::Vector4f GetForward() const;
 
 	private:
 		Math3d::Matrix m_view;
 		Math3d::Matrix m_proj;
 
-		Math3d::Vector3f m_up;
-		Math3d::Vector3f m_lookAt;
-		Math3d::Vector3f m_position;
-		Math3d::Vector3f m_rotation;
+		Math3d::Vector4f m_up;
+		Math3d::Vector4f m_lookAt;
+		Math3d::Vector4f m_position;
+		Math3d::Vector4f m_rotation;
 
 		float m_nearClip;
 		float m_farClip;

@@ -90,62 +90,58 @@ namespace Math3d
 
 	Matrix Matrix::operator*(const float s) const
 	{
-		return Matrix(
+		return Matrix{
 			mat[0].x * s, mat[0].y * s, mat[0].z * s, mat[0].w * s,
 			mat[1].x * s, mat[1].y * s, mat[1].z * s, mat[1].w * s,
 			mat[2].x * s, mat[2].y * s, mat[2].z * s, mat[2].w * s,
-			mat[3].x * s, mat[3].y * s, mat[3].z * s, mat[3].w * s);
+			mat[3].x * s, mat[3].y * s, mat[3].z * s, mat[3].w * s };
 	}
 
-	Matrix Matrix::operator*(const Matrix& a) const
+	Matrix Matrix::operator*(const Matrix& other) const
 	{
-		Matrix dst;
-		const float *m1Ptr = reinterpret_cast<const float *>(this);
-		const float *m2Ptr = reinterpret_cast<const float *>(&a);
-		float * dstPtr = reinterpret_cast<float *>(&dst);
+		Vector4f X = other * mat[0];
+		Vector4f Y = other * mat[1];
+		Vector4f Z = other * mat[2];
+		Vector4f W = other * mat[3];
 
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				*dstPtr = m1Ptr[0] * m2Ptr[0 * 4 + j]
-					+ m1Ptr[1] * m2Ptr[1 * 4 + j]
-					+ m1Ptr[2] * m2Ptr[2 * 4 + j]
-					+ m1Ptr[3] * m2Ptr[3 * 4 + j];
-				dstPtr++;
-			}
-			m1Ptr += 4;
-		}
-
-		return dst;
+		return Matrix{ X, Y, Z, W };
 	}
 
-	Vector4f Matrix::operator*(const Vector4f& vec) const
+	Vector4f Matrix::operator*(const Vector4f& v) const
 	{
-		return Vector4f(
-			mat[0][0] * vec.x + mat[0][1] * vec.y + mat[0][2] * vec.z + mat[0][3] * vec.w,
-			mat[1][0] * vec.x + mat[1][1] * vec.y + mat[1][2] * vec.z + mat[1][3] * vec.w,
-			mat[2][0] * vec.x + mat[2][1] * vec.y + mat[2][2] * vec.z + mat[2][3] * vec.w,
-			mat[3][0] * vec.x + mat[3][1] * vec.y + mat[3][2] * vec.z + mat[3][3] * vec.w);
+		/*return Vector4f(
+			mat[0][0] * v.x + mat[0][1] * v.y + mat[0][2] * v.z + mat[0][3] * v.w,
+			mat[1][0] * v.x + mat[1][1] * v.y + mat[1][2] * v.z + mat[1][3] * v.w,
+			mat[2][0] * v.x + mat[2][1] * v.y + mat[2][2] * v.z + mat[2][3] * v.w,
+			mat[3][0] * v.x + mat[3][1] * v.y + mat[3][2] * v.z + mat[3][3] * v.w);*/
+
+		return Vector4f{
+			mat[0][0] * v.x + mat[1][0] * v.y + mat[2][0] * v.z + mat[3][0] * v.w,
+			mat[0][1] * v.x + mat[1][1] * v.y + mat[2][1] * v.z + mat[3][1] * v.w,
+			mat[0][2] * v.x + mat[1][2] * v.y + mat[2][2] * v.z + mat[3][2] * v.w,
+			mat[0][3] * v.x + mat[1][3] * v.y + mat[2][3] * v.z + mat[3][3] * v.w };
 	}
 
 	Vector3f Matrix::operator*(const Vector3f& vec) const
 	{
+
 		float s = mat[3].x * vec.x + mat[3].y * vec.y + mat[3].z * vec.z + mat[3].w;
 		if (s == 0.0f) {
-			return Vector3f(0.0f, 0.0f, 0.0f);
+			return Vector3f{ 0.0f, 0.0f, 0.0f };
 		}
 		if (s == 1.0f) {
-			return Vector3f(
+			return Vector3f{
 				mat[0].x * vec.x + mat[0].y * vec.y + mat[0].z * vec.z + mat[0].w,
 				mat[1].x * vec.x + mat[1].y * vec.y + mat[1].z * vec.z + mat[1].w,
-				mat[2].x * vec.x + mat[2].y * vec.y + mat[2].z * vec.z + mat[2].w);
+				mat[2].x * vec.x + mat[2].y * vec.y + mat[2].z * vec.z + mat[2].w };
 		}
 
 		float invS = 1.0f / s;
 
-		return Vector3f(
+		return Vector3f{
 			(mat[0].x * vec.x + mat[0].y * vec.y + mat[0].z * vec.z + mat[0].w) * invS,
 			(mat[1].x * vec.x + mat[1].y * vec.y + mat[1].z * vec.z + mat[1].w) * invS,
-			(mat[2].x * vec.x + mat[2].y * vec.y + mat[2].z * vec.z + mat[2].w) * invS);
+			(mat[2].x * vec.x + mat[2].y * vec.y + mat[2].z * vec.z + mat[2].w) * invS };
 	}
 
 	void Matrix::Identity()

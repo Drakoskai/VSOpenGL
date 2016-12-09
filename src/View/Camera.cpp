@@ -6,52 +6,38 @@ namespace View
 {
 	using namespace Math3d;
 
-	CameraOrtho::CameraOrtho()
-		: m_aspectRatio(0.0f), m_viewportWidth(DefaultWidth), m_viewportHeight(DefaultHeight)
-	{
-		m_aspectRatio = m_viewportWidth / static_cast<float>(m_viewportHeight);
-		m_proj = MakeOrtho(-m_aspectRatio, m_aspectRatio, -1.0f, 1.0f, 1.0f, -1.0f);
-	}
-
-	CameraOrtho::~CameraOrtho() { }
-
-	void CameraOrtho::Update() 	{ }
-
-	Matrix CameraOrtho::GetView() const
-	{
-		return m_view;
-	}
-
-	Math3d::Matrix CameraOrtho::GetProjection() const
-	{
-		return m_proj;
-	}
-
-	CameraPerspective::CameraPerspective()
+	Camera::Camera()
 		: m_nearClip(DefaultScreenNear), m_farClip(DefaultScreenDepth),
 		m_fieldofView(DefaultFieldOfView), m_screenAspect(DefaultAspectRatio),
 		m_viewportWidth(DefaultWidth), m_viewportHeight(DefaultHeight)
 	{
-		m_up = Vector3f::Up;
-		m_proj = MakePerspective(m_fieldofView, m_screenAspect, m_nearClip, m_farClip);
+		m_proj = MakePerspectiveRH(Angle::FromDegrees(m_fieldofView), m_screenAspect, m_nearClip, m_farClip);
 	}
 
-	CameraPerspective::~CameraPerspective() { }
+	Camera::~Camera() { }
 
-	void CameraPerspective::Update()
+	void Camera::Update()
 	{
-		m_view = MakeLookAt(m_position, m_lookAt, m_up);	
+		Vector4f focus = m_position + Vector4f::UnitZ;
+		Vector4f up = Vector4f::UnitY;
+		m_view = MakeLookAtRH(m_position, focus, up);
 	}
 
-	void CameraPerspective::GetView(Matrix& modelView) const { modelView = m_view; }
+	Matrix Camera::GetView() const { return m_view; }
 
-	void CameraPerspective::GetProjection(Matrix& projection) const { projection = m_proj; }
+	Matrix Camera::GetProj() const { return m_proj; }
 
-	void CameraPerspective::GetPosition(Vector3f& pos) const { pos = m_position; }
+	void Camera::SetPosition(const Math3d::Vector4f& position) { m_position = position; }
+	
+	void Camera::SetPosition(const float x, const float y, const float z) { SetPosition(Vector4f(x, y, z)); }
 
-	void CameraPerspective::GetRotation(Vector3f& rot) const { rot = m_rotation; }
+	Vector4f Camera::GetPosition() const { return m_position; }
 
-	void CameraPerspective::GetUp(Vector3f& up) const { up = m_up; }
+	void Camera::SetRotation(const Math3d::Vector4f& rotation) { m_rotation = rotation; }
 
-	void CameraPerspective::GetForward(Vector3f& forward) const { forward = m_lookAt; }
+	Vector4f Camera::GetRotation() const { return m_rotation; }
+
+	Vector4f Camera::GetUp() const { return m_up; }
+
+	Vector4f Camera::GetForward() const { return m_lookAt; }
 }

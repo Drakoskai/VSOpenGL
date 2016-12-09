@@ -14,19 +14,19 @@ namespace OpenGL
 
 	VertexBufferObject::~VertexBufferObject()
 	{
-		if (glIsBuffer(m_indexBuffer))
+		if (m_indexBuffer != 0)
 		{
 			glDeleteBuffers(1, &m_indexBuffer);
 			m_indexBuffer = 0;
 		}
 
-		if (glIsBuffer(m_attributeBuffer))
+		if (m_attributeBuffer != 0)
 		{
 			glDeleteBuffers(1, &m_attributeBuffer);
 			m_attributeBuffer = 0;
 		}
 
-		if (glIsVertexArray(m_vao))
+		if (m_vao != 0)
 		{
 			glDeleteVertexArrays(1, &m_vao);
 			m_vao = 0;
@@ -53,11 +53,12 @@ namespace OpenGL
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_attributeBuffer);
 		glBufferStorage(GL_ARRAY_BUFFER, m_info.size, &verts[0], 0);
+		
 
 		glCreateBuffers(1, &m_indexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 		glBufferStorage(GL_ELEMENT_ARRAY_BUFFER, m_info.numIndices, &indices[0], 0);
-
+		
 		uint64_t offset = 0;
 		for (uint32_t i = 0; i < m_info.numAttribs; i++)
 		{
@@ -65,6 +66,8 @@ namespace OpenGL
 			offset += m_attributes[i].offset;
 		}
 
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		glBindVertexArray(0);
 	}
 

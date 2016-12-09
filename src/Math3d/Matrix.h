@@ -63,11 +63,12 @@ namespace Math3d
 
 	inline Matrix MakeTranslate(const float x, const float y, const float z)
 	{
-		return Matrix(
-			1.0f, 0.0f, 0.0f, x,
-			0.0f, 1.0f, 0.0f, y,
-			0.0f, 0.0f, 1.0f, z,
-			0.0f, 0.0f, 0.0f, 1.0f);
+
+		return Matrix{
+			1.0f, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f, 0.0f, 0.0f,
+			0.0f, 0.0f, 1.0f, 0.0f,
+			x, y, z, 1.0f };
 	}
 
 	inline Matrix MakeTranslate(const Vector3f& vector)
@@ -82,11 +83,11 @@ namespace Math3d
 
 	inline Matrix MakeScale(const float x, const float y, const float z)
 	{
-		return Matrix(
+		return Matrix{
 			x, 0.0f, 0.0f, 0.0f,
 			0.0f, y, 0.0f, 0.0f,
 			0.0f, 0.0f, z, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);
+			0.0f, 0.0f, 0.0f, 1.0f };
 	}
 
 	inline Matrix MakeScale(const Vector3f& vector)
@@ -94,33 +95,46 @@ namespace Math3d
 		return MakeScale(vector.x, vector.y, vector.z);
 	}
 
-	inline Matrix MakePerspective(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
+	inline Matrix MakePerspectiveRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
 	{
-		float f = 1.0f / fieldOfView.TanHalfAngle();
-		return Matrix(
-			1.0f / f, 0.0f, 0.0f, 0.0f,
-			0.0f, f, 0.0f, 0.0f,
-			0.0f, 0.0f, (zFar + zNear) / (zFar - zNear), 2.0f * zFar * zNear / (zFar - zNear),
-			0.0f, 0.0f, -1.0f, 0.0f);
+		float tanHalfFovy = fieldOfView.TanHalfAngle();
 
+		float zRange = zFar - zNear;
+		return Matrix{
+			1.0f / (screenAspect * tanHalfFovy), 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f,
+			0.0f, 0.0f, -(zFar + zNear) / zRange, -1.0f,
+			0.0f, 0.0f, -(2.0f * zFar * zNear) / zRange, 0.0f };
+	}
+
+	inline Matrix MakePerspectiveLH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
+	{
+		float tanHalfFovy = fieldOfView.TanHalfAngle();
+		float zRange = zFar - zNear;
+
+		return Matrix{
+			1.0f / (screenAspect * tanHalfFovy), 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f,
+			0.0f, 0.0f, -(zFar + zNear) / zRange, 1.0f,
+			0.0f, 0.0f, -(2.0f * zFar * zNear) / zRange, 0.0f };
 	}
 
 	inline Matrix MakePerspective(const Angle& fieldOfView, const float vWidth, const float vHeight, const float zNear, const float zFar)
 	{
-		float scale = 1.0f / fieldOfView.TanHalfAngle();
+		float top = 1.0f / fieldOfView.TanHalfAngle();
 		float aspect = vWidth / vHeight;
-		float zRange = zNear - zFar;
+		float zRange = zFar - zNear;
 
 		return Matrix(
-			scale / aspect, 0.0f, 0.0f, 0.0f,
-			0.0f, scale, 0.0f, 0.0f,
-			0.0f, 0.0f, (zFar + zNear) / zRange, 2 * zFar * zNear / zRange,
-			0.0f, 0.0f, -1.0f, 0.0f);
+			zNear / (top * aspect), 0.0f, 0.0f, 0.0f,
+			0.0f, zNear / top, 0.0f, 0.0f,
+			0.0f, 0.0f, -(zFar + zNear) / zRange, -2.f * zFar * zNear / zRange,
+			0.0f, 0.0f, -1.0f, 1.0f);
 	}
 
 	inline Matrix MakePerspective(const float fieldOfView, const float screenAspect, const float zNear, const float zFar)
 	{
-		return MakePerspective(Angle::FromDegrees(fieldOfView), screenAspect, zNear, zFar);
+		return MakePerspectiveRH(Angle::FromDegrees(fieldOfView), screenAspect, zNear, zFar);
 	}
 
 	inline Matrix MakeOrtho(const float left, const float right, const float bottom, const float top, const float zNear, const float zFar)
@@ -169,9 +183,8 @@ namespace Math3d
 		return matrix;
 	}
 
-	inline Matrix MakeRotation(const Quaternion& quaternion)
+	inline Matrix MakeRotation(const Quaternion& rot)
 	{
-		Quaternion rot = quaternion.Normalize();
 		return Matrix(
 			1.0f - 2.0f * rot.y * rot.y - 2.0f * rot.z * rot.z,
 			2.0f * rot.x * rot.y - 2.0f * rot.w * rot.z,
@@ -185,19 +198,34 @@ namespace Math3d
 			0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
-	inline Matrix MakeLookAt(Vector4f eye, Vector4f lookAt, Vector4f up)
+	inline Matrix MakeLookAtRH(Vector4f eye, Vector4f lookAt, Vector4f up)
 	{
-		Vector4f forward = lookAt - eye;
-		Vector4f f = Normalize(forward);
-		Vector4f s = Normalize(Cross(f, up));
-		Vector4f u = Normalize(Cross(s, f));
+		Vector4f zAxis = Normalize(eye - lookAt);
+		Vector4f xAxis = Normalize(Cross(up, zAxis));
+		Vector4f yAxis = Normalize(Cross(zAxis, xAxis));
 
-		Matrix axes = Matrix(
-			s.x, s.y, s.z, 0.0,
-			u.x, u.y, u.z, 0.0,
-			-f.x, -f.y, -f.z, 0.0,
-			0.0, 0.0, 0.0, 1.0);
-		return axes *  MakeTranslate(-eye);;
+		Matrix view = {
+			Vector4f(xAxis.x, yAxis.x, zAxis.x, 0.0f),
+			Vector4f(xAxis.y, yAxis.y, zAxis.y, 0.0f),
+			Vector4f(xAxis.z, yAxis.z, zAxis.z, 0.0f),
+			Vector4f(-Dot(xAxis, eye), -Dot(yAxis, eye), -Dot(zAxis, eye), 1.0f) };
+
+		return view;
+	}
+
+	inline Matrix MakeLookAtLH(Vector4f eye, Vector4f lookAt, Vector4f up)
+	{
+		Vector4f zAxis = Normalize(eye - lookAt);
+		Vector4f xAxis = Normalize(Cross(up, zAxis));
+		Vector4f yAxis = Normalize(Cross(zAxis, xAxis));
+
+		Matrix view = {
+			Vector4f(xAxis.x, yAxis.x, zAxis.x, 0.0f),
+			Vector4f(xAxis.y, yAxis.y, zAxis.y, 0.0f),
+			Vector4f(xAxis.z, yAxis.z, zAxis.z, 0.0f),
+			Vector4f(-Dot(xAxis, eye), -Dot(yAxis, eye), -Dot(zAxis, eye), 1.0f) };
+
+		return view;
 	}
 
 	inline Matrix Multiply(const Matrix& a, const Matrix& b)

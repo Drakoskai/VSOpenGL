@@ -14,7 +14,7 @@ namespace Model
 		~Object();
 
 		Transform& GetTransform();
-		void Update(const Math3d::Matrix& view);
+		void Update(const Math3d::Matrix& viewProj);
 		void Draw() const;
 
 	private:

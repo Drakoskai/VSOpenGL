@@ -1,38 +1,8 @@
 #include "pch.h"
 #include "GL/GLDevice.h"
 #include "Model/Object.h"
-#include "Math3d/Angle.h"
 #include "Util/SimpleTimer.h"
-
-class PerspectiveCamera
-{
-public:
-	PerspectiveCamera()
-	{
-		using namespace Math3d;
-		m_position = -Vector4f::UnitZ;
-		m_position += Vector4f(0, 0, -4);
-		m_fieldOfView = Angle::FromDegrees(View::DefaultFieldOfView);
-		m_projection = MakePerspective(m_fieldOfView, View::DefaultWidth, View::DefaultHeight, View::DefaultScreenNear, View::DefaultScreenDepth);
-	}
-
-	~PerspectiveCamera() { }
-
-	void Update()
-	{
-		using namespace Math3d;
-
-		Vector4f focus = m_position + Vector4f::UnitZ;
-		Vector4f up = Vector4f::UnitY;
-		m_view = MakeLookAt(m_position, focus, up);
-	}
-
-	Math3d::Angle m_fieldOfView;
-
-	Math3d::Vector4f m_position;
-	Math3d::Matrix m_view;
-	Math3d::Matrix m_projection;
-};
+#include "View/Camera.h"
 
 int main(int, char**)
 {
@@ -44,15 +14,18 @@ int main(int, char**)
 	GLFWwindow* window = device->GetWindow();
 	SimpleTimer timer = SimpleTimer();
 
-	PerspectiveCamera camera = PerspectiveCamera();
+	View::Camera camera = View::Camera();
+	camera.SetPosition(0, 0, -3);
 
-	Object object = Object("Assets/Meshes/teapot.obj");
+	Object teapot = Object("Assets/Meshes/teapot.obj");
+	teapot.GetTransform()
+		.SetScale(0.8f)
+		.Translate(-4, 0, 0)
+		.RotateX(15.0f);
 
-	Angle initXRot = Angle::FromDegrees(15.0f);
-
-	object.GetTransform()
-		//.Scale(0.3f)
-		//.Translate(0, 0, 5)
+	Object cube = Object("Assets/Meshes/cube.obj");
+	cube.GetTransform()
+		.Translate(3, 2, 0)
 		.RotateX(15.0f);
 
 	float smooth = 1.0f;
@@ -64,15 +37,21 @@ int main(int, char**)
 		timer.Update();
 		camera.Update();
 
-		object.GetTransform()
+		teapot.GetTransform()
 			.RotateY(smooth * 20 * timer.GetDeltaTime());
-		Matrix model;
-		Matrix mvp = camera.m_projection * camera.m_view * model;
-		object.Update(mvp);
+
+		cube.GetTransform()
+			.RotateY(smooth * 20 * timer.GetDeltaTime());
+
+		Matrix viewProj = camera.GetView() * camera.GetProj();
+		
+		cube.Update(viewProj);
+		teapot.Update(viewProj);
 
 		device->BeginScene();
 
-		object.Draw();
+		teapot.Draw();
+		cube.Draw();
 
 		device->EndScene();
 	}

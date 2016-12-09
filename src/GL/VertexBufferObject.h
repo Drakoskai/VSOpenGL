@@ -35,6 +35,7 @@ namespace OpenGL
 	private:
 		void GatherInfo(const std::vector<Model::Vertex>& verts, const std::vector<GLuint>& indices);
 		void CreateAttribute(GLuint const index, const GLvoid* pointer) const;
+
 		GLuint m_vao;
 		GLuint m_attributeBuffer;
 		GLuint m_indexBuffer;
