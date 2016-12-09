@@ -105,7 +105,7 @@ namespace OpenGL
 		}
 	}
 
-	void VertexBufferObject::CreateAttribute(const GLuint index, const GLvoid * pointer) const
+	void VertexBufferObject::CreateAttribute(const GLuint index, const GLvoid* pointer) const
 	{
 		glEnableVertexAttribArray(index);
 		glVertexAttribPointer(index, m_attributes[index].size, m_attributes[index].type, m_attributes[index].normalized, m_info.stride, pointer);

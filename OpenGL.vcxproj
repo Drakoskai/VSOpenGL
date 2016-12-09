@@ -30,6 +30,7 @@
     <ClInclude Include="src\Math3d\Geometry.h" />
     <ClInclude Include="src\Math3d\Matrix.h" />
     <ClInclude Include="src\Math3d\Plane.h" />
+    <ClInclude Include="src\Math3d\Quaternion.h" />
     <ClInclude Include="src\Math3d\Vector.h" />
     <ClInclude Include="src\Model\Object.h" />
     <ClInclude Include="src\Model\Teapot.h" />
@@ -37,6 +38,7 @@
     <ClInclude Include="src\Model\Vertex.h" />
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\Util\ObjFile.h" />
+    <ClInclude Include="src\Util\SimpleTimer.h" />
     <ClInclude Include="src\Util\Util.h" />
     <ClInclude Include="src\View\Camera.h" />
   </ItemGroup>

@@ -5,6 +5,8 @@
 
 namespace Math3d
 {
+	struct Matrix;
+
 #pragma region Vector2f
 
 	struct Vector2f
@@ -190,19 +192,20 @@ namespace Math3d
 			return is >> v.x >> v.y >> v.z >> v.w;
 		}
 
-		operator const GLfloat* () const
+		operator const float* () const
 		{
-			return static_cast<const GLfloat*>(&x);
+			return static_cast<const float*>(&x);
 		}
 
-		operator GLfloat* ()
+		operator float* ()
 		{
-			return static_cast<GLfloat*>(&x);
+			return static_cast<float*>(&x);
 		}
 
 		float Dot(const Vector4f& v) const;
 		float Length() const;
 		Vector4f Normalize() const;
+		Vector4f Transform(const Matrix& matrix) const;
 
 		static const Vector4f Zero;
 		static const Vector4f One;

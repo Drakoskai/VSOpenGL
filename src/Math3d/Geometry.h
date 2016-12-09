@@ -13,7 +13,6 @@ namespace Math3d
 		static const float RadToDeg = 180.0f / PI;
 		static const float Infinity = 1e30f;
 
-
 		float InvSqrt(const float x);
 	}
 }

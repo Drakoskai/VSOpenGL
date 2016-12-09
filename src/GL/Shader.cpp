@@ -5,7 +5,7 @@
 namespace OpenGL
 {
 	Shader::Shader(std::vector<ShaderInfo> shaders)
-		: m_shaderProg(0), m_uniformMVP(0), m_uniformModelView(0), m_numShaders(0), m_shaderInfo(shaders)
+		: m_shaderProg(0), m_uniformMVP(0), m_uniformModel(0), m_numShaders(0), m_shaderInfo(shaders)
 	{
 		m_shaderProg = LoadShaders(&shaders[0]);
 		assert(m_shaderProg != 0);
@@ -15,7 +15,6 @@ namespace OpenGL
 	{
 		if (m_shaderProg != 0)
 		{
-			glUseProgram(0);
 			glDeleteProgram(m_shaderProg);
 			m_shaderProg = 0;
 		}

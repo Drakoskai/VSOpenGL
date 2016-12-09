@@ -105,6 +105,12 @@
     <ClInclude Include="src\GL\OpenGL.h">
       <Filter>Header Files\GL</Filter>
     </ClInclude>
+    <ClInclude Include="src\Math3d\Quaternion.h">
+      <Filter>Header Files\Math3d</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Util\SimpleTimer.h">
+      <Filter>Header Files\Util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">

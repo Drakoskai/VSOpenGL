@@ -2,7 +2,9 @@
 
 #include "Vector.h"
 #include "Geometry.h"
-#include "../GL/glad.h"
+#include "Angle.h"
+#include "Quaternion.h"
+
 namespace Math3d
 {
 	struct Matrix
@@ -33,9 +35,9 @@ namespace Math3d
 		Vector4f operator*(const Vector4f& other) const;
 		Vector3f Matrix::operator*(const Vector3f& vec) const;
 
-		operator const GLfloat* () const
+		operator const float* () const
 		{
-			return static_cast<const GLfloat*>(&mat[0].x);
+			return static_cast<const float*>(&mat[0].x);
 		}
 
 		operator float* ()
@@ -62,10 +64,10 @@ namespace Math3d
 	inline Matrix MakeTranslate(const float x, const float y, const float z)
 	{
 		return Matrix(
-			1.0f, 0.0f, 0.0f, 0.0f,
-			0.0f, 1.0f, 0.0f, 0.0f,
-			0.0f, 0.0f, 1.0f, 0.0f,
-			x, y, z, 1.0f);
+			1.0f, 0.0f, 0.0f, x,
+			0.0f, 1.0f, 0.0f, y,
+			0.0f, 0.0f, 1.0f, z,
+			0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	inline Matrix MakeTranslate(const Vector3f& vector)
@@ -80,13 +82,11 @@ namespace Math3d
 
 	inline Matrix MakeScale(const float x, const float y, const float z)
 	{
-		Matrix m;
-		m.mat[0][0] = x;
-		m.mat[1][1] = y;
-		m.mat[2][2] = z;
-		m.mat[3][3] = 1.0f;
-
-		return m;
+		return Matrix(
+			x, 0.0f, 0.0f, 0.0f,
+			0.0f, y, 0.0f, 0.0f,
+			0.0f, 0.0f, z, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
 	inline Matrix MakeScale(const Vector3f& vector)
@@ -94,40 +94,47 @@ namespace Math3d
 		return MakeScale(vector.x, vector.y, vector.z);
 	}
 
+	inline Matrix MakePerspective(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
+	{
+		float f = 1.0f / fieldOfView.TanHalfAngle();
+		return Matrix(
+			1.0f / f, 0.0f, 0.0f, 0.0f,
+			0.0f, f, 0.0f, 0.0f,
+			0.0f, 0.0f, (zFar + zNear) / (zFar - zNear), 2.0f * zFar * zNear / (zFar - zNear),
+			0.0f, 0.0f, -1.0f, 0.0f);
+
+	}
+
+	inline Matrix MakePerspective(const Angle& fieldOfView, const float vWidth, const float vHeight, const float zNear, const float zFar)
+	{
+		float scale = 1.0f / fieldOfView.TanHalfAngle();
+		float aspect = vWidth / vHeight;
+		float zRange = zNear - zFar;
+
+		return Matrix(
+			scale / aspect, 0.0f, 0.0f, 0.0f,
+			0.0f, scale, 0.0f, 0.0f,
+			0.0f, 0.0f, (zFar + zNear) / zRange, 2 * zFar * zNear / zRange,
+			0.0f, 0.0f, -1.0f, 0.0f);
+	}
+
 	inline Matrix MakePerspective(const float fieldOfView, const float screenAspect, const float zNear, const float zFar)
 	{
-		float angle = fieldOfView * Geometry::DegToRad;
-		float halfTan = tan(angle * 0.5f);
-		float top = halfTan * zNear;
-		float right = top * screenAspect;
-
-		Matrix m;
-		m[0][0] = zNear / right;
-		m[1][1] = zNear / top;
-		m[2][2] = -(zFar + zNear) / (zFar - zNear);
-		m[2][3] = -2.0f * zFar * zNear / (zFar - zNear);
-		m[3][2] = -1.0f;
-
-		return m;
+		return MakePerspective(Angle::FromDegrees(fieldOfView), screenAspect, zNear, zFar);
 	}
 
 	inline Matrix MakeOrtho(const float left, const float right, const float bottom, const float top, const float zNear, const float zFar)
 	{
-		Matrix m;
-		m[0][0] = 2.0f / (right - left);
-		m[1][1] = 2.0f / (top - bottom);
-		m[2][2] = 2.0f / (zNear - zFar);
-		m[3][3] = 1.0f;
-		m[0][3] = -(right + left) / (right - left);
-		m[1][3] = -(top + bottom) / (top - bottom);
-		m[2][3] = -(zFar + zNear) / (zFar - zNear);
-
-		return m;
+		return Matrix(
+			2.0f / (right - left), 0.0f, 0.0f, -(right + left) / (right - left),
+			0.0f, 2.0f / (top - bottom), 0.0f, -(top + bottom) / (top - bottom),
+			0.0f, 0.0f, 2.0f / (zNear - zFar), -(zFar + zNear) / (zFar - zNear),
+			0.0f, 0.0f, 0.0f, 1.0f);
 	}
 
-	inline Matrix MakeRotationX(const GLfloat theta)
+	inline Matrix MakeRotationX(const float theta)
 	{
-		GLfloat angle = Geometry::DegToRad * theta;
+		float angle = Geometry::DegToRad * theta;
 
 		Matrix matrix;
 		matrix[2][2] = matrix[1][1] = cos(angle);
@@ -137,9 +144,9 @@ namespace Math3d
 		return matrix;
 	}
 
-	inline Matrix MakeRotationY(const GLfloat theta)
+	inline Matrix MakeRotationY(const float theta)
 	{
-		GLfloat angle = Geometry::DegToRad * theta;
+		float angle = Geometry::DegToRad * theta;
 
 		Matrix matrix;
 		matrix[2][2] = matrix[0][0] = cos(angle);
@@ -151,6 +158,7 @@ namespace Math3d
 
 	inline Matrix MakeRotationZ(const float theta)
 	{
+
 		float angle = Geometry::DegToRad * theta;
 
 		Matrix matrix;
@@ -161,15 +169,35 @@ namespace Math3d
 		return matrix;
 	}
 
+	inline Matrix MakeRotation(const Quaternion& quaternion)
+	{
+		Quaternion rot = quaternion.Normalize();
+		return Matrix(
+			1.0f - 2.0f * rot.y * rot.y - 2.0f * rot.z * rot.z,
+			2.0f * rot.x * rot.y - 2.0f * rot.w * rot.z,
+			2.0f * rot.x * rot.z + 2.0f * rot.w * rot.y, 0.0f,
+			2.0f * rot.x * rot.y + 2.0f * rot.w * rot.z,
+			1.0f - 2.0f * rot.x * rot.x - 2.0f * rot.z * rot.z,
+			2.0f * rot.y * rot.z - 2.0f * rot.w * rot.x, 0.0f,
+			2.0f * rot.x * rot.z - 2.0f * rot.w * rot.y,
+			2.0f * rot.y * rot.z + 2.0f * rot.x * rot.w,
+			1.0f - 2.0f * rot.x * rot.x - 2.0f * rot.y * rot.y, 0.0f,
+			0.0f, 0.0f, 0.0f, 1.0f);
+	}
+
 	inline Matrix MakeLookAt(Vector4f eye, Vector4f lookAt, Vector4f up)
 	{
-		Vector4f n = Normalize(lookAt - eye);
-		Vector4f u = Normalize(Cross(up, n));
-		Vector4f v = Normalize(Cross(n, u));
-		Vector4f t = Vector4f(0.0, 0.0, 0.0, 1.0);
-		Matrix matrix = Matrix(u, v, n, t);
+		Vector4f forward = lookAt - eye;
+		Vector4f f = Normalize(forward);
+		Vector4f s = Normalize(Cross(f, up));
+		Vector4f u = Normalize(Cross(s, f));
 
-		return MakeTranslate(-eye);
+		Matrix axes = Matrix(
+			s.x, s.y, s.z, 0.0,
+			u.x, u.y, u.z, 0.0,
+			-f.x, -f.y, -f.z, 0.0,
+			0.0, 0.0, 0.0, 1.0);
+		return axes *  MakeTranslate(-eye);;
 	}
 
 	inline Matrix Multiply(const Matrix& a, const Matrix& b)

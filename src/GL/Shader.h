@@ -25,7 +25,7 @@ namespace OpenGL
 
 		GLuint m_shaderProg;
 		GLint m_uniformMVP;
-		GLint m_uniformModelView;
+		GLint m_uniformModel;
 		uint32_t m_numShaders;
 
 		std::vector<ShaderInfo> m_shaderInfo;

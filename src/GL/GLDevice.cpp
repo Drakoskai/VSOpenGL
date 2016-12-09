@@ -34,7 +34,7 @@ namespace OpenGL
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 		glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-		m_window = glfwCreateWindow(800, 600, "", nullptr, nullptr);
+		m_window = glfwCreateWindow(View::DefaultWidth, View::DefaultHeight, "", nullptr, nullptr);
 
 		glfwMakeContextCurrent(m_window);
 		if (!m_window)
@@ -69,7 +69,8 @@ namespace OpenGL
 		}
 
 		Util::DebugPrintF("OpenGL %s, GLSL %s\n", glGetString(GL_VERSION), glGetString(GL_SHADING_LANGUAGE_VERSION));
-
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
 		return true;
 	}
 

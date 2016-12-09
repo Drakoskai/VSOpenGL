@@ -32,24 +32,25 @@ namespace Model
 		m_shader = new Shader(shaders);
 
 		m_shader->Set();
-		m_shader->m_uniformMVP = glGetUniformLocation(m_shader->m_shaderProg, "modelViewProject");
-		m_shader->Unset();
+		m_shader->m_uniformMVP = glGetUniformLocation(m_shader->m_shaderProg, "mvp");	
+		m_shader->m_uniformModel = glGetUniformLocation(m_shader->m_shaderProg, "model");
 
 		return true;
 	}
 
 	Transform& Object::GetTransform() { return m_transform; }
 
-	void Object::Update(const Matrix& world)
+	void Object::Update(const Matrix& mvp)
 	{
 		m_transform.Update();
-		m_mvp = m_transform.GetModelToClip() * world;
+		m_mvp = mvp;
 	}
 
 	void Object::Draw() const
 	{
 		m_shader->Set();
 		glUniformMatrix4fv(m_shader->m_uniformMVP, 1, GL_FALSE, m_mvp);
+		glUniformMatrix4fv(m_shader->m_uniformModel, 1, GL_FALSE, m_transform.GetModelToClip());
 		m_object.Render();
 		m_shader->Unset();
 	}

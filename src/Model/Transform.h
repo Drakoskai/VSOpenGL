@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Math3d/Matrix.h"
+#include "../Math3d/Quaternion.h"
 
 namespace Model
 {
@@ -11,18 +12,25 @@ namespace Model
 		~Transform();
 
 		void Update();
-		void Translate(const Math3d::Vector3f& vector);
-		Transform& Scale(const float s);
+
+		void SetRotation(const Math3d::Quaternion& rotation);
+		Math3d::Quaternion GetRotation() const;
+
+		Transform& Translate(const Math3d::Vector3f& vector);
+		Transform& Translate(float x, const float  y, const float z);
 		Transform& Scale(const Math3d::Vector3f& vec);
-		Transform& RotateX(float theta);
-		Transform& RotateY(float theta);
-		Transform& RotateZ(float theta);
-		Math3d::Matrix& GetModelToClip();
+		Transform& Scale(const float x, const float  y, const float z);
+		Transform& Scale(const float s);
+		Transform& Rotate(const Math3d::Quaternion& rotation);
+		Transform& RotateX(const float theta);
+		Transform& RotateY(const float theta);
+		Transform& RotateZ(const float theta);
+		Math3d::Matrix GetModelToClip() const;
 
 	private:
-		Math3d::Matrix m_scale;
-		Math3d::Matrix m_trans;
-		Math3d::Matrix m_rot;
+		Math3d::Vector3f m_position;
+		Math3d::Quaternion m_rotation;
+		Math3d::Vector3f m_scale;
 		Math3d::Matrix m_model;
 	};
 }

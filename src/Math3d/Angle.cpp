@@ -40,7 +40,7 @@ namespace Math3d
 
 	float Angle::TanHalfAngle() const
 	{
-		return tan(0.5f * radians);
+		return tanf(0.5f * radians);
 	}
 
 	Angle Angle::FromDegrees(float degrees)
@@ -52,4 +52,6 @@ namespace Math3d
 	{
 		return Angle(Geometry::RadToDeg * radians, radians);
 	}
+
+	const Angle Angle::Zero = FromDegrees(0.0f);
 }
