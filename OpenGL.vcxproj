@@ -54,6 +54,7 @@
     <ClCompile Include="src\Math3d\Geometry.cpp" />
     <ClCompile Include="src\Math3d\Matrix.cpp" />
     <ClCompile Include="src\Math3d\Plane.cpp" />
+    <ClCompile Include="src\Math3d\Quaternion.cpp" />
     <ClCompile Include="src\Math3d\Vector.cpp" />
     <ClCompile Include="src\Model\Object.cpp" />
     <ClCompile Include="src\Model\Transform.cpp" />

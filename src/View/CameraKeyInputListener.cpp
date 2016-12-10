@@ -10,13 +10,17 @@ CameraKeyListener::~CameraKeyListener() { }
 
 void CameraKeyListener::Update(float deltaTime)
 {
+	float speedCoefficent = 35.0f;
+	float dragCoefficent = 1.0f;
+
 	Math3d::Vector4f pos = m_camera->
 		GetTransform()
 		.GetPosition();
 
-	float angle = m_camera->
+	Math3d::Angle angle = m_camera->
 		GetTransform()
-		.GetRotation().y;
+		.GetRotation()
+		.GetRotationY();
 
 	float positionX = pos.x;
 	float positionY = pos.y;
@@ -26,88 +30,88 @@ void CameraKeyListener::Update(float deltaTime)
 	{
 		m_rightStrafeSpeed += deltaTime * 1.0f;
 
-		if (m_rightStrafeSpeed > deltaTime * 50.0f)
+		if (m_rightStrafeSpeed > deltaTime * speedCoefficent)
 		{
-			m_rightStrafeSpeed = deltaTime * 50.0f;
+			m_rightStrafeSpeed = deltaTime * speedCoefficent;
 		}
-		positionX -= cosf(angle) * m_rightStrafeSpeed;
-		positionZ -= sinf(angle) * m_rightStrafeSpeed;
+		positionX -= angle.Cos() * m_rightStrafeSpeed;
+		positionZ -= angle.Sin() * m_rightStrafeSpeed;
 	}
 	else
 	{
-		m_rightStrafeSpeed -= deltaTime * 0.5f;
+		m_rightStrafeSpeed -= deltaTime * dragCoefficent;
 
 		if (m_rightStrafeSpeed < 0.0f)
 		{
 			m_rightStrafeSpeed = 0.0f;
 		}
-		positionX -= cosf(angle) * m_rightStrafeSpeed;
-		positionZ -= sinf(angle) * m_rightStrafeSpeed;
+		positionX -= angle.Cos() * m_rightStrafeSpeed;
+		positionZ -= angle.Sin() * m_rightStrafeSpeed;
 	}
 	if (m_left)
 	{
 		m_leftStrafeSpeed += deltaTime * 1.0f;
 
-		if (m_leftStrafeSpeed > deltaTime * 50.0f)
+		if (m_leftStrafeSpeed > deltaTime *speedCoefficent)
 		{
-			m_leftStrafeSpeed = deltaTime * 50.0f;
+			m_leftStrafeSpeed = deltaTime * speedCoefficent;
 		}
-		positionX += cosf(angle) * m_leftStrafeSpeed;
-		positionZ += sinf(angle) * m_leftStrafeSpeed;
+		positionX += angle.Cos() * m_leftStrafeSpeed;
+		positionZ += angle.Sin() * m_leftStrafeSpeed;
 	}
 	else
 	{
-		m_leftStrafeSpeed -= deltaTime * 0.5;
+		m_leftStrafeSpeed -= deltaTime * dragCoefficent;
 
 		if (m_leftStrafeSpeed < 0.0f)
 		{
 			m_leftStrafeSpeed = 0.0f;
 		}
-		positionX += cosf(angle) * m_leftStrafeSpeed;
-		positionZ += sinf(angle) * m_leftStrafeSpeed;
+		positionX += angle.Cos() * m_leftStrafeSpeed;
+		positionZ += angle.Sin() * m_leftStrafeSpeed;
 	}
 	if (m_forward)
 	{
 		m_forwardSpeed += deltaTime * 1.0f;
-		if (m_forwardSpeed > deltaTime * 50.0f)
+		if (m_forwardSpeed > deltaTime * speedCoefficent)
 		{
-			m_forwardSpeed = deltaTime * 50.0f;
+			m_forwardSpeed = deltaTime * speedCoefficent;
 		}
-		positionX += sinf(angle) * m_forwardSpeed;
-		positionZ += cosf(angle) * m_forwardSpeed;
+		positionX += angle.Sin() * m_forwardSpeed;
+		positionZ += angle.Cos() * m_forwardSpeed;
 	}
 	else
 	{
-		m_forwardSpeed -= deltaTime * 0.5f;
+		m_forwardSpeed -= deltaTime * dragCoefficent;
 
 		if (m_forwardSpeed < 0.0f)
 		{
 			m_forwardSpeed = 0.0f;
 		}
-		positionX += sinf(angle) * m_forwardSpeed;
-		positionZ += cosf(angle) * m_forwardSpeed;
+		positionX += angle.Sin() * m_forwardSpeed;
+		positionZ += angle.Cos() * m_forwardSpeed;
 	}
 	if (m_backward)
 	{
 		m_backwardSpeed += deltaTime * 1.0f;
 
-		if (m_backwardSpeed > (deltaTime * 50.0f))
+		if (m_backwardSpeed > deltaTime * speedCoefficent)
 		{
-			m_backwardSpeed = deltaTime * 50.0f;
+			m_backwardSpeed = deltaTime * speedCoefficent;
 		}
-		positionX -= sinf(angle) * m_backwardSpeed;
-		positionZ -= cosf(angle) * m_backwardSpeed;
+		positionX -= angle.Sin() * m_backwardSpeed;
+		positionZ -= angle.Cos() * m_backwardSpeed;
 	}
 	else
 	{
-		m_backwardSpeed -= deltaTime * 0.5f;
+		m_backwardSpeed -= deltaTime * dragCoefficent;
 
 		if (m_backwardSpeed < 0.0f)
 		{
 			m_backwardSpeed = 0.0f;
 		}
-		positionX -= sinf(angle) * m_backwardSpeed;
-		positionZ -= cosf(angle) * m_backwardSpeed;
+		positionX -= angle.Sin() * m_backwardSpeed;
+		positionZ -= angle.Cos() * m_backwardSpeed;
 	}
 	if (m_upward)
 	{
@@ -121,7 +125,7 @@ void CameraKeyListener::Update(float deltaTime)
 	}
 	else
 	{
-		m_upwardSpeed -= deltaTime * 0.5f;
+		m_upwardSpeed -= deltaTime * dragCoefficent;
 
 		if (m_upwardSpeed < 0.0f)
 		{
@@ -141,7 +145,7 @@ void CameraKeyListener::Update(float deltaTime)
 	}
 	else
 	{
-		m_downwardSpeed -= deltaTime * 0.5f;
+		m_downwardSpeed -= deltaTime * dragCoefficent;
 
 		if (m_downwardSpeed < 0.0f)
 		{

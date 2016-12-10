@@ -173,5 +173,8 @@
     <ClCompile Include="src\View\CameraKeyInputListener.cpp">
       <Filter>Source Files\View</Filter>
     </ClCompile>
+    <ClCompile Include="src\Math3d\Quaternion.cpp">
+      <Filter>Source Files\Math3d</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

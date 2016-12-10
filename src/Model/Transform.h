@@ -15,10 +15,10 @@ namespace Model
 		
 		Transform& SetPosition(const Math3d::Vector4f& position);
 		Transform& SetPosition(const Math3d::Vector3f& position);
-		Transform& SetPosition(float x, const float  y, const float z);
+		Transform& SetPosition(float x, const float y, const float z);
 		Transform& Translate(const Math3d::Vector4f& position);
 		Transform& Translate(const Math3d::Vector3f& position);
-		Transform& Translate(float x, const float  y, const float z);
+		Transform& Translate(float x, const float y, const float z);
 
 		Transform& SetScale(const Math3d::Vector3f& scale);
 		Transform& SetScale(const float x, const float  y, const float z);
