@@ -6,30 +6,28 @@ namespace Model
 {
 	using namespace Math3d;
 
-	Transform::Transform()
-	{
-		m_scale = Vector3f(1.0f);
-	}
+	Transform::Transform() : m_scale(Vector4f::One) { }
 
 	Transform::~Transform() { }
-
-	void Transform::SetRotation(const Quaternion& rotation)
-	{
-		m_rotation = rotation;
-	}
-
-	Quaternion Transform::GetRotation() const
-	{
-		return m_rotation;
-	}
 
 	void Transform::Update()
 	{
 		Matrix scale = MakeScale(m_scale);
 		Matrix rotation = MakeRotation(m_rotation);
 		Matrix translation = MakeTranslate(m_position);
-		//scale *
-		m_model =  rotation * translation * scale;
+		m_model = rotation * translation * scale;
+	}
+
+	Transform& Transform::SetPosition(const Vector3f& position)
+	{
+		m_position = position;
+		return *this;
+	}
+
+	Transform& Transform::SetPosition(float x, const float y, const float z)
+	{
+		SetPosition(Vector3f(x, y, z));
+		return *this;
 	}
 
 	Transform& Transform::Translate(const Vector3f& position)
@@ -38,10 +36,7 @@ namespace Model
 		return *this;
 	}
 
-	Transform& Transform::Translate(float x, const float y, const float z)
-	{
-		return Translate(Vector3f(x, y, z));
-	}
+	Transform& Transform::Translate(float x, const float y, const float z) { return Translate(Vector3f(x, y, z)); }
 
 	Transform& Transform::Scale(const Vector3f& scale)
 	{
@@ -49,68 +44,65 @@ namespace Model
 		return *this;
 	}
 
-	Transform& Transform::Scale(const float x, const float y, const float z)
-	{
-		return Scale(Vector3f(x, y, z));
-	}
+	Transform& Transform::Scale(const float x, const float y, const float z) { return Scale(Vector3f(x, y, z)); }
 
-	Transform& Transform::Scale(const float s)
-	{
-		return Scale(Vector3f(s));
-	}
+	Transform& Transform::Scale(const float s) { return Scale(Vector3f(s)); }
 
-	Transform& Transform::SetScale(const Math3d::Vector3f& scale)
+	Transform& Transform::SetScale(const Vector3f& scale)
 	{
 		m_scale = scale;
 		return *this;
 	}
 
-	Transform& Transform::SetScale(const float x, const float y, const float z)
-	{
-		return SetScale(Vector3f(x, y, z));
-	}
+	Transform& Transform::SetScale(const float x, const float y, const float z)	{ return SetScale(Vector3f(x, y, z)); }
 
-	Transform& Transform::SetScale(const float s)
+	Transform& Transform::SetScale(const float s) { return SetScale(s, s, s); }
+
+	Transform& Transform::SetRotation(const Quaternion& rotation)
 	{
-		return SetScale(s, s, s);
+		m_rotation = rotation;
+		return *this;
 	}
 
 	Transform& Transform::Rotate(const Quaternion& rotation)
 	{
 		m_rotation = rotation * m_rotation;
-
 		return *this;
 	}
 
-	Transform& Transform::RotateX(float theta)
+	Transform& Transform::RotateX(const Angle theta)
 	{
-		Angle t = Angle::FromDegrees(theta);
-		Quaternion rotation = Quaternion::FromAxisAngle(t, Vector3f::UnitX);
+		Quaternion rotation = Quaternion::FromAxisAngle(theta, Vector3f::UnitX);
+		m_rotation = rotation * m_rotation;
+		
+		return *this;
+	}
+
+	Transform& Transform::RotateY(const Angle theta)
+	{
+		Quaternion rotation = Quaternion::FromAxisAngle(theta, Vector3f::UnitY);
+		m_rotation = rotation * m_rotation;
+		
+		return *this;
+	}
+
+	Transform& Transform::RotateZ(const Angle theta)
+	{
+		Quaternion rotation = Quaternion::FromAxisAngle(theta, Vector3f::UnitZ);
 		m_rotation = rotation * m_rotation;
 
 		return *this;
 	}
 
-	Transform& Transform::RotateY(float theta)
-	{
-		Angle t = Angle::FromDegrees(theta);
-		Quaternion rotation = Quaternion::FromAxisAngle(t, Vector3f::UnitY);
-		m_rotation = rotation * m_rotation;
+	Transform& Transform::RotateX(float theta) { return RotateX(Angle::FromDegrees(theta)); }
 
-		return *this;
-	}
+	Transform& Transform::RotateY(float theta) { return RotateY(Angle::FromDegrees(theta)); }
 
-	Transform&  Transform::RotateZ(float theta)
-	{
-		Angle t = Angle::FromDegrees(theta);
-		Quaternion rotation = Quaternion::FromAxisAngle(t, Vector3f::UnitZ);
-		m_rotation = rotation * m_rotation;
+	Transform& Transform::RotateZ(float theta) { return RotateZ(Angle::FromDegrees(theta)); }
 
-		return *this;
-	}
+	Matrix Transform::GetModelToClip() const { return m_model; }
 
-	Matrix Transform::GetModelToClip() const
-	{
-		return m_model;
-	}
+	Vector4f Transform::GetPosition() const { return m_position; }
+
+	Quaternion Transform::GetRotation() const { return m_rotation; }
 }

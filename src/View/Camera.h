@@ -2,6 +2,7 @@
 
 #include "../Math3d/Vector.h"
 #include "../Math3d/Matrix.h"
+#include "../Model/Transform.h"
 
 namespace View
 {
@@ -34,24 +35,19 @@ namespace View
 
 		Math3d::Matrix GetView() const;
 		Math3d::Matrix GetProj() const;
-		
-		void SetPosition(const Math3d::Vector4f& position);
-		void SetPosition(const float x, const float y, const float z);
-		Math3d::Vector4f GetPosition() const;
-		void SetRotation(const Math3d::Vector4f& rotation);
-		Math3d::Vector4f GetRotation() const;
-
+		void SetUp(const Math3d::Vector4f& up);
 		Math3d::Vector4f GetUp() const;
-		Math3d::Vector4f GetForward() const;
+		void SetLookAt(const Math3d::Vector4f& forward);
+		Math3d::Vector4f GetLookAt() const;
+		Model::Transform& GetTransform();
 
 	private:
 		Math3d::Matrix m_view;
 		Math3d::Matrix m_proj;
+		Model::Transform m_transform;
 
 		Math3d::Vector4f m_up;
 		Math3d::Vector4f m_lookAt;
-		Math3d::Vector4f m_position;
-		Math3d::Vector4f m_rotation;
 
 		float m_nearClip;
 		float m_farClip;

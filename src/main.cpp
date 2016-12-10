@@ -51,7 +51,7 @@ public:
 		{
 			m_rightStrafeSpeed += deltaTime * 1.0f;
 
-			if (m_rightStrafeSpeed > (deltaTime * 50.0f))
+			if (m_rightStrafeSpeed > deltaTime * 50.0f)
 			{
 				m_rightStrafeSpeed = deltaTime * 50.0f;
 			}
@@ -70,7 +70,7 @@ public:
 		{
 			m_leftStrafeSpeed += deltaTime * 1.0f;
 
-			if (m_leftStrafeSpeed > (deltaTime * 50.0f))
+			if (m_leftStrafeSpeed > deltaTime * 50.0f)
 			{
 				m_leftStrafeSpeed = deltaTime * 50.0f;
 			}
@@ -83,12 +83,12 @@ public:
 			if (m_leftStrafeSpeed < 0.0f)
 			{
 				m_leftStrafeSpeed = 0.0f;
-			}	
+			}
 		}
 		if (m_forward)
 		{
 			m_forwardSpeed += deltaTime * 1.0f;
-			if (m_forwardSpeed > (deltaTime * 50.0f))
+			if (m_forwardSpeed > deltaTime * 50.0f)
 			{
 				m_forwardSpeed = deltaTime * 50.0f;
 			}
@@ -126,7 +126,7 @@ public:
 		{
 			m_upwardSpeed += deltaTime * 1.5f;
 
-			if (m_upwardSpeed > (deltaTime * 15.0f))
+			if (m_upwardSpeed > deltaTime * 15.0f)
 			{
 				m_upwardSpeed = deltaTime * 15.0f;
 			}
@@ -145,7 +145,7 @@ public:
 		{
 			m_downwardSpeed += deltaTime * 1.5f;
 
-			if (m_downwardSpeed > (deltaTime * 15.0f))
+			if (m_downwardSpeed > deltaTime * 15.0f)
 			{
 				m_downwardSpeed = deltaTime * 15.0f;
 			}
@@ -189,7 +189,7 @@ public:
 				break;
 			default: break;
 			}
-	}
+		}
 		if (action == GLFW_RELEASE)
 		{
 			switch (key)
@@ -264,7 +264,7 @@ public:
 	{
 		float deltaTime = m_timer->GetDeltaTime();
 		for (auto it(m_listeners.begin()), ite(m_listeners.end()); it != ite; ++it)
-		{		
+		{
 			(*it)->Update(deltaTime);
 		}
 	}
@@ -329,7 +329,8 @@ int main(int, char**)
 	input.AddKeyInputListener(&systemListener);
 
 	View::Camera* camera = new View::Camera();
-	camera->SetPosition(0, 0, -3);
+	camera->GetTransform()
+		.SetPosition(0, 0, -3);
 
 	CameraKeyListener cameraListener = CameraKeyListener(camera);
 	input.AddKeyInputListener(&cameraListener);
@@ -352,7 +353,7 @@ int main(int, char**)
 		timer->Update();
 		input.Update();
 		camera->Update();
-		
+
 		Matrix viewProj = camera->GetView() * camera->GetProj();
 
 		teapot->GetTransform()

@@ -89,9 +89,14 @@ namespace Math3d
 			0.0f, 0.0f, 0.0f, 1.0f };
 	}
 
-	inline Matrix MakeScale(const Vector3f& vector)
+	inline Matrix MakeScale(const Vector3f& scale)
 	{
-		return MakeScale(vector.x, vector.y, vector.z);
+		return MakeScale(scale.x, scale.y, scale.z);
+	}
+
+	inline Matrix MakeScale(const Vector4f& scale)
+	{
+		return MakeScale(scale.x, scale.y, scale.z);
 	}
 
 	inline Matrix MakePerspectiveRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
@@ -170,7 +175,7 @@ namespace Math3d
 
 	inline Matrix MakeRotation(const Quaternion& rot)
 	{
-		return Matrix(
+		return Matrix{
 			1.0f - 2.0f * rot.y * rot.y - 2.0f * rot.z * rot.z,
 			2.0f * rot.x * rot.y - 2.0f * rot.w * rot.z,
 			2.0f * rot.x * rot.z + 2.0f * rot.w * rot.y, 0.0f,
@@ -180,7 +185,7 @@ namespace Math3d
 			2.0f * rot.x * rot.z - 2.0f * rot.w * rot.y,
 			2.0f * rot.y * rot.z + 2.0f * rot.x * rot.w,
 			1.0f - 2.0f * rot.x * rot.x - 2.0f * rot.y * rot.y, 0.0f,
-			0.0f, 0.0f, 0.0f, 1.0f);
+			0.0f, 0.0f, 0.0f, 1.0f };
 	}
 
 	inline Matrix MakeLookAtRH(Vector4f eye, Vector4f lookAt, Vector4f up)
@@ -211,44 +216,5 @@ namespace Math3d
 			Vector4f(-Dot(xAxis, eye), -Dot(yAxis, eye), -Dot(zAxis, eye), 1.0f) };
 
 		return view;
-	}
-
-	inline Matrix Multiply(const Matrix& a, const Matrix& b)
-	{
-		return Matrix(
-			a[0][0] * b[0][0], a[0][1] * b[0][1], a[0][2] * b[0][2], a[0][3] * b[0][3],
-			a[1][0] * b[1][0], a[1][1] * b[1][1], a[1][2] * b[1][2], a[1][3] * b[1][3],
-			a[2][0] * b[2][0], a[2][1] * b[2][1], a[2][2] * b[2][2], a[2][3] * b[2][3],
-			a[3][0] * b[3][0], a[3][1] * b[3][1], a[3][2] * b[3][2], a[3][3] * b[3][3]);
-	}
-
-	inline void Multiply(const Matrix& a, const Matrix& b, Matrix& dst)
-	{
-		const float *m1Ptr = reinterpret_cast<const float *>(&a);
-		const float *m2Ptr = reinterpret_cast<const float *>(&b);
-		float * dstPtr = reinterpret_cast<float *>(&dst);
-
-		for (int i = 0; i < 4; i++) {
-			for (int j = 0; j < 4; j++) {
-				*dstPtr = m1Ptr[0] * m2Ptr[0 * 4 + j]
-					+ m1Ptr[1] * m2Ptr[1 * 4 + j]
-					+ m1Ptr[2] * m2Ptr[2 * 4 + j]
-					+ m1Ptr[3] * m2Ptr[3 * 4 + j];
-				dstPtr++;
-			}
-			m1Ptr += 4;
-		}
-	}
-
-	inline Vector4f Multiply(const Matrix& a, const Vector4f& b)
-	{
-		Vector4f vec;
-		int i, j;
-		for (i = 0; i < 4; i++) {
-			vec[i] = 0.0;
-			for (j = 0; j < 4; j++) vec[i] += a[i][j] * b[j];
-		}
-
-		return vec;
 	}
 }

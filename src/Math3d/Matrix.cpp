@@ -43,8 +43,8 @@ namespace Math3d
 
 	bool Matrix::Compare(const Matrix& other) const
 	{
-		const float *ptr1 = reinterpret_cast<const float *>(mat);
-		const float *ptr2 = reinterpret_cast<const float *>(other.mat);
+		const float* ptr1 = reinterpret_cast<const float*>(mat);
+		const float* ptr2 = reinterpret_cast<const float*>(other.mat);
 		for (int i = 0; i < 4 * 4; i++) {
 			if (ptr1[i] != ptr2[i]) {
 				return false;
@@ -121,7 +121,7 @@ namespace Math3d
 
 		float s = mat[3].x * vec.x + mat[3].y * vec.y + mat[3].z * vec.z + mat[3].w;
 		if (s == 0.0f) {
-			return Vector3f{ 0.0f, 0.0f, 0.0f };
+			return Vector3f::Zero;
 		}
 		if (s == 1.0f) {
 			return Vector3f{
