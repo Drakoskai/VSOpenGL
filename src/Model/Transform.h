@@ -13,8 +13,10 @@ namespace Model
 
 		void Update();
 		
+		Transform& SetPosition(const Math3d::Vector4f& position);
 		Transform& SetPosition(const Math3d::Vector3f& position);
 		Transform& SetPosition(float x, const float  y, const float z);
+		Transform& Translate(const Math3d::Vector4f& position);
 		Transform& Translate(const Math3d::Vector3f& position);
 		Transform& Translate(float x, const float  y, const float z);
 

@@ -25,6 +25,7 @@
     <ClInclude Include="src\GL\OpenGL.h" />
     <ClInclude Include="src\GL\Shader.h" />
     <ClInclude Include="src\GL\VertexBufferObject.h" />
+    <ClInclude Include="src\InputHandler.h" />
     <ClInclude Include="src\Interfaces.h" />
     <ClInclude Include="src\Math3d\Angle.h" />
     <ClInclude Include="src\Math3d\Geometry.h" />
@@ -40,12 +41,14 @@
     <ClInclude Include="src\Util\SimpleTimer.h" />
     <ClInclude Include="src\Util\Util.h" />
     <ClInclude Include="src\View\Camera.h" />
+    <ClInclude Include="src\View\CameraKeyInputListener.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GL\GLDevice.cpp" />
     <ClCompile Include="src\GL\glad.cpp" />
     <ClCompile Include="src\GL\Shader.cpp" />
     <ClCompile Include="src\GL\VertexBufferObject.cpp" />
+    <ClCompile Include="src\InputHandler.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\Math3d\Angle.cpp" />
     <ClCompile Include="src\Math3d\Geometry.cpp" />
@@ -59,6 +62,7 @@
     <ClCompile Include="src\Util\ObjFile.cpp" />
     <ClCompile Include="src\Util\Util.cpp" />
     <ClCompile Include="src\View\Camera.cpp" />
+    <ClCompile Include="src\View\CameraKeyInputListener.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6E0C40FE-F2EA-4305-B6D4-70ED19B3324A}</ProjectGuid>
