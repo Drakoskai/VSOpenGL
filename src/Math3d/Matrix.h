@@ -63,7 +63,6 @@ namespace Math3d
 
 	inline Matrix MakeTranslate(const float x, const float y, const float z)
 	{
-
 		return Matrix{
 			1.0f, 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f, 0.0f, 0.0f,
@@ -98,8 +97,8 @@ namespace Math3d
 	inline Matrix MakePerspectiveRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
 	{
 		float tanHalfFovy = fieldOfView.TanHalfAngle();
-
 		float zRange = zFar - zNear;
+
 		return Matrix{
 			1.0f / (screenAspect * tanHalfFovy), 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f,
@@ -117,19 +116,6 @@ namespace Math3d
 			0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f,
 			0.0f, 0.0f, -(zFar + zNear) / zRange, 1.0f,
 			0.0f, 0.0f, -(2.0f * zFar * zNear) / zRange, 0.0f };
-	}
-
-	inline Matrix MakePerspective(const Angle& fieldOfView, const float vWidth, const float vHeight, const float zNear, const float zFar)
-	{
-		float top = 1.0f / fieldOfView.TanHalfAngle();
-		float aspect = vWidth / vHeight;
-		float zRange = zFar - zNear;
-
-		return Matrix(
-			zNear / (top * aspect), 0.0f, 0.0f, 0.0f,
-			0.0f, zNear / top, 0.0f, 0.0f,
-			0.0f, 0.0f, -(zFar + zNear) / zRange, -2.f * zFar * zNear / zRange,
-			0.0f, 0.0f, -1.0f, 1.0f);
 	}
 
 	inline Matrix MakePerspective(const float fieldOfView, const float screenAspect, const float zNear, const float zFar)
@@ -172,7 +158,6 @@ namespace Math3d
 
 	inline Matrix MakeRotationZ(const float theta)
 	{
-
 		float angle = Geometry::DegToRad * theta;
 
 		Matrix matrix;
@@ -215,7 +200,7 @@ namespace Math3d
 
 	inline Matrix MakeLookAtLH(Vector4f eye, Vector4f lookAt, Vector4f up)
 	{
-		Vector4f zAxis = Normalize(eye - lookAt);
+		Vector4f zAxis = Normalize(lookAt - eye);
 		Vector4f xAxis = Normalize(Cross(up, zAxis));
 		Vector4f yAxis = Normalize(Cross(zAxis, xAxis));
 

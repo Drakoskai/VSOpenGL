@@ -46,8 +46,6 @@ namespace OpenGL
 
 		glfwSwapInterval(1);
 
-		glfwSetKeyCallback(m_window, DefaultKeyCallback);
-
 		if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress)))
 		{
 			Util::DebugPrintF("OpenGL failed to intialize.\n");

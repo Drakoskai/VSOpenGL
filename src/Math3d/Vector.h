@@ -64,9 +64,7 @@ namespace Math3d
 		static const Vector2f UnitX;
 		static const Vector2f UnitY;
 	};
-
-
-
+	
 #pragma endregion Vector2f
 
 #pragma region Vector3f
@@ -283,7 +281,6 @@ namespace Math3d
 
 		float operator[](const int index) const;
 		float& operator[](const int index);
-
 	};
 
 	namespace Colors

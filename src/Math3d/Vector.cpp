@@ -81,29 +81,29 @@ namespace Math3d
 
 	Vector2f Vector2f::operator-() const
 	{
-		return Vector2f(-x, -y);
+		return Vector2f{ -x, -y };
 	}
 
 	Vector2f Vector2f::operator+(const Vector2f& other) const
 	{
-		return Vector2f(x + other.x, y + other.y);
+		return Vector2f{ x + other.x, y + other.y };
 	}
 
 	Vector2f Vector2f::operator-(const Vector2f& other) const
 	{
-		return Vector2f(x - other.x, y - other.y);
+		return Vector2f{ x - other.x, y - other.y };
 	}
 
 	Vector2f Vector2f::operator*(const float s) const
 	{
-		return Vector2f(x * s, y * s);
+		return Vector2f{ x * s, y * s };
 	}
 
 	Vector2f Vector2f::operator/(const float s) const
 	{
 		float inva = 1.0f / s;
 
-		return Vector2f(x * inva, y * inva);
+		return Vector2f{ x * inva, y * inva };
 	}
 
 	std::string Vector2f::ToString() const
@@ -202,7 +202,7 @@ namespace Math3d
 
 	Vector3f Vector3f::operator-() const
 	{
-		return Vector3f(-x, -y, -z);
+		return Vector3f{ -x, -y, -z };
 	}
 
 	float Vector3f::operator[](const int index) const
@@ -217,24 +217,24 @@ namespace Math3d
 
 	Vector3f Vector3f::operator+(const Vector3f& other) const
 	{
-		return Vector3f(x + other.x, y + other.y, z + other.z);
+		return Vector3f{ x + other.x, y + other.y, z + other.z };
 	}
 
 	Vector3f Vector3f::operator-(const Vector3f& other) const
 	{
-		return Vector3f(x - other.x, y - other.y, z - other.z);
+		return Vector3f{ x - other.x, y - other.y, z - other.z };
 	}
 
 	Vector3f Vector3f::operator*(const float s) const
 	{
-		return Vector3f(x * s, y * s, z * s);
+		return Vector3f{ x * s, y * s, z * s };
 	}
 
 	Vector3f Vector3f::operator/(const float s) const
 	{
 		float inva = 1.0f / s;
 
-		return Vector3f(x * inva, y * inva, z * inva);
+		return Vector3f{ x * inva, y * inva, z * inva };
 	}
 
 	float Vector3f::GetLength() const
@@ -244,7 +244,7 @@ namespace Math3d
 
 	float Vector3f::GetLengthSqrd() const
 	{
-		return  x * x + y * y + z * z;
+		return x * x + y * y + z * z;
 	}
 
 	float Vector3f::Normalize()
@@ -264,15 +264,15 @@ namespace Math3d
 		float length = GetLength();
 		if (length == 0)
 		{
-			return Vector3f(x, y, z);
+			return Vector3f{ x, y, z };
 		}
 
-		return Vector3f(x / length, y / length, z / length);
+		return Vector3f{ x / length, y / length, z / length };
 	}
 
 	Vector3f Vector3f::Cross(Vector3f& other) const
 	{
-		return Vector3f(y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x);
+		return Vector3f{ y * other.z - z * other.y, z * other.x - x * other.z, x * other.y - y * other.x };
 	}
 
 	float Vector3f::Dot(const Vector3f& other) const
@@ -382,7 +382,7 @@ namespace Math3d
 
 	Vector4f Vector4f::operator-() const
 	{
-		return Vector4f(-x, -y, -z, -w);
+		return Vector4f{ -x, -y, -z, -w };
 	}
 
 	float Vector4f::operator[](const int index) const
@@ -397,23 +397,23 @@ namespace Math3d
 
 	Vector4f Vector4f::operator+(const Vector4f& other) const
 	{
-		return Vector4f(x + other.x, y + other.y, z + other.z, w + other.w);
+		return Vector4f{ x + other.x, y + other.y, z + other.z, w + other.w };
 	}
 
 	Vector4f Vector4f::operator-(const Vector4f& other) const
 	{
-		return Vector4f(x - other.x, y - other.y, z - other.z, w - other.w);
+		return Vector4f{ x - other.x, y - other.y, z - other.z, w - other.w };
 	}
 
 	Vector4f Vector4f::operator*(const float s) const
 	{
-		return Vector4f(x * s, y * s, z * s, w * s);
+		return Vector4f{ x * s, y * s, z * s, w * s };
 	}
 
 	Vector4f Vector4f::operator/(const float s) const
 	{
 		float inva = 1.0f / s;
-		return Vector4f(x * inva, y * inva, z * inva, w * inva);
+		return Vector4f{ x * inva, y * inva, z * inva, w * inva };
 	}
 
 	float Vector4f::Dot(const Vector4f& v) const
@@ -423,7 +423,7 @@ namespace Math3d
 
 	float Vector4f::Length() const
 	{
-		return std::sqrt(Dot(*this));
+		return sqrt(Dot(*this));
 	}
 
 	Vector4f Vector4f::Normalize() const
@@ -433,10 +433,10 @@ namespace Math3d
 
 	Vector4f Vector4f::Transform(const Matrix& matrix) const
 	{
-		return Vector4f(
+		return Vector4f{
 			matrix[0][0] * x + matrix[0][1] * y + matrix[0][2] * z,
 			matrix[1][0] * x + matrix[1][1] * y + matrix[1][2] * z,
-			matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z);
+			matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z };
 	}
 
 #pragma endregion Vector4

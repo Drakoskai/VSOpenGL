@@ -17,8 +17,6 @@ namespace Math3d
 		float SinHalfAngle() const;
 		float Cos() const;
 		float CosHalfAngle() const;
-		
-
 		float TanHalfAngle() const;
 
 		static Angle FromDegrees(float degrees);

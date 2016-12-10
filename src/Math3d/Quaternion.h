@@ -53,7 +53,7 @@ namespace Math3d
 		Quaternion Normalize() const
 		{
 			float length = Length();
-			if (length)
+			if (length != 0.0f)
 			{
 				float ilength;
 				ilength = 1 / length;

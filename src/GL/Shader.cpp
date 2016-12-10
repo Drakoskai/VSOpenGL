@@ -15,8 +15,7 @@ namespace OpenGL
 	{
 		m_uniformMVP = 0;
 		if (m_shaderProg != 0)
-		{
-			glUseProgram(0);
+		{		
 			glDeleteProgram(m_shaderProg);
 			m_shaderProg = 0;
 		}
@@ -64,7 +63,7 @@ namespace OpenGL
 
 	GLuint Shader::LoadShaders(ShaderInfo* shaders) const
 	{
-		using namespace ::Util;
+		using namespace Util;
 		if (shaders == nullptr)
 		{
 			return 0;
@@ -106,7 +105,7 @@ namespace OpenGL
 				GLchar* log = new GLchar[len + 1];
 				glGetShaderInfoLog(shader, len, &len, log);
 				DebugPrintF("Shader compilation failed: %s\n", log);
-				delete[] log;
+				SafeDeleteArr(log);
 
 				return 0;
 			}
@@ -127,7 +126,7 @@ namespace OpenGL
 			GLchar* log = new GLchar[len + 1];
 			glGetProgramInfoLog(program, len, &len, log);
 			DebugPrintF("Shader linking failed: %s\n", log);
-			delete[] log;
+			SafeDeleteArr(log);
 
 			for (entry = shaders; entry->type != GL_NONE; ++entry)
 			{

@@ -75,9 +75,6 @@
     <ClInclude Include="src\Math3d\Vector.h">
       <Filter>Header Files\Math3d</Filter>
     </ClInclude>
-    <ClInclude Include="src\Model\Teapot.h">
-      <Filter>Header Files\Model</Filter>
-    </ClInclude>
     <ClInclude Include="src\Model\Transform.h">
       <Filter>Header Files\Model</Filter>
     </ClInclude>
