@@ -43,7 +43,6 @@ namespace Model
 	void Object::Update(const Matrix& viewProj)
 	{
 		m_transform.Update();
-
 		m_mvp = m_transform.GetModelToClip() * viewProj;
 	}
 

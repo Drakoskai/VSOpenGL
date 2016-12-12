@@ -24,6 +24,7 @@ namespace Math3d
 		Quaternion operator*(const float s) const;
 		Quaternion operator/(const Quaternion& other) const;
 		Quaternion operator/(const float s) const;
+
 		Quaternion& operator*=(const Quaternion& other);
 		
 		operator float*();

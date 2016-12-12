@@ -42,6 +42,7 @@
     <ClInclude Include="src\Util\Util.h" />
     <ClInclude Include="src\View\Camera.h" />
     <ClInclude Include="src\View\CameraKeyInputListener.h" />
+    <ClInclude Include="src\View\CameraMouseInputListener.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\GL\GLDevice.cpp" />
@@ -64,6 +65,7 @@
     <ClCompile Include="src\Util\Util.cpp" />
     <ClCompile Include="src\View\Camera.cpp" />
     <ClCompile Include="src\View\CameraKeyInputListener.cpp" />
+    <ClCompile Include="src\View\CameraMouseInputListener.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6E0C40FE-F2EA-4305-B6D4-70ED19B3324A}</ProjectGuid>
