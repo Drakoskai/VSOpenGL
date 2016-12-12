@@ -6,61 +6,9 @@
 #include "InputHandler.h"
 #include "View/CameraKeyInputListener.h"
 #include "View/CameraMouseInputListener.h"
-#include <functional>
+#include "SystemKeyListener.h"
+#include "Scene.h"
 
-class SystemKeyListener : public KeyInputListner
-{
-public:
-	SystemKeyListener() { }
-	~SystemKeyListener() { }
-	void OnKeyEvent(GLFWwindow* window, int key, int scancode, int action, int mode) override
-	{
-		if (action == GLFW_PRESS)
-		{
-			switch (key)
-			{
-			case GLFW_KEY_ESCAPE:
-				glfwSetWindowShouldClose(window, GL_TRUE);
-				break;
-			default: break;
-			}
-		}
-	}
-	void Update(float deltaTime) override { }
-};
-
-class Scene
-{
-public:
-	Scene(OpenGL::GLDevice& device, SimpleTimer& timer, InputHandler& input)
-		: m_device(device), m_timer(timer), m_input(input) { }
-
-	~Scene() { }
-
-	Model::Object& AddObjectToScene(const char* filename)
-	{
-		Model::Object* obj = new Model::Object(filename);
-		m_objects.push_back(obj);
-
-		return *obj;
-	}
-
-	void Frame()
-	{
-		m_device.BeginScene();
-
-		for (auto&& drawable : m_objects) { drawable->Draw(); }
-
-		m_device.EndScene();
-	}
-
-private:
-	OpenGL::GLDevice& m_device;
-	SimpleTimer& m_timer;
-	InputHandler& m_input;
-	std::vector<Model::Object*> m_objects;
-
-};
 
 int main(int, char**)
 {

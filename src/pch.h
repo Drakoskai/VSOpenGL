@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <cassert>
+#include <functional>
 
 #include <math.h>
 #include "GL/glad.h"

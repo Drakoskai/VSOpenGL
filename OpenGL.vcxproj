@@ -37,6 +37,8 @@
     <ClInclude Include="src\Model\Transform.h" />
     <ClInclude Include="src\Model\Vertex.h" />
     <ClInclude Include="src\pch.h" />
+    <ClInclude Include="src\Scene.h" />
+    <ClInclude Include="src\SystemKeyListener.h" />
     <ClInclude Include="src\Util\ObjFile.h" />
     <ClInclude Include="src\Util\SimpleTimer.h" />
     <ClInclude Include="src\Util\Util.h" />
@@ -61,6 +63,8 @@
     <ClCompile Include="src\Model\Transform.cpp" />
     <ClCompile Include="src\Model\Vertex.cpp" />
     <ClCompile Include="src\pch.cpp" />
+    <ClCompile Include="src\Scene.cpp" />
+    <ClCompile Include="src\SystemKeyListener.cpp" />
     <ClCompile Include="src\Util\ObjFile.cpp" />
     <ClCompile Include="src\Util\Util.cpp" />
     <ClCompile Include="src\View\Camera.cpp" />
