@@ -19,8 +19,8 @@ void CameraKeyListener::Update(float deltaTime)
 	if (m_backward) { position -= forward * speed; }
 	if (m_left) { position += right * speed; }
 	if (m_right) { position -= right * speed; }
-	if (m_upward) { position -= up * speed; }
-	if (m_downward) { position += up * speed; }
+	if (m_upward) { position += up * speed; }
+	if (m_downward) { position -= up * speed; }
 
 	m_camera->SetPosition(position);
 }

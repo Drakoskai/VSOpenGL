@@ -99,6 +99,7 @@ namespace Math3d
 
 	Matrix Matrix::operator*(const Matrix& other) const
 	{
+
 		Vector4f X = other * mat[0];
 		Vector4f Y = other * mat[1];
 		Vector4f Z = other * mat[2];

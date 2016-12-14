@@ -12,23 +12,19 @@ namespace View
 		m_viewportWidth(DefaultWidth), m_viewportHeight(DefaultHeight)
 	{
 		m_proj = MakePerspectiveRH(Angle::FromDegrees(m_fieldofView), m_screenAspect, m_nearClip, m_farClip);
-
 		m_rotation = Quaternion::MakeLookAt(m_position, Vector4f::Forward);
-		Matrix rotation = MakeRotation(m_rotation);
-		Matrix translation = MakeTranslate(m_position);
-
-		m_view = rotation * translation;
+		
+		Vector4f focus = m_position + m_rotation.GetForward();
+		m_view = MakeLookAtRH(m_position, focus, m_rotation.GetUp());
 	}
 
 	Camera::~Camera() { }
 
 	void Camera::Update()
 	{
+		Vector4f focus = m_position + m_rotation.GetForward();
 
-		Matrix rotation = MakeRotation(m_rotation);
-		Matrix translation = MakeTranslate(m_position);
-
-		m_view = rotation * translation;
+		m_view = MakeLookAtRH(m_position, focus, m_rotation.GetUp());
 	}
 
 	Matrix Camera::GetView() const { return m_view; }

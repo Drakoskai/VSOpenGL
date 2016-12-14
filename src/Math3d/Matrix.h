@@ -32,7 +32,7 @@ namespace Math3d
 		Matrix operator*(const float s) const;
 		Matrix operator*(const Matrix& other) const;
 		Vector4f operator*(const Vector4f& other) const;
-		Vector3f Matrix::operator*(const Vector3f& vec) const;
+		Vector3f operator*(const Vector3f& vec) const;
 
 		operator const float*() const;
 		operator float*();
