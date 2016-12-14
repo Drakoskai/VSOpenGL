@@ -22,11 +22,4 @@ private:
 	bool m_downward;
 	bool m_left;
 	bool m_right;
-
-	float m_forwardSpeed;
-	float m_backwardSpeed;
-	float m_upwardSpeed;
-	float m_downwardSpeed;
-	float m_leftStrafeSpeed;
-	float m_rightStrafeSpeed;
 };

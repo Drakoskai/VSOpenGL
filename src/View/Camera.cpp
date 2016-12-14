@@ -12,32 +12,36 @@ namespace View
 		m_viewportWidth(DefaultWidth), m_viewportHeight(DefaultHeight)
 	{
 		m_proj = MakePerspectiveRH(Angle::FromDegrees(m_fieldofView), m_screenAspect, m_nearClip, m_farClip);
-		m_lookAt = Vector4f::UnitZ;
-		m_up = Vector4f::UnitY;
-		Vector4f position = m_transform.GetPosition();
-		Vector4f focus = position + m_lookAt;
-		m_view = MakeLookAtRH(position, focus, m_up);
+
+		m_rotation = Quaternion::MakeLookAt(m_position, Vector4f::Forward);
+		Matrix rotation = MakeRotation(m_rotation);
+		Matrix translation = MakeTranslate(m_position);
+
+		m_view = rotation * translation;
 	}
 
 	Camera::~Camera() { }
 
 	void Camera::Update()
 	{
-		Vector4f position = m_transform.GetPosition();
-		Vector4f focus = position + m_lookAt;
-		m_view = MakeLookAtRH(position, focus, m_up);
+
+		Matrix rotation = MakeRotation(m_rotation);
+		Matrix translation = MakeTranslate(m_position);
+
+		m_view = rotation * translation;
 	}
 
 	Matrix Camera::GetView() const { return m_view; }
 
 	Matrix Camera::GetProj() const { return m_proj; }
 
-	void Camera::SetUp(const Vector4f& up) { m_up = up; }
-	Vector4f Camera::GetUp() const { return m_up; }
+	Vector4f Camera::GetPosition() const { return m_position; }
 
-	void Camera::SetLookAt(const Vector4f& lookat) { m_lookAt = lookat; }
+	Quaternion Camera::GetRotation() const	{ return m_rotation; }
 
-	Vector4f Camera::GetLookAt() const { return m_lookAt; }
+	void Camera::SetPosition(const Vector4f& position) { m_position = position; }
 
-	Model::Transform& Camera::GetTransform() { return m_transform; }
+	void Camera::SetPosition(const float x, const float y, const float z) { SetPosition(Vector4f(x, y, z)); }
+
+	void Camera::SetRotation(const Quaternion& rotation) { m_rotation = rotation; }
 }

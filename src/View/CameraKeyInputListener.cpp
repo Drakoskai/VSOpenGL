@@ -3,158 +3,26 @@
 
 CameraKeyListener::CameraKeyListener(View::Camera* camera)
 	: m_camera(camera), m_forward(false), m_backward(false), m_upward(false), m_downward(false),
-	m_left(false), m_right(false), m_forwardSpeed(0), m_backwardSpeed(0), m_upwardSpeed(0),
-	m_downwardSpeed(0), m_leftStrafeSpeed(0), m_rightStrafeSpeed(0) { }
+	m_left(false), m_right(false) { }
 
 CameraKeyListener::~CameraKeyListener() { }
 
 void CameraKeyListener::Update(float deltaTime)
 {
-	float speedCoefficent = 35.0f;
-	float dragCoefficent = 1.0f;
+	Math3d::Vector4f position = m_camera->GetPosition();
+	Math3d::Vector4f forward = m_camera->GetRotation().GetForward();
+	Math3d::Vector4f right = m_camera->GetRotation().GetRight();
+	Math3d::Vector4f up = m_camera->GetRotation().GetUp();
 
-	Math3d::Vector4f pos = m_camera->
-		GetTransform()
-		.GetPosition();
+	float speed = 5.0f * deltaTime;
+	if (m_forward) { position += forward * speed; }
+	if (m_backward) { position -= forward * speed; }
+	if (m_left) { position += right * speed; }
+	if (m_right) { position -= right * speed; }
+	if (m_upward) { position -= up * speed; }
+	if (m_downward) { position += up * speed; }
 
-	Math3d::Angle angle = m_camera->
-		GetTransform()
-		.GetRotation()
-		.GetRotationY();
-
-	float positionX = pos.x;
-	float positionY = pos.y;
-	float positionZ = pos.z;
-
-	if (m_right)
-	{
-		m_rightStrafeSpeed += deltaTime * 1.0f;
-
-		if (m_rightStrafeSpeed > deltaTime * speedCoefficent)
-		{
-			m_rightStrafeSpeed = deltaTime * speedCoefficent;
-		}
-		positionX -= angle.Cos() * m_rightStrafeSpeed;
-		positionZ -= angle.Sin() * m_rightStrafeSpeed;
-	}
-	else
-	{
-		m_rightStrafeSpeed -= deltaTime * dragCoefficent;
-
-		if (m_rightStrafeSpeed < 0.0f)
-		{
-			m_rightStrafeSpeed = 0.0f;
-		}
-		positionX -= angle.Cos() * m_rightStrafeSpeed;
-		positionZ -= angle.Sin() * m_rightStrafeSpeed;
-	}
-	if (m_left)
-	{
-		m_leftStrafeSpeed += deltaTime * 1.0f;
-
-		if (m_leftStrafeSpeed > deltaTime *speedCoefficent)
-		{
-			m_leftStrafeSpeed = deltaTime * speedCoefficent;
-		}
-		positionX += angle.Cos() * m_leftStrafeSpeed;
-		positionZ += angle.Sin() * m_leftStrafeSpeed;
-	}
-	else
-	{
-		m_leftStrafeSpeed -= deltaTime * dragCoefficent;
-
-		if (m_leftStrafeSpeed < 0.0f)
-		{
-			m_leftStrafeSpeed = 0.0f;
-		}
-		positionX += angle.Cos() * m_leftStrafeSpeed;
-		positionZ += angle.Sin() * m_leftStrafeSpeed;
-	}
-	if (m_forward)
-	{
-		m_forwardSpeed += deltaTime * 1.0f;
-		if (m_forwardSpeed > deltaTime * speedCoefficent)
-		{
-			m_forwardSpeed = deltaTime * speedCoefficent;
-		}
-		positionX += angle.Sin() * m_forwardSpeed;
-		positionZ += angle.Cos() * m_forwardSpeed;
-	}
-	else
-	{
-		m_forwardSpeed -= deltaTime * dragCoefficent;
-
-		if (m_forwardSpeed < 0.0f)
-		{
-			m_forwardSpeed = 0.0f;
-		}
-		positionX += angle.Sin() * m_forwardSpeed;
-		positionZ += angle.Cos() * m_forwardSpeed;
-	}
-	if (m_backward)
-	{
-		m_backwardSpeed += deltaTime * 1.0f;
-
-		if (m_backwardSpeed > deltaTime * speedCoefficent)
-		{
-			m_backwardSpeed = deltaTime * speedCoefficent;
-		}
-		positionX -= angle.Sin() * m_backwardSpeed;
-		positionZ -= angle.Cos() * m_backwardSpeed;
-	}
-	else
-	{
-		m_backwardSpeed -= deltaTime * dragCoefficent;
-
-		if (m_backwardSpeed < 0.0f)
-		{
-			m_backwardSpeed = 0.0f;
-		}
-		positionX -= angle.Sin() * m_backwardSpeed;
-		positionZ -= angle.Cos() * m_backwardSpeed;
-	}
-	if (m_upward)
-	{
-		m_upwardSpeed += deltaTime * 1.5f;
-
-		if (m_upwardSpeed > deltaTime * 15.0f)
-		{
-			m_upwardSpeed = deltaTime * 15.0f;
-		}
-		positionY += m_upwardSpeed;
-	}
-	else
-	{
-		m_upwardSpeed -= deltaTime * dragCoefficent;
-
-		if (m_upwardSpeed < 0.0f)
-		{
-			m_upwardSpeed = 0.0f;
-		}
-		positionY += m_upwardSpeed;
-	}
-	if (m_downward)
-	{
-		m_downwardSpeed += deltaTime * 1.5f;
-
-		if (m_downwardSpeed > deltaTime * 15.0f)
-		{
-			m_downwardSpeed = deltaTime * 15.0f;
-		}
-		positionY -= m_downwardSpeed;
-	}
-	else
-	{
-		m_downwardSpeed -= deltaTime * dragCoefficent;
-
-		if (m_downwardSpeed < 0.0f)
-		{
-			m_downwardSpeed = 0.0f;
-		}
-		positionY -= m_downwardSpeed;
-	}
-
-	m_camera->GetTransform().SetPosition(positionX, positionY, positionZ);
+	m_camera->SetPosition(position);
 }
 
 void CameraKeyListener::OnKeyEvent(GLFWwindow* window, int key, int scancode, int action, int mode)

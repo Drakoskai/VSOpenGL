@@ -13,7 +13,13 @@ public:
 
 private:
 	View::Camera* m_camera;
-	double m_curX;
-	double m_curY;
+	float m_rotationX;
+	float m_rotationY;
+	float m_rotationZ;
 
+	float m_lastY;
+	float m_lastX;
+	float m_init;
+
+	float m_sensitivity;
 };

@@ -30,7 +30,7 @@ int main(int, char**)
 	input->AddKeyInputListener(&systemListener);
 
 	View::Camera camera = View::Camera();
-	camera.GetTransform()
+	camera
 		.SetPosition(0, 0, -3);
 
 	CameraKeyListener cameraKeyListener = CameraKeyListener(&camera);

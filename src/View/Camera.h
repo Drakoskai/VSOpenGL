@@ -6,6 +6,14 @@
 
 namespace View
 {
+
+	struct CameraViewState
+	{
+		float rotationX;
+		float rotationY;
+		float rotationZ;
+	};
+
 	class CameraOrtho
 	{
 	public:
@@ -15,7 +23,10 @@ namespace View
 		void Update();
 		Math3d::Matrix GetView() const;
 		Math3d::Matrix GetProjection() const;
+
 	private:
+		CameraViewState m_cameraViewState;
+
 		Math3d::Matrix m_view;
 		Math3d::Matrix m_proj;
 		Math3d::Vector4f m_position;
@@ -35,19 +46,18 @@ namespace View
 
 		Math3d::Matrix GetView() const;
 		Math3d::Matrix GetProj() const;
-		void SetUp(const Math3d::Vector4f& up);
-		Math3d::Vector4f GetUp() const;
-		void SetLookAt(const Math3d::Vector4f& forward);
-		Math3d::Vector4f GetLookAt() const;
-		Model::Transform& GetTransform();
+		Math3d::Vector4f GetPosition() const;
+		Math3d::Quaternion GetRotation() const;
+
+		void SetPosition(const Math3d::Vector4f& position);
+		void SetPosition(const float x, const float y, const float z);
+		void SetRotation(const Math3d::Quaternion& rotation);
 
 	private:
 		Math3d::Matrix m_view;
 		Math3d::Matrix m_proj;
-		Model::Transform m_transform;
-
-		Math3d::Vector4f m_up;
-		Math3d::Vector4f m_lookAt;
+		Math3d::Vector4f m_position;
+		Math3d::Quaternion m_rotation;
 
 		float m_nearClip;
 		float m_farClip;

@@ -134,7 +134,7 @@ namespace OpenGL
 				entry->shader = 0;
 			}
 
-			for (int i = 0; i < m_numShaders; i++)
+			for (uint32_t i = 0; i < m_numShaders; i++)
 			{
 				GLuint shaderId = m_shaderInfo[i].shader;
 				if (m_shaderInfo[i].type != GL_NONE && shaderId != 0)

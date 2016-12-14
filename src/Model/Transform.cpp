@@ -18,7 +18,7 @@ namespace Model
 		m_model = rotation * translation * scale;
 	}
 
-	Transform& Transform::SetPosition(const Math3d::Vector4f& position)
+	Transform& Transform::SetPosition(const Vector4f& position)
 	{
 		m_position = position;
 		return *this;
