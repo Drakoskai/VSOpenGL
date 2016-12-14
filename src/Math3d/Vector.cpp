@@ -237,6 +237,16 @@ namespace Math3d
 		return Vector3f{ x * inva, y * inva, z * inva };
 	}
 
+	Vector3f::operator const float*() const
+	{
+		return static_cast<const GLfloat*>(&x);
+	}
+
+	Vector3f::operator float*()
+	{
+		return static_cast<GLfloat*>(&x);
+	}
+
 	float Vector3f::GetLength() const
 	{
 		return sqrtf(GetLengthSqrd());
@@ -257,17 +267,6 @@ namespace Math3d
 		z *= invLength;
 
 		return invLength * sqrLength;
-	}
-
-	Vector3f Vector3f::NormalizeTo() const
-	{
-		float length = GetLength();
-		if (length == 0)
-		{
-			return Vector3f{ x, y, z };
-		}
-
-		return Vector3f{ x / length, y / length, z / length };
 	}
 
 	Vector3f Vector3f::Cross(Vector3f& other) const
@@ -308,6 +307,12 @@ namespace Math3d
 	const Vector4f Vector4f::UnitY(0.0f, 1.0f, 0.0f, 0.0f);
 	const Vector4f Vector4f::UnitZ(0.0f, 0.0f, 1.0f, 0.0f);
 	const Vector4f Vector4f::UnitW(0.0f, 0.0f, 0.0f, 1.0f);
+	const Vector4f Vector4f::Up(0.0f, 1.0f, 0.0f);
+	const Vector4f Vector4f::Down(0.0f, -1.0f, 0.0f, 0.0f);
+	const Vector4f Vector4f::Right(1.0f, 0.0f, 0.0f, 0.0f);
+	const Vector4f Vector4f::Left(-1.0f, 0.0f, 0.0f, 0.0f);
+	const Vector4f Vector4f::Forward(0.0f, 0.0f, -1.0f, 0.0f);
+	const Vector4f Vector4f::Backward(0.0f, 0.0f, 1.0f, 0.0f);
 
 	Vector4f::Vector4f() : x(0.0f), y(0.0f), z(0.0f), w(0.0f) { }
 	Vector4f::Vector4f(float s) : x(s), y(s), z(s), w(s) { }
@@ -410,10 +415,26 @@ namespace Math3d
 		return Vector4f{ x * s, y * s, z * s, w * s };
 	}
 
+	Vector4f Vector4f::operator*(const Vector4f& other) const
+	{
+		return Vector4f{ x * other.x, y * other.y, z * other.z, w * other.w };
+	}
+
 	Vector4f Vector4f::operator/(const float s) const
 	{
 		float inva = 1.0f / s;
+
 		return Vector4f{ x * inva, y * inva, z * inva, w * inva };
+	}
+
+	Vector4f::operator const float*() const
+	{
+		return static_cast<const float*>(&x);
+	}
+
+	Vector4f::operator float*()
+	{
+		return static_cast<float*>(&x);
 	}
 
 	float Vector4f::Dot(const Vector4f& v) const
@@ -423,7 +444,7 @@ namespace Math3d
 
 	float Vector4f::Length() const
 	{
-		return sqrt(Dot(*this));
+		return sqrtf(Dot(*this));
 	}
 
 	Vector4f Vector4f::Normalize() const
@@ -449,5 +470,27 @@ namespace Math3d
 	float& Color::operator[](const int index)
 	{
 		return (&r)[index];
+	}
+
+	std::ostream& operator<<(std::ostream& os, const Vector3f& v)
+	{
+		return os << "( " << v.x << ", " << v.y
+			<< ", " << v.z << " )";
+	}
+
+	std::istream& operator>>(std::istream& is, Vector3f& v)
+	{
+		return is >> v.x >> v.y >> v.z;
+	}
+
+	std::ostream& operator<<(std::ostream& os, const Vector4f& v)
+	{
+		return os << "( " << v.x << ", " << v.y
+			<< ", " << v.z << ", " << v.w << " )";
+	}
+
+	std::istream& operator>>(std::istream& is, Vector4f& v)
+	{
+		return is >> v.x >> v.y >> v.z >> v.w;
 	}
 }

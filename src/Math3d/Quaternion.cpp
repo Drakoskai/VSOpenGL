@@ -1,9 +1,11 @@
 #include "../pch.h"
 #include "Quaternion.h"
+#include "Matrix.h"
+
 namespace Math3d
 {
-	const Quaternion Identity = Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
-	const Quaternion Zero = Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+	const Quaternion Quaternion::Identity = Quaternion(0.0f, 0.0f, 0.0f, 1.0f);
+	const Quaternion Quaternion::Zero = Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
 
 	Quaternion::Quaternion() : x(0.0f), y(0.0f), z(0.0f), w(1.0f) { }
 
@@ -13,15 +15,9 @@ namespace Math3d
 	bool Quaternion::operator==(const Quaternion& other) const { return x == other.x && y == other.y && z == other.z && w == other.w ? true : false; }
 	bool Quaternion::operator!=(const Quaternion& other) const { return x == other.x && y == other.y && z == other.z && w == other.w ? false : true; }
 
-	Quaternion Quaternion::operator+(const Quaternion& other) const
-	{
-		return Quaternion{ x + other.x, y + other.y, z + other.z, w + other.w };
-	}
+	Quaternion Quaternion::operator+(const Quaternion& other) const	{ return Quaternion{ x + other.x, y + other.y, z + other.z, w + other.w }; }
 
-	Quaternion Quaternion::operator-(const Quaternion& other) const
-	{
-		return Quaternion{ x - other.x, y - other.y, z - other.z, w - other.w };
-	}
+	Quaternion Quaternion::operator-(const Quaternion& other) const	{ return Quaternion{ x - other.x, y - other.y, z - other.z, w - other.w }; }
 
 	Quaternion Quaternion::operator*(const Quaternion& other) const
 	{
@@ -61,15 +57,9 @@ namespace Math3d
 		return *this;
 	}
 
-	Quaternion::operator float*()
-	{
-		return static_cast<float*>(&x);
-	}
+	Quaternion::operator float*() { return static_cast<float*>(&x);	}
 
-	Quaternion::operator const float*() const
-	{
-		return static_cast<const float*>(&x);
-	}
+	Quaternion::operator const float*() const { return static_cast<const float*>(&x); }
 
 	float Quaternion::Length() const
 	{
@@ -86,19 +76,6 @@ namespace Math3d
 	std::istream& operator>>(std::istream& is, Quaternion& quaternion)
 	{
 		return is >> quaternion.x >> quaternion.y >> quaternion.z >> quaternion.w;
-	}
-
-	Quaternion Quaternion::Normalize() const
-	{
-		float length = Length();
-		if (length != 0.0f && length != -0.0f)
-		{
-			float ilength;
-			ilength = 1 / length;
-			return Quaternion(x / ilength, y / ilength, z / ilength, w / ilength);
-		}
-
-		return Quaternion(x, y, z, w);
 	}
 
 	Quaternion Quaternion::Inverse() const
@@ -166,9 +143,30 @@ namespace Math3d
 
 	Angle Quaternion::GetRotationZ() const
 	{
-		float radians = asinf((2.0 * x * y) + (2.0 * z * w));
+		float radians = asinf((2.0f * x * y) + (2.0f * z * w));
 
 		return Angle::FromRadians(radians);
+	}
+
+	Vector4f Quaternion::GetUp() const
+	{
+		return Vector4f{ 2.0f * (x * y - w * z),
+			1.0f - 2.0f * (x * x + z * z),
+			2.0f * (y * z + w * x) };
+	}
+
+	Vector4f Quaternion::GetRight() const
+	{
+		return Vector4f{ 1.0f - 2.0f * (y * y + z * z),
+			2.0f * (x * y + w * z),
+			2.0f * (x * z - w * y) };
+	}
+
+	Vector4f Quaternion::GetForward() const
+	{
+		return Vector4f{ 2.0f * (x * z + w * y),
+			2.0f * (y * x - w * x),
+			1.0f - 2.0f * (x * x + y * y) };
 	}
 
 	Quaternion Quaternion::FromAxisAngle(const Angle& angle, const float x, const float y, const float z)
@@ -216,5 +214,73 @@ namespace Math3d
 		float qz = (cx * cy * sz) - (sx * sy * cz);
 
 		return Quaternion(qx, qy, qz, qw);
+	}
+
+	Quaternion Quaternion::FromMatrix(const Matrix& m)
+	{
+		float t = 1.0f + m.mat[0][0] + m.mat[1][1] + m.mat[2][2];
+		float x;
+		float y;
+		float z;
+		float w;
+		float s;
+		const float Epsilon = 0.00000001f;
+		if (t > Epsilon)
+		{
+			s = 2.0f * sqrtf(t);
+			x = (m.mat[2][1] - m.mat[1][2]) / s;
+			y = (m.mat[0][2] - m.mat[2][0]) / s;
+			z = (m.mat[1][0] - m.mat[0][1]) / s;
+			w = s / 4.0f;
+		}
+		else if (m.mat[0][0] > m.mat[1][1] && m.mat[0][0] > m.mat[2][2])
+		{
+			s = 2.0f * sqrtf(1.0f + m.mat[0][0] - m.mat[1][1] - m.mat[2][2]);
+			x = s / 4.0f;
+			y = (m.mat[1][0] + m.mat[0][1]) / s;
+			z = (m.mat[0][2] + m.mat[2][0]) / s;
+			w = (m.mat[2][1] - m.mat[1][2]) / s;
+		}
+		else if (m.mat[1][1] > m.mat[2][2])
+		{
+			s = 2.0f * sqrtf(1.0f + m.mat[1][1] - m.mat[0][0] - m.mat[2][2]);
+			x = (m.mat[1][0] + m.mat[0][1]) / s;
+			y = s / 4.0f;
+			z = (m.mat[2][1] + m.mat[1][2]) / s;
+			w = (m.mat[0][2] - m.mat[2][0]) / s;
+		}
+		else
+		{
+			s = 2.0f * sqrtf(1.0f + m.mat[2][2] - m.mat[0][0] - m.mat[1][1]);
+			x = (m.mat[0][2] + m.mat[2][0]) / s;
+			y = (m.mat[2][1] + m.mat[1][2]) / s;
+			z = s / 4.0f;
+			w = (m.mat[1][0] - m.mat[0][1]) / s;
+		}
+
+		return Quaternion{ x, y, z, w };
+	}
+
+	Quaternion Quaternion::MakeLookAt(Vector4f sourcePoint, Vector4f destPoint)
+	{
+		const float Epsilion = 0.000001f;
+		Vector4f forwardVector = Normalize(destPoint - sourcePoint);
+
+		float dot = Dot(Vector4f::Forward, forwardVector);
+
+		if (abs(dot - (-1.0f)) < Epsilion)
+		{
+			return Quaternion(Vector4f::Up.x, Vector4f::Up.y, Vector4f::Up.z, Geometry::PI);
+		}
+		if (abs(dot - (1.0f)) < Epsilion)
+		{
+			return Identity;
+		}
+
+		float rotAngle = acosf(dot);
+		Vector4f rotAxis = Cross(Vector4f::Forward, forwardVector);
+		rotAxis = Normalize(rotAxis);
+
+		return FromAxisAngle(Angle::FromDegrees(rotAngle), rotAxis);
 	}
 }

@@ -18,6 +18,47 @@ namespace Math3d
 		return other.degrees == degrees;
 	}
 
+	Angle Angle::operator+(const Angle& other) const
+	{
+		return FromDegrees(degrees + other.degrees);
+	}
+
+	Angle& Angle::operator+=(const Angle& other)
+	{
+		degrees += other.degrees;
+		return *this;
+	}
+
+	Angle Angle::operator-(const Angle& other) const
+	{
+		return FromDegrees(degrees - other.degrees);
+	}
+
+	Angle& Angle::operator-=(const Angle& other)
+	{
+		degrees -= other.degrees;
+		return *this;
+	}
+
+	Angle Angle::operator*(const float f) const
+	{
+		return FromDegrees(degrees * f);
+	}
+
+	Angle& Angle::operator*=(const float f)
+	{
+		degrees *= f;
+		return *this;
+	}
+
+	Angle Angle::NormalizeAngle() const
+	{
+		float a = fmod(degrees, 360.0f);
+		float d = a > 180.0f ? a - 360.0f : a < -180.0f ? 360.0f + a : a;
+
+		return FromDegrees(d);
+	}
+
 	float Angle::Sin() const
 	{
 		return sinf(radians);

@@ -13,6 +13,15 @@ namespace Math3d
 		bool operator!=(const Angle& other) const;
 		bool operator==(const Angle& other) const;
 
+		Angle operator+(const Angle& other) const;
+		Angle& operator+=(const Angle& other);
+		Angle operator-(const Angle& other)const;
+		Angle& operator-=(const Angle& other);
+		Angle operator*(const float f) const;
+		Angle& operator*=(const float f);
+
+		Angle NormalizeAngle() const;
+
 		float Sin() const;
 		float SinHalfAngle() const;
 		float Cos() const;
