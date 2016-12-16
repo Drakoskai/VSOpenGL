@@ -1,6 +1,6 @@
 #pragma once
 #include "../InputHandler.h"
-#include "Camera.h";
+#include "Camera.h"
 
 class CameraMouseInputListener : public MouseInputListner
 {

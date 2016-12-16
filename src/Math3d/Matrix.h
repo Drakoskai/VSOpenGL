@@ -47,16 +47,18 @@ namespace Math3d
 	Matrix MakeTranslate(const float x, const float y, const float z);
 	Matrix MakeTranslate(const Vector3f& vector);
 	Matrix MakeTranslate(const Vector4f& vector);
+	
 	Matrix MakeScale(const float x, const float y, const float z);
 	Matrix MakeScale(const Vector3f& scale);
 	Matrix MakeScale(const Vector4f& scale);
+	
 	Matrix MakePerspectiveRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar);
 	Matrix MakePerspectiveLH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar);
-	Matrix MakePerspective(const float fieldOfView, const float screenAspect, const float zNear, const float zFar);
-	Matrix MakeOrtho(const float left, const float right, const float bottom, const float top, const float zNear, const float zFar);
+	
 	Matrix MakeRotationX(const float theta);
 	Matrix MakeRotationY(const float theta);
 	Matrix MakeRotationZ(const float theta);
+	
 	Matrix MakeRotation(const Quaternion& rot);
 	Matrix MakeLookAtRH(Vector4f eye, Vector4f lookAt, Vector4f up);
 	Matrix MakeLookAtLH(Vector4f eye, Vector4f lookAt, Vector4f up);

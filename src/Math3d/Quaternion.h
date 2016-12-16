@@ -2,7 +2,6 @@
 
 #include "Angle.h"
 #include "Vector.h"
-#include "Geometry.h"
 
 namespace Math3d
 {
@@ -59,25 +58,6 @@ namespace Math3d
 		static const Quaternion Zero;
 	};
 
-	static Quaternion Cross(const Quaternion& q1, const Quaternion& q2)
-	{
-		return Quaternion{
-			q1.w * q2.w - q1.x * q2.x - q1.y * q2.y - q1.z * q2.z,
-			q1.w * q2.x + q1.x * q2.w + q1.y * q2.z - q1.z * q2.y,
-			q1.w * q2.y + q1.y * q2.w + q1.z * q2.x - q1.x * q2.z,
-			q1.w * q2.z + q1.z * q2.w + q1.x * q2.y - q1.y * q2.x };
-	}
-
-	static Quaternion Normalize(const Quaternion& q)
-	{
-		float length = q.Length();
-		if (length != 0.0f && length != -0.0f)
-		{
-			float ilength;
-			ilength = 1 / length;
-			return Quaternion{ q.x / ilength, q.y / ilength, q.z / ilength, q.w / ilength };
-		}
-
-		return Quaternion{ q.x, q.y, q.z, q.w };
-	}
+	static Quaternion Cross(const Quaternion& q1, const Quaternion& q2);
+	static Quaternion Normalize(const Quaternion& q);
 }

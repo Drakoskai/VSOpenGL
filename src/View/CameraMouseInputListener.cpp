@@ -9,21 +9,22 @@ CameraMouseInputListener::~CameraMouseInputListener() { }
 
 void CameraMouseInputListener::OnMouseMoveEvent(GLFWwindow* window, double xpos, double ypos)
 {
+	float x = float(xpos);
+	float y = float(ypos);
 	if (m_init)
 	{
-		m_lastY = ypos;
-		m_lastX = xpos;
+		m_lastY = y;
+		m_lastX = x;
 		m_init = false;
-
 	}
 
-	float offsety = m_lastY - ypos;
-	float offsetx = m_lastX - xpos;
+	float offsety = m_lastY - y;
+	float offsetx = m_lastX - x;
 	m_rotationX += offsetx * m_sensitivity;
 	m_rotationY += offsety * m_sensitivity;
 
-	m_lastY = ypos;
-	m_lastX = xpos;
+	m_lastY = y;
+	m_lastX = x;
 
 	if (m_rotationY < 0.0f)
 	{

@@ -224,21 +224,7 @@ namespace Math3d
 			1.0f / (screenAspect * tanHalfFovy), 0.0f, 0.0f, 0.0f,
 			0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f,
 			0.0f, 0.0f, -(zFar + zNear) / zRange, 1.0f,
-			0.0f, 0.0f, -(2.0f * zFar * zNear) / zRange, 0.0f };
-	}
-
-	Matrix MakePerspective(const float fieldOfView, const float screenAspect, const float zNear, const float zFar)
-	{
-		return MakePerspectiveRH(Angle::FromDegrees(fieldOfView), screenAspect, zNear, zFar);
-	}
-
-	Matrix MakeOrtho(const float left, const float right, const float bottom, const float top, const float zNear, const float zFar)
-	{
-		return Matrix(
-			2.0f / (right - left), 0.0f, 0.0f, -(right + left) / (right - left),
-			0.0f, 2.0f / (top - bottom), 0.0f, -(top + bottom) / (top - bottom),
-			0.0f, 0.0f, 2.0f / (zNear - zFar), -(zFar + zNear) / (zFar - zNear),
-			0.0f, 0.0f, 0.0f, 1.0f);
+			0.0f, 0.0f, 2.0f * zFar * zNear / zRange, 0.0f };
 	}
 
 	Matrix MakeRotationX(const float theta)
@@ -317,7 +303,7 @@ namespace Math3d
 			Vector4f(xAxis.x, yAxis.x, zAxis.x, 0.0f),
 			Vector4f(xAxis.y, yAxis.y, zAxis.y, 0.0f),
 			Vector4f(xAxis.z, yAxis.z, zAxis.z, 0.0f),
-			Vector4f(-Dot(xAxis, eye), -Dot(yAxis, eye), -Dot(zAxis, eye), 1.0f) };
+			Vector4f(Dot(xAxis, eye), Dot(yAxis, eye), Dot(zAxis, eye), 1.0f) };
 
 		return view;
 	}
