@@ -77,36 +77,20 @@ namespace Util{
 				fileStream.get(input);
 				if (input == ' ')
 				{
-					float x;
-					float y;
-					float z;
-					fileStream >> x;
-					fileStream >> y;
-					fileStream >> z;
-
-					Vector3f vert = Vector3f(x, y, z);
+					Vector3f vert;
+					fileStream >> vert;
 					m_positions.push_back(vert);
 				}
 				else if (input == 't')
 				{
-					float x;
-					float y;
-					fileStream >> x;
-					fileStream >> y;
-
-					Vector2f tex = Vector2f(x, y);
+					Vector2f tex;
+					fileStream >> tex;
 					m_uvs.push_back(tex);
 				}
 				else if (input == 'n')
 				{
-					float x;
-					float y;
-					float z;
-					fileStream >> x;
-					fileStream >> y;
-					fileStream >> z;
-
-					Vector3f norm = Vector3f(x, y, z);
+					Vector3f norm;
+					fileStream >> norm;
 					m_normals.push_back(norm);
 				}
 			}
@@ -116,15 +100,15 @@ namespace Util{
 				if (input == ' ')
 				{
 					char garbage;
-					GLuint vertidx1;
-					GLuint vertidx2;
-					GLuint vertidx3;
-					GLuint uvidx1;
-					GLuint uvidx2;
-					GLuint uvidx3;
-					GLuint normalidx1;
-					GLuint normalidx2;
-					GLuint normalidx3;
+					unsigned short vertidx1;
+					unsigned short vertidx2;
+					unsigned short vertidx3;
+					unsigned short uvidx1;
+					unsigned short uvidx2;
+					unsigned short uvidx3;
+					unsigned short normalidx1;
+					unsigned short normalidx2;
+					unsigned short normalidx3;
 					if (m_uvs.size() == 0)
 					{
 						fileStream >> vertidx1 >> garbage >> garbage >> normalidx1

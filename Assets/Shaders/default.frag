@@ -1,12 +1,14 @@
 #version 450 core
 
 #define FRAG_COLOR  0
-#pragma debug(on)
 
 uniform vec3 viewPos;
 
-in vec3 vs_worldpos;
-in vec3 vs_normal;
+in GS_OUT
+{
+	vec4 worldpos;
+	vec4 normal;
+} fr_in;
 
 layout (location = FRAG_COLOR) out vec4 outputColor;
 
@@ -20,8 +22,8 @@ const float kPi = 3.14159265;
 
 void main()
 {
-	vec3 lightDir = normalize(lightPos - vs_worldpos);
-    vec3 normal = normalize(vs_normal);
+	vec3 lightDir = normalize(lightPos.xyz - fr_in.worldpos.xyz);
+    vec3 normal = normalize(fr_in.normal.xyz);
 		
 	//Diffuse
     float diffuseCoefficient = max(dot(normal, lightDir), 0.0f);
@@ -33,11 +35,9 @@ void main()
 	if(diffuseCoefficient > 0.0f)
 	{
 		const float kEnergyConservation = ( 8.0f + shininess ) / ( 8.0f * kPi ); 
-		specularCoefficient = kEnergyConservation * pow(max(dot(lightDir, reflect(-lightDir, normal)), 0.0f), shininess);
+		specularCoefficient =/* kEnergyConservation */ pow(max(dot(lightDir, reflect(-lightDir, normal)), 0.0f), shininess);
 	}
-	
 
-	
 	vec4 spec = specularCoefficient * specular;
 	vec4 linearColor = ambient * (diff + spec);
 	vec4 gamma = vec4(1.0/2.2);

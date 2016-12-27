@@ -15,7 +15,7 @@ namespace Model
 		Matrix scale = MakeScale(m_scale);
 		Matrix rotation = MakeRotation(m_rotation);
 		Matrix translation = MakeTranslate(m_position);
-		m_model = rotation * translation * scale;
+		m_model = scale * rotation * translation;
 	}
 
 	Transform& Transform::SetPosition(const Vector4f& position)

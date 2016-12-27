@@ -24,7 +24,7 @@ namespace Model
 	bool Object::Init()
 	{
 		std::vector<ShaderInfo> shaders = {
-			//{ GL_GEOMETRY_SHADER, "Assets/Shaders/default.geom" },
+			{ GL_GEOMETRY_SHADER, "Assets/Shaders/default.geom" },
 			{ GL_VERTEX_SHADER, "Assets/Shaders/default.vert" },
 			{ GL_FRAGMENT_SHADER, "Assets/Shaders/default.frag" },
 			{ GL_NONE, nullptr }

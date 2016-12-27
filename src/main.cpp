@@ -42,14 +42,13 @@ int main(int, char**)
 	Object& teapot = scene.AddObjectToScene("Assets/Meshes/teapot.obj");
 
 	teapot.GetTransform()
-		.Translate(-2, 10, 0)
-		.RotateX(15.0f);
+		.Translate(-2, 10, 0);
 
-	/*Object& cube = scene.AddObjectToScene("Assets/Meshes/cube.obj");
+	//Object& cube = scene.AddObjectToScene("Assets/Meshes/cube.obj");
 
-	cube.GetTransform()
-		.Translate(3, 2, 0)
-		.RotateX(12.0f);*/
+	/*cube.GetTransform()
+		.SetScale(3.0f, 2.0f, 3.0f)
+		.Translate(-2, 8.30, 0);*/
 
 	float smooth = 1.0f;
 
@@ -65,8 +64,8 @@ int main(int, char**)
 
 	/*auto cubeAnimation = [&]()
 	{
-		cube.GetTransform()
-			.RotateY(smooth * -14 * timer->GetDeltaTime());
+	cube.GetTransform()
+	.RotateY(smooth * -14 * timer->GetDeltaTime());
 	};*/
 
 	//workflows.push_back(cubeAnimation);
@@ -79,7 +78,7 @@ int main(int, char**)
 		input->Update();
 		camera.Update();
 
-		for (auto&& workflow : workflows) { workflow(); }
+		//for (auto&& workflow : workflows) { workflow(); }
 		teapot.Update(camera.GetView(), camera.GetProj(), camera.GetPosition());
 		//cube.Update(camera.GetView(), camera.GetProj(), camera.GetPosition());
 		scene.Frame();
