@@ -1,15 +1,20 @@
 #version 450 core
+#pragma debug(on)
 
-uniform mat4 mvp;
- 
+uniform mat4 projection;
+uniform mat4 modelView;
+uniform vec3 viewPos;
+
 layout(location = 0) in vec3 vPosition;
 layout(location = 1) in vec3 vNormal;
 
-layout (location = 0) out vec3 interpolatedColor;
+out vec3 vs_worldpos;
+out vec3 vs_normal;
 
 void main()
 {
-	gl_Position = mvp * vec4(vPosition, 1.0);
-
-	interpolatedColor = vec3(clamp(vPosition, 0, 1));
+	vec4 position = projection * modelView * vec4(vPosition, 1.0);
+	gl_Position = position;
+	vs_worldpos = position.xyz;
+	vs_normal = mat3(modelView) * vNormal;
 }

@@ -17,9 +17,7 @@ int main(int, char**)
 	using namespace Math3d;
 
 	GLDevice* device = new GLDevice();
-
 	SimpleTimer* timer = new SimpleTimer();
-
 	InputHandler* input = new InputHandler(timer);
 
 	glfwSetKeyCallback(device->GetWindow(), InputHandler::KeyCallback);
@@ -31,7 +29,7 @@ int main(int, char**)
 
 	View::Camera camera = View::Camera();
 	camera
-		.SetPosition(0, 0, -3);
+		.SetPosition(2.50987, -0.514646, 0.591658);
 
 	CameraKeyListener cameraKeyListener = CameraKeyListener(&camera);
 	CameraMouseInputListener cameraMouseListener = CameraMouseInputListener(&camera);
@@ -44,15 +42,14 @@ int main(int, char**)
 	Object& teapot = scene.AddObjectToScene("Assets/Meshes/teapot.obj");
 
 	teapot.GetTransform()
-		.SetScale(0.8f)
-		.Translate(-4, 0, 0)
+		.Translate(-2, 10, 0)
 		.RotateX(15.0f);
 
-	Object& cube = scene.AddObjectToScene("Assets/Meshes/cube.obj");
+	/*Object& cube = scene.AddObjectToScene("Assets/Meshes/cube.obj");
 
 	cube.GetTransform()
 		.Translate(3, 2, 0)
-		.RotateX(12.0f);
+		.RotateX(12.0f);*/
 
 	float smooth = 1.0f;
 
@@ -66,13 +63,13 @@ int main(int, char**)
 
 	workflows.push_back(teapotAnimation);
 
-	auto cubeAnimation = [&]()
+	/*auto cubeAnimation = [&]()
 	{
 		cube.GetTransform()
 			.RotateY(smooth * -14 * timer->GetDeltaTime());
-	};
+	};*/
 
-	workflows.push_back(cubeAnimation);
+	//workflows.push_back(cubeAnimation);
 
 	timer->Start();
 
@@ -82,13 +79,9 @@ int main(int, char**)
 		input->Update();
 		camera.Update();
 
-		for (auto && workflow : workflows) { workflow(); }
-
-		Matrix viewProj = camera.GetView() * camera.GetProj();
-
-		teapot.Update(viewProj);
-		cube.Update(viewProj);
-
+		for (auto&& workflow : workflows) { workflow(); }
+		teapot.Update(camera.GetView(), camera.GetProj(), camera.GetPosition());
+		//cube.Update(camera.GetView(), camera.GetProj(), camera.GetPosition());
 		scene.Frame();
 	}
 

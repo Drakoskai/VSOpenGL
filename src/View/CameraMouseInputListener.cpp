@@ -47,7 +47,7 @@ void CameraMouseInputListener::OnMouseMoveEvent(GLFWwindow* window, double xpos,
 void CameraMouseInputListener::Update(float deltaTime)
 {
 	Math3d::Quaternion heading = Math3d::Quaternion::FromAxisAngle(Math3d::Angle::FromDegrees(m_rotationX), Math3d::Vector4f::UnitY);
-	Math3d::Quaternion pitch = Math3d::Quaternion::FromAxisAngle(Math3d::Angle::FromDegrees(m_rotationY), Math3d::Vector4f::UnitX);
+	Math3d::Quaternion pitch = Math3d::Quaternion::FromAxisAngle(Math3d::Angle::FromDegrees(m_rotationY), -Math3d::Vector4f::UnitX);
 	Math3d::Quaternion roll = Math3d::Quaternion::FromAxisAngle(Math3d::Angle::FromDegrees(m_rotationZ), Math3d::Vector4f::UnitZ);
 	Math3d::Quaternion orientation = pitch * heading * roll;
 

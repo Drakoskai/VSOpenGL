@@ -1,5 +1,6 @@
 #include "../pch.h"
 #include "Matrix.h"
+#include "Geometry.h"
 
 namespace Math3d
 {
@@ -278,7 +279,7 @@ namespace Math3d
 			0.0f, 0.0f, 0.0f, 1.0f };
 	}
 
-	Matrix MakeLookAtRH(Vector4f eye, Vector4f lookAt, Vector4f up)
+	Matrix MakeLookAtRH(Vector3f eye, Vector3f lookAt, Vector3f up)
 	{
 		Vector4f zAxis = Normalize(eye - lookAt);
 		Vector4f xAxis = Normalize(Cross(up, zAxis));
@@ -293,7 +294,7 @@ namespace Math3d
 		return view;
 	}
 
-	Matrix MakeLookAtLH(Vector4f eye, Vector4f lookAt, Vector4f up)
+	Matrix MakeLookAtLH(Vector3f eye, Vector3f lookAt, Vector3f up)
 	{
 		Vector4f zAxis = Normalize(lookAt - eye);
 		Vector4f xAxis = Normalize(Cross(up, zAxis));

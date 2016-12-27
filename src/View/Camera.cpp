@@ -14,7 +14,7 @@ namespace View
 		m_proj = MakePerspectiveRH(Angle::FromDegrees(m_fieldofView), m_screenAspect, m_nearClip, m_farClip);
 		m_rotation = Quaternion::MakeLookAt(m_position, Vector4f::Forward);
 		
-		Vector4f focus = m_position + m_rotation.GetForward();
+		Vector3f focus = m_position + m_rotation.GetForward();
 		m_view = MakeLookAtRH(m_position, focus, m_rotation.GetUp());
 	}
 
@@ -22,7 +22,7 @@ namespace View
 
 	void Camera::Update()
 	{
-		Vector4f focus = m_position + m_rotation.GetForward();
+		Vector3f focus = m_position + m_rotation.GetForward();
 
 		m_view = MakeLookAtRH(m_position, focus, m_rotation.GetUp());
 	}
@@ -31,13 +31,13 @@ namespace View
 
 	Matrix Camera::GetProj() const { return m_proj; }
 
-	Vector4f Camera::GetPosition() const { return m_position; }
+	Vector3f Camera::GetPosition() const { return m_position; }
 
 	Quaternion Camera::GetRotation() const	{ return m_rotation; }
 
-	void Camera::SetPosition(const Vector4f& position) { m_position = position; }
+	void Camera::SetPosition(const Vector3f& position) { m_position = position; }
 
-	void Camera::SetPosition(const float x, const float y, const float z) { SetPosition(Vector4f(x, y, z)); }
+	void Camera::SetPosition(const float x, const float y, const float z) { SetPosition(Vector3f(x, y, z)); }
 
 	void Camera::SetRotation(const Quaternion& rotation) { m_rotation = rotation; }
 }

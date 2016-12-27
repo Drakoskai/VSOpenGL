@@ -116,4 +116,9 @@ namespace Model
 	Vector4f Transform::GetPosition() const { return m_position; }
 
 	Quaternion Transform::GetRotation() const { return m_rotation; }
+
+	Math3d::Vector4f Transform::GetForward() const { return m_rotation.GetForward(); }
+
+	Vector4f Transform::GetRight() const { return m_rotation.GetRight(); }
+
 }

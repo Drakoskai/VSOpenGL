@@ -24,7 +24,9 @@ namespace OpenGL
 		GLuint LoadShaders(ShaderInfo* shaders) const;
 
 		GLuint m_shaderProg;
-		GLint m_uniformMVP;
+		GLint m_uniformModel;
+		GLint m_uniformProjection;
+		GLint m_uniformViewPos;
 		uint32_t m_numShaders;
 
 		std::vector<ShaderInfo> m_shaderInfo;

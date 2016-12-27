@@ -24,15 +24,18 @@ namespace Model
 	bool Object::Init()
 	{
 		std::vector<ShaderInfo> shaders = {
+			//{ GL_GEOMETRY_SHADER, "Assets/Shaders/default.geom" },
 			{ GL_VERTEX_SHADER, "Assets/Shaders/default.vert" },
 			{ GL_FRAGMENT_SHADER, "Assets/Shaders/default.frag" },
 			{ GL_NONE, nullptr }
 		};
 
 		m_shader = new Shader(shaders);
-
 		m_shader->Set();
-		m_shader->m_uniformMVP = glGetUniformLocation(m_shader->m_shaderProg, "mvp");	
+		m_shader->m_uniformProjection = glGetUniformLocation(m_shader->m_shaderProg, "projection");
+		m_shader->m_uniformModel = glGetUniformLocation(m_shader->m_shaderProg, "modelView");
+		m_shader->m_uniformViewPos = glGetUniformLocation(m_shader->m_shaderProg, "viewPos");
+		
 		m_shader->Unset();
 
 		return true;
@@ -40,16 +43,20 @@ namespace Model
 
 	Transform& Object::GetTransform() { return m_transform; }
 
-	void Object::Update(const Matrix& viewProj)
+	void Object::Update(const Matrix& view, const Matrix& projection, const Vector4f viewPos)
 	{
 		m_transform.Update();
-		m_mvp = m_transform.GetModelToClip() * viewProj;
+		m_modelView = m_transform.GetModelToClip() * view;
+		m_viewPos = viewPos;
+		m_projection = projection;
 	}
 
 	void Object::Draw() const
 	{
 		m_shader->Set();
-		glUniformMatrix4fv(m_shader->m_uniformMVP, 1, GL_FALSE, m_mvp);
+		glUniformMatrix4fv(m_shader->m_uniformModel, 1, GL_FALSE, m_modelView);
+		glUniformMatrix4fv(m_shader->m_uniformProjection, 1, GL_FALSE, m_projection);
+		glUniformMatrix4fv(m_shader->m_uniformViewPos, 1, GL_FALSE, m_viewPos);
 		m_object.Render();
 		m_shader->Unset();
 	}

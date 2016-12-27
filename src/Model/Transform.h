@@ -39,6 +39,8 @@ namespace Model
 		Math3d::Matrix GetModelToClip() const;
 		Math3d::Vector4f GetPosition() const;
 		Math3d::Quaternion GetRotation() const;
+		Math3d::Vector4f GetForward() const;
+		Math3d::Vector4f GetRight() const;
 
 	private:
 		Math3d::Vector4f m_position;

@@ -106,6 +106,16 @@ namespace Math3d
 		return Vector2f{ x * inva, y * inva };
 	}
 
+	Vector2f::operator const float*() const
+	{
+		return static_cast<const float*>(&x);
+	}
+
+	Vector2f::operator float*()
+	{
+		return static_cast<float*>(&x);
+	}
+
 	std::string Vector2f::ToString() const
 	{
 		std::stringstream ss;
@@ -460,6 +470,27 @@ namespace Math3d
 			matrix[2][0] * x + matrix[2][1] * y + matrix[2][2] * z };
 	}
 
+	float Dot(const Vector4f& u, const Vector4f& v)
+	{
+		return u.x * v.x + u.y * v.y + u.z * v.z + u.w + v.w;
+	}
+
+	float Length(const Vector4f& v)
+	{
+		return sqrtf(Dot(v, v));
+	}
+
+	Vector4f Normalize(const Vector4f& v)
+	{
+		return v / Length(v);
+	}
+
+	Vector4f Cross(const Vector4f& a, const Vector4f& b)
+	{
+		return Vector3f{a.y * b.z - a.z * b.y,
+			a.z * b.x - a.x * b.z,
+			a.x * b.y - a.y * b.x};
+	}
 #pragma endregion Vector4
 
 	float Color::operator[](const int index) const
@@ -470,6 +501,16 @@ namespace Math3d
 	float& Color::operator[](const int index)
 	{
 		return (&r)[index];
+	}
+
+	std::ostream& operator<<(std::ostream& os, const Vector2f& v)
+	{
+		return os << "( " << v.x << ", " << v.y << " )";
+	}
+
+	std::istream& operator>>(std::istream& is, Vector2f& v)
+	{
+		return is >> v.x >> v.y;
 	}
 
 	std::ostream& operator<<(std::ostream& os, const Vector3f& v)

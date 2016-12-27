@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include "../GL/glad.h"
 
 namespace Math3d
 {
@@ -26,6 +25,9 @@ namespace Math3d
 		float operator[](const int index) const;
 		float& operator[](const int index);
 
+		operator const float*() const;
+		operator float*();
+
 		Vector2f& operator= (const Vector2f& other);
 		Vector2f& operator+= (const Vector2f& other);
 		Vector2f& operator-= (const Vector2f& other);
@@ -38,26 +40,10 @@ namespace Math3d
 		Vector2f operator*(const float s) const;
 		Vector2f operator/(const float s) const;
 
-		operator const float* () const
-		{
-			return static_cast<const float*>(&x);
-		}
-
-		operator float* ()
-		{
-			return static_cast<float*>(&x);
-		}
 
 		std::string ToString() const;
-
-		friend std::ostream& operator << (std::ostream& os, const Vector2f& v) {
-			return os << "( " << v.x << ", " << v.y << " )";
-		}
-
-		friend std::istream& operator >> (std::istream& is, Vector2f& v)
-		{
-			return is >> v.x >> v.y;
-		}
+		friend std::ostream& operator<<(std::ostream& os, const Vector2f& v);
+		friend std::istream& operator>>(std::istream& is, Vector2f& v);
 
 		static const Vector2f Zero;
 		static const Vector2f One;
@@ -95,16 +81,17 @@ namespace Math3d
 		float operator[](const int index) const;
 		float& operator[](const int index);
 
+		operator const float*() const;
+		operator float*();
+
 		Vector3f operator+(const Vector3f& other) const;
 		Vector3f operator-(const Vector3f& other) const;
 		Vector3f operator*(const float s) const;
 		Vector3f operator/(const float s) const;
 
+		std::string ToString() const;
 		friend std::ostream& operator<<(std::ostream& os, const Vector3f& v);
 		friend std::istream& operator>>(std::istream& is, Vector3f& v);
-
-		operator const float*() const;
-		operator float*();
 
 		float GetLength() const;
 		float GetLengthSqrd() const;
@@ -112,8 +99,6 @@ namespace Math3d
 		float Normalize();
 		Vector3f Cross(Vector3f& other) const;
 		float Dot(const Vector3f& other) const;
-
-		std::string ToString() const;
 
 		static const Vector3f Zero;
 		static const Vector3f One;
@@ -126,7 +111,6 @@ namespace Math3d
 		static const Vector3f Right;
 		static const Vector3f Forward;
 		static const Vector3f Backward;
-
 	};
 
 #pragma endregion Vector3f
@@ -194,24 +178,10 @@ namespace Math3d
 
 	};
 
-	inline float Dot(const Vector4f& u, const Vector4f& v) {
-		return u.x*v.x + u.y*v.y + u.z*v.z + u.w + v.w;
-	}
-
-	inline float Length(const Vector4f& v) {
-		return sqrtf(Dot(v, v));
-	}
-
-	inline Vector4f Normalize(const Vector4f& v) {
-		return v / Length(v);
-	}
-
-	inline Vector4f Cross(const Vector4f& a, const Vector4f& b)
-	{
-		return Vector3f{ a.y * b.z - a.z * b.y,
-			a.z * b.x - a.x * b.z,
-			a.x * b.y - a.y * b.x };
-	}
+	float Dot(const Vector4f& u, const Vector4f& v);
+	float Length(const Vector4f& v);
+	Vector4f Normalize(const Vector4f& v);
+	Vector4f Cross(const Vector4f& a, const Vector4f& b);
 
 #pragma endregion Vector4f
 
@@ -241,12 +211,12 @@ namespace Math3d
 		Color(const float* pArray)
 			: r(pArray[0]), g(pArray[1]), b(pArray[2]), a(pArray[3]) { }
 
-		operator const GLfloat* () const
+		operator const float* () const
 		{
 			return static_cast<const GLfloat*>(&r);
 		}
 
-		operator GLfloat* ()
+		operator float* ()
 		{
 			return static_cast<GLfloat*>(&r);
 		}

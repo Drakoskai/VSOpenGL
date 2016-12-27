@@ -9,10 +9,10 @@ CameraKeyListener::~CameraKeyListener() { }
 
 void CameraKeyListener::Update(float deltaTime)
 {
-	Math3d::Vector4f position = m_camera->GetPosition();
-	Math3d::Vector4f forward = m_camera->GetRotation().GetForward();
-	Math3d::Vector4f right = m_camera->GetRotation().GetRight();
-	Math3d::Vector4f up = m_camera->GetRotation().GetUp();
+	Math3d::Vector3f position = m_camera->GetPosition();
+	Math3d::Vector3f forward = m_camera->GetRotation().GetForward();
+	Math3d::Vector3f right = m_camera->GetRotation().GetRight();
+	Math3d::Vector3f up = m_camera->GetRotation().GetUp();
 
 	float speed = 5.0f * deltaTime;
 	if (m_forward) { position += forward * speed; }
@@ -46,7 +46,7 @@ void CameraKeyListener::OnKeyEvent(GLFWwindow* window, int key, int scancode, in
 		case GLFW_KEY_SPACE:
 			m_upward = true;
 			break;
-		case GLFW_KEY_Z:
+		case GLFW_KEY_C:
 			m_downward = true;
 			break;
 		default: break;
@@ -71,7 +71,7 @@ void CameraKeyListener::OnKeyEvent(GLFWwindow* window, int key, int scancode, in
 		case GLFW_KEY_SPACE:
 			m_upward = false;
 			break;
-		case GLFW_KEY_Z:
+		case GLFW_KEY_C:
 			m_downward = false;
 			break;
 		default: break;

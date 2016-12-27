@@ -60,6 +60,6 @@ namespace Math3d
 	Matrix MakeRotationZ(const float theta);
 	
 	Matrix MakeRotation(const Quaternion& rot);
-	Matrix MakeLookAtRH(Vector4f eye, Vector4f lookAt, Vector4f up);
-	Matrix MakeLookAtLH(Vector4f eye, Vector4f lookAt, Vector4f up);
+	Matrix MakeLookAtRH(Vector3f eye, Vector3f lookAt, Vector3f up);
+	Matrix MakeLookAtLH(Vector3f eye, Vector3f lookAt, Vector3f up);
 }

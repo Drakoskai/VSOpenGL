@@ -37,15 +37,15 @@ namespace Math3d
 		Quaternion Inverse() const;
 
 		Angle GetAngle() const;
-		Vector4f GetAxis() const;
+		Vector3f GetAxis() const;
 
 		Angle GetRotationX() const;
 		Angle GetRotationY() const;
 		Angle GetRotationZ() const;
 
-		Vector4f GetUp() const;
-		Vector4f GetRight() const;
-		Vector4f GetForward() const;
+		Vector3f GetUp() const;
+		Vector3f GetRight() const;
+		Vector3f GetForward() const;
 
 		static Quaternion FromAxisAngle(const Angle& angle, const float x, const float y, const float z);
 		static Quaternion FromAxisAngle(const Angle& angle, const Vector4f& axis);

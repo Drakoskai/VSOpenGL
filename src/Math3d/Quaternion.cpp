@@ -1,6 +1,7 @@
 #include "../pch.h"
 #include "Quaternion.h"
 #include "Matrix.h"
+#include "Geometry.h"
 
 namespace Math3d
 {
@@ -102,7 +103,7 @@ namespace Math3d
 		return Angle::FromRadians(radians);
 	}
 
-	Vector4f Quaternion::GetAxis() const
+	Vector3f Quaternion::GetAxis() const
 	{
 		float x_ = x;
 		float y_ = y;
@@ -124,7 +125,7 @@ namespace Math3d
 			z_ /= vecLength;
 		}
 
-		return Vector4f{ x_, y_, z_ };
+		return Vector3f{ x_, y_, z_ };
 	}
 
 	Angle Quaternion::GetRotationX() const
@@ -148,23 +149,23 @@ namespace Math3d
 		return Angle::FromRadians(radians);
 	}
 
-	Vector4f Quaternion::GetUp() const
+	Vector3f Quaternion::GetUp() const
 	{
-		return Vector4f{ 2.0f * (x * y - w * z),
+		return Vector3f{ 2.0f * (x * y - w * z),
 			1.0f - 2.0f * (x * x + z * z),
 			2.0f * (y * z + w * x) };
 	}
 
-	Vector4f Quaternion::GetRight() const
+	Vector3f Quaternion::GetRight() const
 	{
-		return Vector4f{ 1.0f - 2.0f * (y * y + z * z),
+		return Vector3f{ 1.0f - 2.0f * (y * y + z * z),
 			2.0f * (x * y + w * z),
 			2.0f * (x * z - w * y) };
 	}
 
-	Vector4f Quaternion::GetForward() const
+	Vector3f Quaternion::GetForward() const
 	{
-		return Vector4f{ 2.0f * (x * z + w * y),
+		return Vector3f{ 2.0f * (x * z + w * y),
 			2.0f * (y * x - w * x),
 			1.0f - 2.0f * (x * x + y * y) };
 	}
