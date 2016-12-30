@@ -25,6 +25,6 @@ namespace Model
 		Math3d::Matrix m_projection;
 
 		OpenGL::VertexBufferObject m_object;
-		OpenGL::Shader* m_shader;	
+		OpenGL::Shader* m_shader;
 	};
 }

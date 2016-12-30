@@ -1,4 +1,5 @@
 #version 450 core
+#pragma debug(on)
 
 uniform mat4 projection;
 uniform mat4 modelView;
@@ -18,5 +19,5 @@ void main()
 	vec4 position = projection * modelView * vec4(vPosition, 1.0f);
 	gl_Position = position;
 	vs_out.worldpos = position;
-	vs_out.normal = vec4(mat3(modelView) * vNormal,1.0f);
+	vs_out.normal = vec4(mat3(modelView) * vNormal, 1.0f);
 }

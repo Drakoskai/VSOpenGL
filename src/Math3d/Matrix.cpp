@@ -204,7 +204,7 @@ namespace Math3d
 		return MakeScale(scale.x, scale.y, scale.z);
 	}
 
-	Matrix MakePerspectiveRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
+	Matrix MakePerspectiveOGLRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
 	{
 		float tanHalfFovy = fieldOfView.TanHalfAngle();
 		float zRange = zFar - zNear;
@@ -216,7 +216,7 @@ namespace Math3d
 			0.0f, 0.0f, -(2.0f * zFar * zNear) / zRange, 0.0f };
 	}
 
-	Matrix MakePerspectiveLH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
+	Matrix MakePerspectiveOGLLH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
 	{
 		float tanHalfFovy = fieldOfView.TanHalfAngle();
 		float zRange = zFar - zNear;
@@ -228,40 +228,43 @@ namespace Math3d
 			0.0f, 0.0f, 2.0f * zFar * zNear / zRange, 0.0f };
 	}
 
+	Matrix MakePerspectiveDXRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
+	{
+		float tanHalfFovy = fieldOfView.TanHalfAngle();
+		float zRange = zFar - zNear;
+
+		return Matrix{
+			screenAspect * 1.0f / tanHalfFovy, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f,
+			0.0f, 0.0f, zFar / zRange, -1.0f,
+			0.0f, 0.0f, zNear * (zFar / zRange), 0.0f };
+	}
+
+	Matrix MakePerspectiveDXLH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar)
+	{
+		float tanHalfFovy = fieldOfView.TanHalfAngle();
+		float zRange = zFar - zNear;
+
+		return Matrix{
+			screenAspect * 1.0f / tanHalfFovy, 0.0f, 0.0f, 0.0f,
+			0.0f, 1.0f / tanHalfFovy, 0.0f, 0.0f,
+			0.0f, 0.0f, zFar / zRange, 1.0f,
+			0.0f, 0.0f, -zNear * (zFar / zRange), 0.0f };
+	}
+
 	Matrix MakeRotationX(const float theta)
 	{
-		float angle = Geometry::DegToRad * theta;
-
-		Matrix matrix;
-		matrix[2][2] = matrix[1][1] = cos(angle);
-		matrix[2][1] = sin(angle);
-		matrix[1][2] = -matrix[2][1];
-
-		return matrix;
+		return MakeRotation(Quaternion::FromAxisAngle(Angle::FromDegrees(theta), Vector4f::UnitX));
 	}
 
 	Matrix MakeRotationY(const float theta)
 	{
-		float angle = Geometry::DegToRad * theta;
-
-		Matrix matrix;
-		matrix[2][2] = matrix[0][0] = cos(angle);
-		matrix[0][2] = sin(angle);
-		matrix[2][0] = -matrix[0][2];
-
-		return matrix;
+		return MakeRotation(Quaternion::FromAxisAngle(Angle::FromDegrees(theta), Vector4f::UnitY));
 	}
-
+	
 	Matrix MakeRotationZ(const float theta)
 	{
-		float angle = Geometry::DegToRad * theta;
-
-		Matrix matrix;
-		matrix[0][0] = matrix[1][1] = cosf(angle);
-		matrix[1][0] = sinf(angle);
-		matrix[0][1] = -matrix[1][0];
-
-		return matrix;
+		return MakeRotation(Quaternion::FromAxisAngle(Angle::FromDegrees(theta), Vector4f::UnitZ));
 	}
 
 	Matrix MakeRotation(const Quaternion& rot)

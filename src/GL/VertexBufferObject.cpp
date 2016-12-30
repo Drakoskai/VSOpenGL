@@ -10,7 +10,7 @@ namespace OpenGL
 	using namespace Model;
 
 	VertexBufferObject::VertexBufferObject()
-		: m_vao(0), m_attributeBuffer(0), m_indexBuffer(0), m_attributes(nullptr) { }
+		: m_vao(0), m_attributeBuffer(0), m_indexBuffer(0), m_mode(0), m_attributes(nullptr) { }
 
 	VertexBufferObject::~VertexBufferObject()
 	{
@@ -46,19 +46,28 @@ namespace OpenGL
 
 		GatherInfo(verts, indices);
 
+		Create(verts, indices);
+	}
+
+	void VertexBufferObject::SetAttributes(AttribInfo* attribs)
+	{
+		m_attributes = attribs;
+	}
+
+	void VertexBufferObject::Create(std::vector<Vertex> vertices, std::vector<uint32_t> indices)
+	{
 		glGenVertexArrays(1, &m_vao);
 		glBindVertexArray(m_vao);
 
 		glCreateBuffers(1, &m_attributeBuffer);
 
 		glBindBuffer(GL_ARRAY_BUFFER, m_attributeBuffer);
-		glBufferStorage(GL_ARRAY_BUFFER, m_info.size, &verts[0], 0);
-		
+		glBufferStorage(GL_ARRAY_BUFFER, m_info.size, &vertices[0], 0);
 
 		glCreateBuffers(1, &m_indexBuffer);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexBuffer);
 		glBufferStorage(GL_ELEMENT_ARRAY_BUFFER, m_info.numIndices, &indices[0], 0);
-		
+
 		uint64_t offset = 0;
 		for (uint32_t i = 0; i < m_info.numAttribs; i++)
 		{
@@ -92,20 +101,21 @@ namespace OpenGL
 			m_info.numAttribs++;
 		}
 
-		m_attributes = new AttribInfo[m_info.numAttribs];
+		AttribInfo* attribs = new AttribInfo[m_info.numAttribs];
 
-		m_attributes[0].size = 3;
-		m_attributes[0].offset = sizeof(Vector3f);
-		m_attributes[0].type = GL_FLOAT;
-		m_attributes[0].normalized = GL_FALSE;
+		attribs[0].size = 3;
+		attribs[0].offset = sizeof(Vector3f);
+		attribs[0].type = GL_FLOAT;
+		attribs[0].normalized = GL_FALSE;
 
 		if (m_info.numAttribs > 0)
 		{
-			m_attributes[1].size = 3;
-			m_attributes[1].offset = sizeof(Vector3f);
-			m_attributes[1].type = GL_FLOAT;
-			m_attributes[1].normalized = GL_FALSE;
+			attribs[1].size = 3;
+			attribs[1].offset = sizeof(Vector3f);
+			attribs[1].type = GL_FLOAT;
+			attribs[1].normalized = GL_FALSE;
 		}
+		SetAttributes(attribs);
 	}
 
 	void VertexBufferObject::CreateAttribute(const GLuint index, const GLvoid* pointer) const

@@ -3,7 +3,9 @@
 #include "Util.h"
 
 namespace Util{
+
 	using namespace std;
+
 	ObjFile::ObjFile(std::string filename)
 		: m_exists(false), m_isLoaded(false), m_filename(filename) { }
 
@@ -31,27 +33,26 @@ namespace Util{
 			LoadData();
 		}
 
-		size_t numNormals = m_normals.size();
-		size_t numVertices = m_vertIndices.size();
-		//size_t numUvs = m_uvs.size();
+		size_t numVertices = m_faceIndices.size();
 
 		for (uint32_t i = 0; i < numVertices; i++){
-			GLuint vertexIndex = m_vertIndices[i];
-
+			MeshVert face = m_faceIndices[i];
 			Vertex v;
-			v.position = m_positions[vertexIndex - 1];
-
-			if (numNormals > 0)
+			if (face.hasPos)
 			{
-				v.normal = m_normals[vertexIndex - 1];
+				uint16_t posidx = face.posIdx;
+				v.position = m_positions[posidx - 1];
+			}
+			if (face.hasNorm)
+			{
+				uint16_t normidx = m_faceIndices[i].normIdx;
+				v.normal = m_normals[normidx - 1];
+			}
+			if (face.hasUv)
+			{
+				uint16_t uvidx = m_faceIndices[i].hasUv;
 			}
 
-			/*if (numUvs > 0)
-			{
-			GLuint uvIndex = m_uvIndices[i];
-			Vector2f uv = m_uvs[uvIndex - 1];
-			v.uv = uv;
-			}*/
 			vertices.push_back(v);
 
 			indices.push_back(static_cast<GLuint>(vertices.size()) - 1);
@@ -68,11 +69,39 @@ namespace Util{
 		fstream fileStream;
 		fileStream.open(m_filename);
 
+		uint16_t format = 0;
 		char input;
+		string material;
+		string name;
 		fileStream.get(input);
+		uint32_t sides = 0;
 		while (!fileStream.eof())
 		{
-			if (input == 'v')
+			switch (input)
+			{
+			case '#':
+			{
+				ConsumeToEOL(fileStream);
+			}
+			break;
+			case 'u':
+			{
+				while (input != ' ')
+				{
+					fileStream.get(input);
+				}
+				fileStream >> material;
+				//DebugPrintF("Material: %s\n", material.c_str());
+			}
+			break;
+			case 'o':
+			{
+				fileStream >> name;
+				//DebugPrintF("name: %s\n", name.c_str());
+			}
+			break;
+
+			case 'v':
 			{
 				fileStream.get(input);
 				if (input == ' ')
@@ -93,67 +122,204 @@ namespace Util{
 					fileStream >> norm;
 					m_normals.push_back(norm);
 				}
+				ConsumeToEOL(fileStream);
 			}
-			else if (input == 'f')
+			break;
+			case 's':
 			{
-				fileStream.get(input);
-				if (input == ' ')
+				sides++;
+			}
+			break;
+			case 'f':
+			{
+				if (format == 0)
 				{
-					char garbage;
-					unsigned short vertidx1;
-					unsigned short vertidx2;
-					unsigned short vertidx3;
-					unsigned short uvidx1;
-					unsigned short uvidx2;
-					unsigned short uvidx3;
-					unsigned short normalidx1;
-					unsigned short normalidx2;
-					unsigned short normalidx3;
-					if (m_uvs.size() == 0)
+					//formats
+					// 1  #
+					// 2  #/#
+					// 3  #/#/#
+					// 4  #//#
+					if (m_positions.size() > 0 && m_uvs.size() == 0 && m_normals.size() == 0)
 					{
-						fileStream >> vertidx1 >> garbage >> garbage >> normalidx1
-							>> vertidx2 >> garbage >> garbage >> normalidx2
-							>> vertidx3 >> garbage >> garbage >> normalidx3;
-
-						m_vertIndices.push_back(vertidx1);
-						m_vertIndices.push_back(vertidx2);
-						m_vertIndices.push_back(vertidx3);
-
-						m_normalIndices.push_back(normalidx1);
-						m_normalIndices.push_back(normalidx2);
-						m_normalIndices.push_back(normalidx3);
+						format = 1;
 					}
-					else
+					else if (m_positions.size() > 0 && m_uvs.size() > 0 && m_normals.size() == 0)
 					{
-
-						fileStream >> vertidx1 >> garbage >> uvidx1 >> garbage >> normalidx1
-							>> vertidx2 >> garbage >> uvidx2 >> garbage >> normalidx2
-							>> vertidx3 >> garbage >> uvidx3 >> garbage >> normalidx3;
-
-						m_vertIndices.push_back(vertidx1);
-						m_vertIndices.push_back(vertidx2);
-						m_vertIndices.push_back(vertidx3);
-
-						m_uvIndices.push_back(uvidx1);
-						m_uvIndices.push_back(uvidx2);
-						m_uvIndices.push_back(uvidx3);
-
-						m_normalIndices.push_back(normalidx1);
-						m_normalIndices.push_back(normalidx2);
-						m_normalIndices.push_back(normalidx3);
+						format = 2;
+					}
+					else if (m_positions.size() > 0 && m_uvs.size() > 0 && m_normals.size() > 0)
+					{
+						format = 3;
+					}
+					else if (m_positions.size() > 0 && m_uvs.size() == 0 && m_normals.size() > 0)
+					{
+						format = 4;
 					}
 				}
-			}
+				char garbage;
+				uint16_t vertidx1;
+				uint16_t vertidx2;
+				uint16_t vertidx3;
+				uint16_t uvidx1;
+				uint16_t uvidx2;
+				uint16_t uvidx3;
+				uint16_t normalidx1;
+				uint16_t normalidx2;
+				uint16_t normalidx3;
+				switch (format)
+				{
+				case 1:
+				{
+					// 1 #
+					fileStream >> vertidx1 >> vertidx2 >> vertidx3;
 
-			while (input != '\n')
-			{
-				fileStream.get(input);
+					MeshVert vert1;
+					vert1.posIdx = vertidx1;
+					vert1.hasPos = true;
+					vert1.hasNorm = false;
+					vert1.hasUv = false;
+
+					m_faceIndices.push_back(vert1);
+
+					MeshVert vert2;
+					vert2.posIdx = vertidx2;
+					vert2.hasPos = true;
+					vert2.hasNorm = false;
+					vert2.hasUv = false;
+					m_faceIndices.push_back(vert2);
+
+					MeshVert vert3;
+					vert3.hasPos = true;
+					vert3.hasNorm = false;
+					vert3.posIdx = vertidx3;
+					vert3.hasUv = false;
+
+					m_faceIndices.push_back(vert3);
+				}
+				break;
+				case 2:
+				{
+					// 2  #/#
+					fileStream >> vertidx1 >> garbage >> uvidx1
+						>> vertidx2 >> garbage >> uvidx2
+						>> vertidx3 >> garbage >> uvidx3;
+
+					MeshVert vert1;
+					vert1.posIdx = vertidx1;
+					vert1.uvIdx = uvidx1;
+					vert1.hasPos = true;
+					vert1.hasNorm = false;
+					vert1.hasUv = true;
+
+					m_faceIndices.push_back(vert1);
+
+					MeshVert vert2;
+					vert2.posIdx = vertidx2;
+					vert2.uvIdx = uvidx3;
+					vert2.hasPos = true;
+					vert2.hasNorm = false;
+					vert2.hasUv = true;
+					m_faceIndices.push_back(vert2);
+
+					MeshVert vert3;
+					vert3.hasPos = true;
+					vert3.hasNorm = false;
+					vert3.posIdx = vertidx3;
+					vert3.uvIdx = uvidx3;
+					vert3.hasUv = true;
+
+					m_faceIndices.push_back(vert3);
+				}
+				break;
+				case 3:
+				{
+					// 3  #/#/#
+					fileStream >> vertidx1 >> garbage >> uvidx1 >> garbage >> normalidx1
+						>> vertidx2 >> garbage >> uvidx2 >> garbage >> normalidx2
+						>> vertidx3 >> garbage >> uvidx3 >> garbage >> normalidx3;
+
+					MeshVert vert1;
+					vert1.posIdx = vertidx1;
+					vert1.normIdx = normalidx1;
+					vert1.uvIdx = uvidx1;
+					vert1.hasPos = true;
+					vert1.hasNorm = true;
+					vert1.hasUv = true;
+
+					m_faceIndices.push_back(vert1);
+
+					MeshVert vert2;
+					vert2.posIdx = vertidx2;
+					vert2.normIdx = normalidx2;
+					vert2.uvIdx = uvidx3;
+					vert2.hasPos = true;
+					vert2.hasNorm = true;
+					vert2.hasUv = true;
+					m_faceIndices.push_back(vert2);
+
+					MeshVert vert3;
+					vert3.hasPos = true;
+					vert3.hasNorm = true;
+					vert3.posIdx = vertidx3;
+					vert3.normIdx = normalidx3;
+					vert3.uvIdx = uvidx3;
+					vert3.hasUv = true;
+
+					m_faceIndices.push_back(vert3);
+				}
+				break;
+				case 4:
+				{
+					// 3  #/#/#
+					fileStream >> vertidx1 >> garbage >> garbage >> normalidx1
+						>> vertidx2 >> garbage >> garbage >> normalidx2
+						>> vertidx3 >> garbage >> garbage >> normalidx3;
+
+					MeshVert vert1;
+					vert1.posIdx = vertidx1;
+					vert1.normIdx = normalidx1;
+					vert1.hasPos = true;
+					vert1.hasNorm = true;
+					m_faceIndices.push_back(vert1);
+
+					MeshVert vert2;
+					vert2.posIdx = vertidx2;
+					vert2.normIdx = normalidx2;
+					vert2.hasPos = true;
+					vert2.hasNorm = true;
+					m_faceIndices.push_back(vert2);
+
+					MeshVert vert3;
+					vert3.hasPos = true;
+					vert3.hasNorm = true;
+					vert3.posIdx = vertidx3;
+					vert3.normIdx = normalidx3;
+					m_faceIndices.push_back(vert3);
+				}
+				break;
+
+				default:
+					break;
+				}
+				ConsumeToEOL(fileStream);
+			}
+			default:
+				break;
 			}
 			fileStream.get(input);
 		}
-
 		fileStream.close();
 		m_isLoaded = true;
+	}
+
+	void ObjFile::ConsumeToEOL(fstream& stream)
+	{
+		char input;
+		input = stream.peek();
+		while (input != '\n')
+		{
+			stream.get(input);
+		}
 	}
 
 	string ObjFile::ToString()

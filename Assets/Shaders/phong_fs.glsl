@@ -4,7 +4,7 @@
 
 uniform vec3 viewPos;
 
-in GS_OUT
+in VS_OUT
 {
 	vec4 worldpos;
 	vec4 normal;
@@ -12,7 +12,7 @@ in GS_OUT
 
 layout (location = FRAG_COLOR) out vec4 outputColor;
 
-uniform vec4 ambient = vec4(0.329412f, 0.223529f, 0.027451f,1.0f);
+uniform vec4 ambient = vec4(0.329412f, 0.223529f, 0.027451f, 1.0f);
 uniform vec4 diffuse = vec4(0.780392f, 0.568627f, 0.113725f, 1.0f);
 uniform vec4 specular = vec4(0.992157f, 0.941176f, 0.807843f, 1.0f );
 uniform float shininess =  27.0f;
@@ -30,7 +30,6 @@ void main()
 	vec4 diff = diffuseCoefficient * diffuse;
 	
 	//Specular
-	
 	float specularCoefficient = 0.0;
 	if(diffuseCoefficient > 0.0f)
 	{

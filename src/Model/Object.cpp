@@ -16,22 +16,22 @@ namespace Model
 		assert(Init());
 	}
 
-	Object::~Object()
-	{
-		SafeDelete(m_shader);
-	}
+	Object::~Object() { SafeDelete(m_shader); }
 
 	bool Object::Init()
 	{
 		std::vector<ShaderInfo> shaders = {
-			{ GL_GEOMETRY_SHADER, "Assets/Shaders/default.geom" },
-			{ GL_VERTEX_SHADER, "Assets/Shaders/default.vert" },
-			{ GL_FRAGMENT_SHADER, "Assets/Shaders/default.frag" },
+			{ GL_VERTEX_SHADER, "Assets/Shaders/default_vs.glsl" },
+			//{ GL_TESS_CONTROL_SHADER, "Assets/Shaders/default_tcs.glsl"},
+			//{ GL_TESS_EVALUATION_SHADER, "Assets/Shaders/default_tes.glsl" },
+			//{ GL_GEOMETRY_SHADER, "Assets/Shaders/explode_gs.glsl" },		
+			{ GL_FRAGMENT_SHADER, "Assets/Shaders/phong_fs.glsl" },
 			{ GL_NONE, nullptr }
 		};
 
 		m_shader = new Shader(shaders);
 		m_shader->Set();
+
 		m_shader->m_uniformProjection = glGetUniformLocation(m_shader->m_shaderProg, "projection");
 		m_shader->m_uniformModel = glGetUniformLocation(m_shader->m_shaderProg, "modelView");
 		m_shader->m_uniformViewPos = glGetUniformLocation(m_shader->m_shaderProg, "viewPos");

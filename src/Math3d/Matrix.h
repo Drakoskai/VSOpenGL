@@ -52,9 +52,13 @@ namespace Math3d
 	Matrix MakeScale(const Vector3f& scale);
 	Matrix MakeScale(const Vector4f& scale);
 	
-	Matrix MakePerspectiveRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar);
-	Matrix MakePerspectiveLH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar);
+	Matrix MakePerspectiveOGLRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar);
+	Matrix MakePerspectiveOGLLH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar);
 	
+	Matrix MakePerspectiveDXRH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar);
+	Matrix MakePerspectiveDXLH(const Angle& fieldOfView, const float screenAspect, const float zNear, const float zFar);
+
+
 	Matrix MakeRotationX(const float theta);
 	Matrix MakeRotationY(const float theta);
 	Matrix MakeRotationZ(const float theta);

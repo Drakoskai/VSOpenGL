@@ -9,7 +9,6 @@
 #include "SystemKeyListener.h"
 #include "Scene.h"
 
-
 int main(int, char**)
 {
 	using namespace OpenGL;
@@ -44,12 +43,6 @@ int main(int, char**)
 	teapot.GetTransform()
 		.Translate(-2, 10, 0);
 
-	//Object& cube = scene.AddObjectToScene("Assets/Meshes/cube.obj");
-
-	/*cube.GetTransform()
-		.SetScale(3.0f, 2.0f, 3.0f)
-		.Translate(-2, 8.30, 0);*/
-
 	float smooth = 1.0f;
 
 	std::vector<std::function<void()>> workflows;
@@ -62,14 +55,6 @@ int main(int, char**)
 
 	workflows.push_back(teapotAnimation);
 
-	/*auto cubeAnimation = [&]()
-	{
-	cube.GetTransform()
-	.RotateY(smooth * -14 * timer->GetDeltaTime());
-	};*/
-
-	//workflows.push_back(cubeAnimation);
-
 	timer->Start();
 
 	while (!glfwWindowShouldClose(device->GetWindow()))
@@ -80,7 +65,6 @@ int main(int, char**)
 
 		//for (auto&& workflow : workflows) { workflow(); }
 		teapot.Update(camera.GetView(), camera.GetProj(), camera.GetPosition());
-		//cube.Update(camera.GetView(), camera.GetProj(), camera.GetPosition());
 		scene.Frame();
 	}
 

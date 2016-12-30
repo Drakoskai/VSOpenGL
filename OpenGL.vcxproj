@@ -33,6 +33,7 @@
     <ClInclude Include="src\Math3d\Plane.h" />
     <ClInclude Include="src\Math3d\Quaternion.h" />
     <ClInclude Include="src\Math3d\Vector.h" />
+    <ClInclude Include="src\Model\Material.h" />
     <ClInclude Include="src\Model\Object.h" />
     <ClInclude Include="src\Model\Transform.h" />
     <ClInclude Include="src\Model\Vertex.h" />
@@ -70,6 +71,25 @@
     <ClCompile Include="src\View\Camera.cpp" />
     <ClCompile Include="src\View\CameraKeyInputListener.cpp" />
     <ClCompile Include="src\View\CameraMouseInputListener.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\default_tcs.glsl" />
+    <None Include="Assets\Shaders\default_tes.glsl" />
+    <None Include="Assets\Shaders\phong_fs.glsl" />
+    <None Include="Assets\Shaders\explode_gs.glsl" />
+    <None Include="Assets\Shaders\default_vs.glsl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Meshes\cube.obj">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Resource>
+    <Resource Include="Assets\Meshes\teapot.obj">
+      <FileType>Document</FileType>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Resource>
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{6E0C40FE-F2EA-4305-B6D4-70ED19B3324A}</ProjectGuid>

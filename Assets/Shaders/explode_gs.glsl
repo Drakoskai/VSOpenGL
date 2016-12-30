@@ -1,4 +1,5 @@
 #version 450 core
+#pragma debug(on)
 
 layout (triangles) in;
 layout (triangle_strip) out;
@@ -27,10 +28,9 @@ void main(void)
 	
 	for(int i = 0; i < gl_in.length(); i++)
 	{
-		//vec3 faceNorm = -normalize(gs_in[i].normal.xyz);
 		gl_Position = gl_in[i].gl_Position + vec4(faceNorm * explosionCoeffecient, 0.0);
 		gs_out.worldpos = gs_in[i].worldpos + vec4(faceNorm * explosionCoeffecient, 0.0);
-		gs_out.normal = gs_in[i].normal + vec4(faceNorm * explosionCoeffecient, 0.0);
+		gs_out.normal = gs_in[i].normal;
 		EmitVertex();
 	}
 	

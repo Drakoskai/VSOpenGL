@@ -27,6 +27,7 @@ namespace OpenGL
 		GLint m_uniformModel;
 		GLint m_uniformProjection;
 		GLint m_uniformViewPos;
+		GLint m_uniformExplodeCoeff;
 		uint32_t m_numShaders;
 
 		std::vector<ShaderInfo> m_shaderInfo;

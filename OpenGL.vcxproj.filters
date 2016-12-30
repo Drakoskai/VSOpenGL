@@ -43,6 +43,15 @@
     <Filter Include="Header Files\Util">
       <UniqueIdentifier>{fbadaf77-8566-4406-a316-704037efeb16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Assets">
+      <UniqueIdentifier>{01a1ce7a-f494-43ce-8dc7-5bebea8cefe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Assets\Shaders">
+      <UniqueIdentifier>{37cc8264-e900-4d0e-b4a3-529dadf072d6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Assets\Meshes">
+      <UniqueIdentifier>{15bc02b5-b314-472d-9cc3-2e62c2b127ab}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Interfaces.h">
@@ -123,6 +132,9 @@
     <ClInclude Include="src\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Model\Material.h">
+      <Filter>Header Files\Model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -194,5 +206,30 @@
     <ClCompile Include="src\Scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Shaders\default_tcs.glsl">
+      <Filter>Source Files\Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\default_tes.glsl">
+      <Filter>Source Files\Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\explode_gs.glsl">
+      <Filter>Source Files\Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\phong_fs.glsl">
+      <Filter>Source Files\Assets\Shaders</Filter>
+    </None>
+    <None Include="Assets\Shaders\default_vs.glsl">
+      <Filter>Source Files\Assets\Shaders</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\Meshes\cube.obj">
+      <Filter>Source Files\Assets\Meshes</Filter>
+    </Resource>
+    <Resource Include="Assets\Meshes\teapot.obj">
+      <Filter>Source Files\Assets\Meshes</Filter>
+    </Resource>
   </ItemGroup>
 </Project>
