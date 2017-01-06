@@ -5,6 +5,8 @@
 
 namespace Math3d
 {
+	struct Matrix;
+
 	struct Quaternion
 	{
 		float x;

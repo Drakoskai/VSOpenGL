@@ -28,7 +28,7 @@ int main(int, char**)
 
 	View::Camera camera = View::Camera();
 	camera
-		.SetPosition(2.50987, -0.514646, 0.591658);
+		.SetPosition(2.47737f, -1.05385f, -77.5735f);
 
 	CameraKeyListener cameraKeyListener = CameraKeyListener(&camera);
 	CameraMouseInputListener cameraMouseListener = CameraMouseInputListener(&camera);
@@ -63,7 +63,7 @@ int main(int, char**)
 		input->Update();
 		camera.Update();
 
-		//for (auto&& workflow : workflows) { workflow(); }
+		for (auto&& workflow : workflows) { workflow(); }
 		teapot.Update(camera.GetView(), camera.GetProj(), camera.GetPosition());
 		scene.Frame();
 	}

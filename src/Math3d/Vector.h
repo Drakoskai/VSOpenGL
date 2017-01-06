@@ -4,7 +4,6 @@
 
 namespace Math3d
 {
-	struct Matrix;
 
 #pragma region Vector2f
 
@@ -161,7 +160,6 @@ namespace Math3d
 		float Dot(const Vector4f& v) const;
 		float Length() const;
 		Vector4f Normalize() const;
-		Vector4f Transform(const Matrix& matrix) const;
 
 		static const Vector4f Zero;
 		static const Vector4f One;

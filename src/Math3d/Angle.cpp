@@ -53,7 +53,7 @@ namespace Math3d
 
 	Angle Angle::NormalizeAngle() const
 	{
-		float a = fmod(degrees, 360.0f);
+		float a = fmodf(degrees, 360.0f);
 		float d = a > 180.0f ? a - 360.0f : a < -180.0f ? 360.0f + a : a;
 
 		return FromDegrees(d);

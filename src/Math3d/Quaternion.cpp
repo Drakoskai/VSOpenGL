@@ -14,6 +14,7 @@ namespace Math3d
 		: x(x_), y(y_), z(z_), w(w_) { }
 
 	bool Quaternion::operator==(const Quaternion& other) const { return x == other.x && y == other.y && z == other.z && w == other.w ? true : false; }
+	
 	bool Quaternion::operator!=(const Quaternion& other) const { return x == other.x && y == other.y && z == other.z && w == other.w ? false : true; }
 
 	Quaternion Quaternion::operator+(const Quaternion& other) const	{ return Quaternion{ x + other.x, y + other.y, z + other.z, w + other.w }; }

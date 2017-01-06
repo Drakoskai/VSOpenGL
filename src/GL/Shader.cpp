@@ -5,7 +5,7 @@
 namespace OpenGL
 {
 	Shader::Shader(std::vector<ShaderInfo> shaders)
-		: m_shaderProg(0), m_uniformModel(0), m_uniformProjection(0), m_uniformExplodeCoeff(0), m_numShaders(0), m_shaderInfo(shaders)
+		: m_shaderProg(0),  m_shaderInfo(shaders)
 	{
 		m_shaderProg = LoadShaders(&shaders[0]);
 		assert(m_shaderProg != 0);
@@ -13,8 +13,6 @@ namespace OpenGL
 
 	Shader::~Shader()
 	{
-		m_uniformModel = 0;
-		m_uniformProjection = 0;
 		if (m_shaderProg != 0)
 		{		
 			glDeleteProgram(m_shaderProg);
@@ -26,6 +24,83 @@ namespace OpenGL
 
 	void Shader::Unset() { glUseProgram(0); }
 
+	void Shader::SetFloat(const char* name, float value, bool useShader) const
+	{
+		if (useShader) { Set(); }
+
+		glUniform1f(glGetUniformLocation(m_shaderProg, name), value);
+
+		if (useShader) { Unset(); }
+	}
+
+	void Shader::SetInteger(const char* name, uint32_t value, bool useShader) const
+	{
+		if (useShader) { Set(); }
+
+		glUniform1i(glGetUniformLocation(m_shaderProg, name), value);
+
+		if (useShader) { Unset(); }
+	}
+
+	void Shader::SetVector2f(const char* name, float x, float y, bool useShader) const
+	{
+		if (useShader) { Set(); }
+		glUniform2f(glGetUniformLocation(m_shaderProg, name), x, y);
+		if (useShader) { Unset(); }
+	}
+
+	void Shader::SetVector2f(const char* name, const Math3d::Vector2f& value, bool useShader) const
+	{
+		if (useShader) { Set(); }
+
+		glUniform2f(glGetUniformLocation(m_shaderProg, name), value.x, value.y);
+
+		if (useShader) { Unset(); }
+	}
+
+	void Shader::SetVector3f(const char* name, float x, float y, float z, bool useShader) const
+	{
+		if (useShader) { Set(); }
+
+		glUniform3f(glGetUniformLocation(m_shaderProg, name), x, y, z);
+
+		if (useShader) { Unset(); }
+	}
+
+	void Shader::SetVector3f(const char* name, const Math3d::Vector3f& value, bool useShader) const
+	{
+		if (useShader) { Set(); }
+
+		glUniform3f(glGetUniformLocation(m_shaderProg, name), value.x, value.y, value.z);
+
+		if (useShader) { Unset(); }
+	}
+
+	void Shader::SetVector4f(const char* name, float x, float y, float z, float w, bool useShader) const
+	{
+		if (useShader) { Set(); }
+
+		glUniform4f(glGetUniformLocation(m_shaderProg, name), x, y, z, w);
+
+		if (useShader) { Unset(); }
+	}
+
+	void Shader::SetVector4f(const char* name, const Math3d::Vector4f& value, bool useShader) const
+	{
+		if (useShader) { Set(); }
+
+		glUniform4f(glGetUniformLocation(m_shaderProg, name), value.x, value.y, value.z, value.w);
+
+		if (useShader) { Unset(); }
+	}
+
+	void Shader::SetMatrix4(const char* name, const Math3d::Matrix& matrix, bool useShader) const
+	{
+		if (useShader) { Set(); }
+		glUniformMatrix4fv(glGetUniformLocation(m_shaderProg, name), 1, GL_FALSE, matrix);
+
+		if (useShader) { Unset(); }
+	}
 	GLuint Shader::LoadShader(const char* text, GLenum type)
 	{
 		using namespace Util;
@@ -134,7 +209,6 @@ namespace OpenGL
 				glDeleteShader(entry->shader);
 				entry->shader = 0;
 			}
-
 			for (uint32_t i = 0; i < m_numShaders; i++)
 			{
 				GLuint shaderId = m_shaderInfo[i].shader;

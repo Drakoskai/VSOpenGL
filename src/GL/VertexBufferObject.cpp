@@ -87,11 +87,11 @@ namespace OpenGL
 		glBindVertexArray(0);
 	}
 
-	void VertexBufferObject::GatherInfo(const std::vector<Vertex>& verts, const std::vector<GLuint>& indices)
+	void VertexBufferObject::GatherInfo(const std::vector<Vertex>& verts, const std::vector<uint32_t>& indices)
 	{
 		size_t numVerts = verts.size();
 		m_info.numVertices = numVerts;
-		m_info.numIndices = indices.size() * sizeof(GLuint);
+		m_info.numIndices = indices.size() * sizeof(uint32_t);
 		m_info.size = numVerts * sizeof(Vertex);
 		m_info.stride = sizeof(Vertex);
 

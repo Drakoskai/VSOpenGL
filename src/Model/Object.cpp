@@ -30,13 +30,6 @@ namespace Model
 		};
 
 		m_shader = new Shader(shaders);
-		m_shader->Set();
-
-		m_shader->m_uniformProjection = glGetUniformLocation(m_shader->m_shaderProg, "projection");
-		m_shader->m_uniformModel = glGetUniformLocation(m_shader->m_shaderProg, "modelView");
-		m_shader->m_uniformViewPos = glGetUniformLocation(m_shader->m_shaderProg, "viewPos");
-		
-		m_shader->Unset();
 
 		return true;
 	}
@@ -54,9 +47,9 @@ namespace Model
 	void Object::Draw() const
 	{
 		m_shader->Set();
-		glUniformMatrix4fv(m_shader->m_uniformModel, 1, GL_FALSE, m_modelView);
-		glUniformMatrix4fv(m_shader->m_uniformProjection, 1, GL_FALSE, m_projection);
-		glUniformMatrix4fv(m_shader->m_uniformViewPos, 1, GL_FALSE, m_viewPos);
+		m_shader->SetMatrix4("modelView", m_modelView);
+		m_shader->SetMatrix4("projection", m_projection);
+		m_shader->SetVector4f("viewPos", m_viewPos);
 		m_object.Render();
 		m_shader->Unset();
 	}

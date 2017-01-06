@@ -20,19 +20,4 @@ namespace OpenGL
 			Util::DebugPrintF("ERROR %d in %s\n", error_code, name);
 		}
 	}
-
-	inline void DefaultKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mode)
-	{
-		Util::DebugPrintF("Pressed key: %i\n", key);
-		if (action == GLFW_PRESS)
-		{
-			switch (key)
-			{
-			case GLFW_KEY_ESCAPE:
-				glfwSetWindowShouldClose(window, GL_TRUE);
-				break;
-			default: break;
-			}
-		}
-	}
 }
